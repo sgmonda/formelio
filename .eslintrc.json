@@ -1,0 +1,75 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": ["eslint:recommended", "plugin:react/recommended", "prettier", "prettier/@typescript-eslint"],
+  "env": {
+    "cypress/globals": true,
+    "jest": true,
+    "node": true,
+    "es6": true,
+    "browser": true
+  },
+  "plugins": ["@typescript-eslint", "import", "react", "json", "cypress"],
+  "rules": {
+    "camelcase": "off",
+    "comma-dangle": ["error", "always-multiline"],
+    "consistent-return": "off",
+    "complexity": ["error", 10],
+    "global-require": "off",
+    "eqeqeq": "error",
+    "max-len": ["error", 120, { "tabWidth": 2, "ignoreComments": true }],
+    "max-lines": ["error", 350],
+    "no-await-in-loop": "off",
+    "no-case-declarations": "off",
+    "no-cond-assign": "off",
+    "no-continue": "off",
+    "no-multiple-empty-lines": ["error", { "max": 1 }],
+    "no-restricted-syntax": "off",
+    "no-return-assign": ["error", "except-parens"],
+    "no-param-reassign": "off",
+    "no-plusplus": "off",
+    "no-underscore-dangle": "off",
+    "import/no-dynamic-require": "off",
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "import/no-unresolved": "error",
+    "import/prefer-default-export": "off",
+    "object-property-newline": "off",
+    "object-curly-newline": ["error", { "consistent": true }],
+    "radix": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"],
+    "react/prop-types": "off",
+    "guard-for-in": "off",
+    "semi": "error",
+    "sort-keys": "error",
+    "sort-imports": [
+      "error",
+      {
+        "ignoreCase": true,
+        "ignoreDeclarationSort": true,
+        "ignoreMemberSort": false
+      }
+    ],
+    "sort-vars": "error"
+  },
+  "settings": {
+    "import/parsers": {
+      "typescript-eslint-parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"],
+        "paths": ["."]
+      }
+    },
+    "react": {
+      "version": "detect"
+    }
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "tsx": true
+    }
+  }
+}
