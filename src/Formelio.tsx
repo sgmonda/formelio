@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
 import styles from './Formelio.module.css';
+import { Field } from './typings';
 
 type Props = {
-  text: string;
+  fields: Field[][];
 };
 
 type State = {};
 
 export class Formelio extends Component<Props, State> {
   public render = () => {
-    const { text } = this.props;
-    return <div className={styles.test}>This is Formelio! {text}</div>;
+    const { fields } = this.props;
+    return (
+      <div className={styles.formelio}>
+        This is Formelio!
+        <pre>{JSON.stringify(fields)}</pre>
+      </div>
+    );
   };
 }

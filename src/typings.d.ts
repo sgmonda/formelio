@@ -15,3 +15,9 @@ declare module '*.svg' {
   export default svgUrl;
   export { svgComponent as ReactComponent };
 }
+
+export type Field = {
+  name: string;
+  label?: string;
+  // @TODO Add more props
+};
