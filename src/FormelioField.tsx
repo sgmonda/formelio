@@ -5,7 +5,7 @@ import cl from 'classnames';
 
 type Props<T> = Field<T> & {
   value?: T;
-  onChange?: (value: T, isValid: boolean) => Promise<T>;
+  onChange: (value: T, isValid: boolean) => Promise<T>;
 };
 
 type State<T> = {
@@ -14,11 +14,31 @@ type State<T> = {
   value: T | undefined;
 };
 
+export type FieldProps<T> = Props<T>;
+
 export class FormelioField<T> extends Component<Props<T>, State<T>> {
-  public state = {
-    errors: [],
-    isFocused: false,
-    value: this.props.value,
+  static initialState = { errors: [], isFocused: false, value: undefined };
+
+  constructor(props: Props<T>) {
+    super(props);
+    this.state = this.getStateAndValidate(props);
+  }
+
+  private getStateAndValidate = (props: Props<T>): State<T> => {
+    const state = {
+      ...FormelioField.initialState,
+      value: props.value,
+    };
+    if (props.value) {
+      this.props.validator?.(props.value).then((errors) => this.setState({ errors: errors || [] }));
+    }
+    return state;
+  };
+
+  public componentDidUpdate = (prevProps: Props<T>) => {
+    if (prevProps.value !== this.state.value) {
+      this.setState(this.getStateAndValidate(this.props));
+    }
   };
 
   private onChange: ChangeEventHandler<HTMLInputElement> = async (ev) => {
@@ -26,6 +46,7 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
     const value = (ev.target.value as any) as T;
     const errors = (await validator?.(value)) || [];
     this.setState({ errors, value });
+    this.props.onChange(value, !errors.length);
   };
 
   public render = () => {
@@ -40,7 +61,7 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
             [styles.isErrored]: !!errors.length,
           })}
           type="text"
-          value={value as any}
+          defaultValue={value as any}
           onFocus={() => this.setState({ isFocused: true })}
           onBlur={() => this.setState({ isFocused: false })}
           onChange={this.onChange}
