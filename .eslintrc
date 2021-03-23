@@ -15,6 +15,7 @@
       "jsx": true
     }
   },
+  "plugins": ["@typescript-eslint", "import", "react", "json", "cypress"],
   "settings": {
     "react": {
       "version": "16"

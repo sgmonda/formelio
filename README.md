@@ -15,14 +15,14 @@ npm install --save formelio
 ## Usage
 
 ```tsx
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-import MyComponent from 'formelio'
-import 'formelio/dist/index.css'
+import MyComponent from 'formelio';
+import 'formelio/dist/index.css';
 
 class Example extends Component {
   render() {
-    return <MyComponent />
+    return <MyComponent />;
   }
 }
 ```
@@ -32,6 +32,13 @@ class Example extends Component {
 GPL-3.0 © [Sergio Garcia Mondaray &lt;sgmonda@gmail.com&gt; (https://sgmonda.com)](https://github.com/Sergio Garcia Mondaray &lt;sgmonda@gmail.com&gt; (https://sgmonda.com))
 
 ## Development
+
+#### Git hooks
+
+This project uses git hooks for:
+
+- Commit message format: see https://www.conventionalcommits.org/
+- Lint, format and test before commiting
 
 #### Environment
 
