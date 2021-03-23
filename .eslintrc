@@ -1,12 +1,9 @@
 {
   "parser": "@typescript-eslint/parser",
   "extends": [
-    "standard",
-    "standard-react",
+    "eslint:recommended",
     "plugin:prettier/recommended",
-    "prettier/standard",
-    "prettier/react",
-    "plugin:@typescript-eslint/eslint-recommended"
+    "plugin:react/recommended",
   ],
   "env": {
     "node": true
@@ -25,10 +22,51 @@
   },
   "rules": {
     "space-before-function-paren": 0,
-    "react/prop-types": 0,
     "react/jsx-handler-names": 0,
     "react/jsx-fragments": 0,
     "react/no-unused-prop-types": 0,
-    "import/export": 0
+    "import/export": 0,
+
+    "camelcase": "off",
+    "comma-dangle": ["error", "always-multiline"],
+    "consistent-return": "off",
+    "complexity": ["error", 10],
+    "global-require": "off",
+    "eqeqeq": "error",
+    "max-len": ["error", 120, { "tabWidth": 2, "ignoreComments": true }],
+    "max-lines": ["error", 350],
+    "no-await-in-loop": "off",
+    "no-case-declarations": "off",
+    "no-cond-assign": "off",
+    "no-continue": "off",
+    "no-multiple-empty-lines": ["error", { "max": 1 }],
+    "no-restricted-syntax": "off",
+    "no-return-assign": ["error", "except-parens"],
+    "no-param-reassign": "off",
+    "no-plusplus": "off",
+    "no-underscore-dangle": "off",
+    "import/no-dynamic-require": "off",
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "import/no-unresolved": "error",
+    "import/prefer-default-export": "off",
+    "object-property-newline": "off",
+    "object-curly-newline": ["error", { "consistent": true }],
+    "radix": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"],
+    "react/prop-types": "off",
+    "react/react-in-jsx-scoe": "off", // React must be in global scope, so we don't need to import it
+    "guard-for-in": "off",
+    "semi": "error",
+    "sort-keys": "error",
+    "sort-imports": [
+      "error",
+      {
+        "ignoreCase": true,
+        "ignoreDeclarationSort": true,
+        "ignoreMemberSort": false
+      }
+    ],
+    "sort-vars": "error"
   }
 }

@@ -1,10 +1,5 @@
-import * as React from 'react'
-import styles from './styles.module.css'
+import { Formelio } from './Formelio';
 
-interface Props {
-  text: string
-}
+export * from './Formelio';
 
-export const ExampleComponent = ({ text }: Props) => {
-  return <div className={styles.test}>Example Component: {text}</div>
-}
+export default Formelio;
