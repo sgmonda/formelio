@@ -13,12 +13,18 @@
     "ecmaFeatures": {
       "legacyDecorators": true,
       "jsx": true
-    }
+    },
+    "sourceType": "module"
   },
   "plugins": ["@typescript-eslint", "import", "react", "json", "cypress"],
   "settings": {
     "react": {
       "version": "16"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
     }
   },
   "rules": {

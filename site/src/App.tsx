@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 
-import Formelio from 'formelio'
-import 'formelio/dist/index.css'
+import Formelio from 'formelio';
+import 'formelio/dist/index.css';
 
 const App = () => {
-  return <Formelio text="Create React Library Example 😄 3" />
-}
+  return <Formelio text="Create React Library Example 😄 3" />;
+};
 
-export default App
+export default App;
