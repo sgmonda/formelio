@@ -12,7 +12,7 @@ export class Formelio extends Component<Props, State> {
     const { text } = this.props;
     return (
       <div className={styles.test}>
-        Example Component 2: {text}
+        This is Formelio! {text}
       </div>
     );
   }

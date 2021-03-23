@@ -1,5 +1,7 @@
 # formelio
 
+See https://sgmonda.github.io/formelio/ for documentation and usage examples.
+
 > Forms for human beings
 
 [![NPM](https://img.shields.io/npm/v/formelio.svg)](https://www.npmjs.com/package/formelio) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
@@ -31,6 +33,8 @@ GPL-3.0 © [Sergio Garcia Mondaray &lt;sgmonda@gmail.com&gt; (https://sgmonda.co
 
 ## Development
 
+#### Environment
+
 - Terminal 1: Open dev server, to compile and bundle everything on every change:
 
   ```
@@ -46,5 +50,19 @@ GPL-3.0 © [Sergio Garcia Mondaray &lt;sgmonda@gmail.com&gt; (https://sgmonda.co
 - Terminal 3: Serve (watching) the example
 
   ```
-  $ npm run dev:example
+  $ npm run dev:site
   ```
+
+#### Deployment
+
+To update gh pages:
+
+```
+$ npm run deploy
+```
+
+To publish on npm:
+
+```
+$ npm publish
+```
