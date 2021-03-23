@@ -12,6 +12,7 @@
     "node": ">=10"
   },
   "scripts": {
+    "clean": "rm -Rf dist/* site/build/*",
     "build": "microbundle-crl --no-compress --format modern,cjs",
     "lint": "eslint --fix -c .eslintrc . --ext .tsx,.ts,.json --ignore-path .gitignore",
     "dev": "microbundle-crl watch --no-compress --format modern,cjs",
@@ -30,6 +31,7 @@
   "devDependencies": {
     "@commitlint/cli": "^12.0.1",
     "@commitlint/config-conventional": "^12.0.1",
+    "@creativebulma/bulma-tooltip": "^1.2.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -40,6 +42,7 @@
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
     "babel-eslint": "^10.0.3",
+    "bulma": "^0.9.2",
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.7.0",
@@ -57,6 +60,7 @@
     "husky": "^5.2.0",
     "lint-staged": "^10.5.4",
     "microbundle-crl": "^0.13.10",
+    "node-sass": "^5.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.4",
     "react": "^16.13.1",

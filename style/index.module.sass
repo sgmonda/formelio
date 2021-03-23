@@ -1,0 +1,19 @@
+@import './theme.sass'
+
+.columns
+  background: $blue
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  padding: $unit 0 $unit 0
+
+  .column
+    color: yellow
+    background: red
+    flex: 1
+
+    &:not(:last-child)
+      margin-right: $unit
+
+.formelio
+  border: solid 1px red

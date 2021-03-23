@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from './Formelio.module.css';
+import styles from '../style/index.module.sass';
 import { Field } from './typings';
 
 type Props = {
@@ -15,6 +15,12 @@ export class Formelio extends Component<Props, State> {
       <div className={styles.formelio}>
         This is Formelio!
         <pre>{JSON.stringify(fields)}</pre>
+        <div className={styles.columns}>
+          <div className={styles.column}>hello</div>
+          <div className={styles.column}>hello</div>
+          <div className={styles.column}>hello</div>
+          <div className={styles.column}>hello</div>
+        </div>
       </div>
     );
   };
