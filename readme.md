@@ -65,7 +65,7 @@ This project uses git hooks for:
 To update gh pages:
 
 ```
-$ npm run deploy
+$ npm run deploy:page
 ```
 
 To publish on npm:
