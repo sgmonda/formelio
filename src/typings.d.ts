@@ -16,8 +16,10 @@ declare module '*.svg' {
   export { svgComponent as ReactComponent };
 }
 
-export type Field = {
+export type Field<T> = {
   name: string;
   label?: string;
+  help?: string;
+  validator?: (value: T) => Promise<string[]>;
   // @TODO Add more props
 };
