@@ -18,7 +18,7 @@ declare module '*.svg' {
 
 export type Field<T> = {
   name: string;
-
+  options?: { [key: string]: { label: string } };
   /** bla bla size */
   size?: number;
   label?: string;

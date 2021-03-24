@@ -15,7 +15,7 @@
   //   margin-right: $unit * 0.5
 
 .formelio
-  // background: #ddd
+  flex: 1
 
 .fieldWrapper
   padding: $unit * 0.5
@@ -106,7 +106,7 @@
       right: $unit * 0.5
       top: -$unit * 0.5
 
-  input
+  input, select
     margin-top: $unit * 0.75
     font-size: $unit
     width: 100%
@@ -121,6 +121,13 @@
       border-color: $color-primary
     &.isErrored
       border-color: $color-error
+
+  select
+    cursor: text
+    -webkit-appearance: none
+    -moz-appearance: none
+    appearance: none
+    text-indent: 0
 
   // Avoid blue background on autocompleted fields under Google Chrome
   input:-webkit-autofill,

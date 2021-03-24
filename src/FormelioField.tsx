@@ -94,7 +94,7 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
     );
   };
 
-  private renderInput = () => {
+  private renderCommonInput = () => {
     const { errors, value } = this.state;
     return (
       <input
@@ -110,10 +110,35 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
     );
   };
 
+  private renderSelect = () => {
+    const { options } = this.props;
+    const { errors, value } = this.state;
+    return (
+      <select
+        className={cl({
+          [styles.isErrored]: !!errors.length,
+        })}
+      >
+        {Object.entries(options || {}).map(([key, { label }]) => (
+          <option key={key} value={key} selected={String(value) === key}>
+            {label}
+          </option>
+        ))}
+      </select>
+    );
+  };
+
+  private renderInput = () => {
+    const { options } = this.props;
+    if (options) return this.renderSelect();
+    return this.renderCommonInput();
+  };
+
   private renderLabel = () => {
-    const { label, name } = this.props;
+    const { label, name, options } = this.props;
     const { isFocused, value } = this.state;
-    return <label className={isFocused ? styles.isFocused : value ? '' : styles.isEmpty}>{label || name}</label>;
+    const isEmpty = !options && !value;
+    return <label className={isFocused ? styles.isFocused : isEmpty ? styles.isEmpty : ''}>{label || name}</label>;
   };
 
   public render = () => {

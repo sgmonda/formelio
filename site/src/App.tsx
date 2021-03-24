@@ -22,6 +22,14 @@ const App = () => {
     { help: 'Esto es algo de ayuda. Bla bla bla', label: 'Primer apellido', name: 'surname1', size: 0.25 },
     { name: 'surname2', size: 0.25 },
     {
+      name: 'city',
+      options: {
+        val1: { label: 'First value' },
+        val2: { label: 'Seconds value' },
+        val3: { label: 'Third value' },
+      },
+    },
+    {
       help: 'Esto es algo de ayuda. Bla bla bla',
       label: 'Nombre',
       name: 'firstName2',
