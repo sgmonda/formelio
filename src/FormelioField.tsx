@@ -29,9 +29,7 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
       ...FormelioField.initialState,
       value: props.value,
     };
-    if (props.value) {
-      this.props.validator?.(props.value).then((errors) => this.setState({ errors: errors || [] }));
-    }
+    this.props.validator?.((props.value || '') as any).then((errors) => this.setState({ errors: errors || [] }));
     return state;
   };
 
