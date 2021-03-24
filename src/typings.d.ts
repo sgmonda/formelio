@@ -18,6 +18,9 @@ declare module '*.svg' {
 
 export type Field<T> = {
   name: string;
+
+  /** bla bla size */
+  size?: number;
   label?: string;
   help?: string;
   validator?: (value: T) => Promise<string[]>;

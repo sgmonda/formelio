@@ -2,8 +2,7 @@
 
 .formelio
   flex: 1
-
-.columns
+  flex-wrap: wrap
   display: flex
   flex-direction: row
   justify-content: space-between
@@ -11,16 +10,14 @@
   @media screen and ( max-width: $mobile-width )
     flex-direction: column
 
-  .column
-    flex: 1
-
-    &:not(:last-child)
-      margin-right: $unit
+  // .field:not(:last-child)
+  //   margin-right: $unit * 0.5
 
 .field
   flex-direction: column
   position: relative
-  margin: $unit * 0.3 0
+  margin: $unit * 0.1 0
+  flex: 1
 
   .icon
     position: absolute
@@ -47,8 +44,12 @@
     text-transform: uppercase
     top: 0
     left: 0
+    right: 0
     transition: 0.2s ease-in-out
     white-space: nowrap
+    text-overflow: ellipsis
+    overflow: hidden
+    whitespace: nowrap
 
     &.isFocused
       color: $color-primary
@@ -81,9 +82,9 @@
     border-radius: $unit * 0.1
 
     &.isErrored
-      background: rgba($color-error, 0.75)
+      background: rgba($color-error, 0.9)
       .spike
-        border-bottom-color: rgba($color-error, 0.75)
+        border-bottom-color: rgba($color-error, 0.9)
 
     &.hidden
       opacity: 0
@@ -94,7 +95,7 @@
       height: 0
       border-left: $unit * 0.5 solid transparent
       border-right: $unit * 0.5 solid transparent
-      border-bottom: $unit * 0.5 solid rgba($color-primary, 0.75)
+      border-bottom: $unit * 0.5 solid rgba($color-primary, 0.9)
       position: absolute
       right: $unit * 0.5
       top: -$unit * 0.5

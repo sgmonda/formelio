@@ -65,7 +65,7 @@
     "react/react-in-jsx-scoe": "off", // React must be in global scope, so we don't need to import it
     "guard-for-in": "off",
     "semi": "error",
-    "sort-keys": "error",
+    "sort-keys": "warn",
     "sort-imports": [
       "error",
       {

@@ -37,7 +37,8 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
 
   public componentDidUpdate = (prevProps: Props<T>) => {
     if (prevProps.value !== this.state.value) {
-      this.setState(this.getStateAndValidate(this.props));
+      const newState = { ...this.getStateAndValidate(this.props), isFocused: this.state.isFocused };
+      this.setState(newState);
     }
   };
 

@@ -4,7 +4,7 @@ import { FormelioField } from './FormelioField';
 import { Field } from './typings';
 
 export type Props<T> = {
-  fields: Field<any>[][]; // @TODO Could this "any" be avoided?
+  fields: Field<any>[]; // @TODO Could this "any" be avoided?
   onChange: (value: Partial<T>) => Promise<void>;
   value?: Partial<T>;
 };
@@ -31,17 +31,13 @@ export class Formelio<T> extends Component<Props<T>, State<T>> {
     const { value } = this.state;
     return (
       <div className={styles.formelio}>
-        {fields.map((row, i) => (
-          <div key={i} className={styles.columns}>
-            {row.map((field) => (
-              <div key={field.name} className={styles.column}>
-                <FormelioField<string>
-                  {...field}
-                  value={value[field.name]}
-                  onChange={(value: string, isValid: boolean) => this.onChange(field, value, isValid)}
-                />
-              </div>
-            ))}
+        {fields.map((field) => (
+          <div key={field.name} className={styles.field} style={{ flexBasis: (field.size || 1) * 100 + '%' }}>
+            <FormelioField<string>
+              {...field}
+              value={value[field.name]}
+              onChange={(value: string, isValid: boolean) => this.onChange(field, value, isValid)}
+            />
           </div>
         ))}
       </div>
