@@ -23,7 +23,9 @@
     "test:build": "run-s build",
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
     "predeploy": "cd site && npm install && npm run build",
-    "deploy:page": "gh-pages -d site/build"
+    "site": "npm run site:build && npm run site:deploy",
+    "site:build": "cd site && npm install && npm run build",
+    "site:deploy": "gh-pages -d site/build"
   },
   "peerDependencies": {
     "react": "^16.0.0"

@@ -23,6 +23,17 @@ const App = () => {
     { name: 'surname2', size: 0.25 },
     {
       name: 'city',
+      size: 0.5,
+      help: 'this is a city',
+      options: [
+        { value: 'val1', label: 'First value' },
+        { value: 'val2', label: 'Second value' },
+        { value: 'val3', label: 'Third value' },
+      ],
+    },
+    {
+      name: 'region',
+      size: 0.5,
       options: [
         { value: 'val1', label: 'First value' },
         { value: 'val2', label: 'Second value' },

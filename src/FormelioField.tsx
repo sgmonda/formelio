@@ -95,10 +95,11 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
   };
 
   private renderInput = () => {
-    const { options, placeholder } = this.props;
+    const { help, options, placeholder } = this.props;
     const { errors, value } = this.state;
     return (
       <Input
+        hasHint={!!errors.length || !!help}
         isErrored={!!errors.length}
         value={value}
         options={options}
@@ -111,22 +112,22 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
   };
 
   private renderLabel = () => {
-    const { label, name, options } = this.props;
+    const { label, name } = this.props;
     const { isFocused, value } = this.state;
-    const isEmpty = !options && !value;
+    const isEmpty = !value;
     return <label className={isFocused ? styles.isFocused : isEmpty ? styles.isEmpty : ''}>{label || name}</label>;
   };
 
   public render = () => {
     const { help } = this.props;
     const { errors } = this.state;
-    const isThereHint = errors.length > 0 || help;
+    const hasHint = errors.length > 0 || help;
     return (
       <div className={`${styles.field} ${errors.length ? styles.isErrored : ''}`}>
         {this.renderLabel()}
         {this.renderInput()}
-        {isThereHint && this.renderIcon()}
-        {isThereHint && this.renderHint()}
+        {hasHint && this.renderIcon()}
+        {hasHint && this.renderHint()}
       </div>
     );
   };
