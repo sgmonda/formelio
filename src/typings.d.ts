@@ -24,6 +24,6 @@ export type Field<T> = {
   size?: number;
   label?: string;
   help?: string;
-  validator?: (value: T) => Promise<string[]>;
+  validator?: (value: T, otherValues?: { [key: string]: any }) => Promise<string[]>;
   // @TODO Add more props
 };

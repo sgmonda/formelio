@@ -5,6 +5,7 @@ import cl from 'classnames';
 import Input from './Input';
 
 type Props<T> = Field<T> & {
+  formValue: { [key: string]: any };
   value?: T;
   onChange: (value: T, isValid: boolean) => Promise<T>;
 };
@@ -30,20 +31,22 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
       ...FormelioField.initialState,
       value: props.value,
     };
-    this.props.validator?.((props.value || '') as any).then((errors) => this.setState({ errors: errors || [] }));
+    props
+      .validator?.((props.value || '') as any, props.formValue)
+      .then((errors) => this.setState({ errors: errors || [] }));
     return state;
   };
 
   public componentDidUpdate = (prevProps: Props<T>) => {
-    if (prevProps.value !== this.state.value) {
+    if (prevProps.value !== this.state.value || prevProps.formValue !== this.props.formValue) {
       const newState = { ...this.getStateAndValidate(this.props), isFocused: this.state.isFocused };
       this.setState(newState);
     }
   };
 
   private onChange = async (value: T) => {
-    const { validator } = this.props;
-    const errors = (await validator?.(value)) || [];
+    const { formValue, validator } = this.props;
+    const errors = (await validator?.(value, formValue)) || [];
     this.setState({ errors, value });
     this.props.onChange(value, !errors.length);
   };

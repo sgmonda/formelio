@@ -30,6 +30,8 @@ const App = () => {
         { value: 'val2', label: 'Second value' },
         { value: 'val3', label: 'Third value' },
       ],
+      validator: async (v: string, form: any) =>
+        v === 'val2' && form.region === 'val1' ? ['no vale la opción 2 si region es "First value"'] : [],
     },
     {
       name: 'region',

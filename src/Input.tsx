@@ -6,6 +6,7 @@ import RSelect, { StylesConfig } from 'react-select';
 // @TODO Move this to other place to support theming
 const COLOR_PRIMARY = '#5196D5';
 const COLOR_INPUT = '#ECEFEE';
+const COLOR_ERROR = '#D65947';
 
 type Props<T> = {
   value?: T;
@@ -37,7 +38,7 @@ const Select = (props: Props<string>) => {
   const customStyles: StylesConfig<any, any, any> = {
     control: (_: any, state: any) => ({
       background: 'none !important',
-      borderBottom: `solid 0.13em ${state.isFocused ? COLOR_PRIMARY : COLOR_INPUT}`,
+      borderBottom: `solid 0.13em ${props.isErrored ? COLOR_ERROR : state.isFocused ? COLOR_PRIMARY : COLOR_INPUT}`,
       cursor: 'text',
       display: 'flex',
       transition: '0.2s ease-in-out',
@@ -47,11 +48,10 @@ const Select = (props: Props<string>) => {
     option: (_: any, state) => ({
       background: state.isSelected ? COLOR_PRIMARY : state.isFocused ? COLOR_PRIMARY + '1F' : 'white',
       color: state.isSelected ? 'white' : 'inerit',
-
       padding: '0.25em 0.5em',
     }),
     placeholder: () => ({ display: 'none' }),
-    singleValue: () => ({}),
+    singleValue: () => ({ color: props.isErrored ? COLOR_ERROR : 'inherit' }),
     valueContainer: (provided: any) => ({
       ...provided,
       'align-items': 'flex-end',

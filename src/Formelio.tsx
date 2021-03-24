@@ -38,6 +38,7 @@ export class Formelio<T> extends Component<Props<T>, State<T>> {
                 <FormelioField<string>
                   {...field}
                   value={value[field.name]}
+                  formValue={value}
                   onChange={(value: string, isValid: boolean) => this.onChange(field, value, isValid)}
                 />
               </div>
