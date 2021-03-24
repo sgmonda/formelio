@@ -18,29 +18,33 @@ const App = () => {
   };
 
   return (
-    <div style={{ border: 'solid 1px gray', margin: '1em', padding: '1em' }}>
-      <Formelio<TFormValue>
-        fields={[
-          [
-            { label: 'Nombre', name: 'firstName' },
-            { help: 'Esto es algo de ayuda. Bla bla bla', label: 'Primer apellido', name: 'surname1' },
-            { name: 'surname2' },
-          ],
-          [
-            {
-              help: 'Esto es algo de ayuda. Bla bla bla',
-              label: 'Nombre',
-              name: 'firstName2',
-              validator: async (v: string) => (v === 'error' ? ['error 1', 'error 2'] : []),
-            },
-            { label: 'Primer apellido', name: 'surname1' },
-            { name: 'surname2' },
-          ],
-        ]}
-        value={value}
-        onChange={onChange}
-      />
-      <pre>{JSON.stringify(value, null, 2)}</pre>
+    <div className="panel" style={{ margin: '5em' }}>
+      <div className="panel-block">
+        <Formelio<TFormValue>
+          fields={[
+            [
+              { label: 'Nombre', name: 'firstName' },
+              { help: 'Esto es algo de ayuda. Bla bla bla', label: 'Primer apellido', name: 'surname1' },
+              { name: 'surname2' },
+            ],
+            [
+              {
+                help: 'Esto es algo de ayuda. Bla bla bla',
+                label: 'Nombre',
+                name: 'firstName2',
+                validator: async (v: string) => (v === 'error' ? ['error 1', 'error 2'] : []),
+              },
+              { label: 'Primer apellido', name: 'surname1' },
+              { name: 'surname2' },
+            ],
+          ]}
+          value={value}
+          onChange={onChange}
+        />
+      </div>
+      <div className="panel-block">
+        <pre style={{ height: '100%', width: '100%' }}>{JSON.stringify(value, null, 2)}</pre>
+      </div>
     </div>
   );
 };

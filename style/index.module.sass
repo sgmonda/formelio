@@ -1,10 +1,12 @@
 @import './theme.sass'
 
+.formelio
+  flex: 1
+
 .columns
   display: flex
   flex-direction: row
   justify-content: space-between
-  padding: $unit * 0.5 0
 
   @media screen and ( max-width: $mobile-width )
     flex-direction: column
@@ -46,6 +48,7 @@
     top: 0
     left: 0
     transition: 0.2s ease-in-out
+    white-space: nowrap
 
     &.isFocused
       color: $color-primary
@@ -70,7 +73,7 @@
     left: 0
     color: $color-tooltip-text
     font-size: small
-    background: rgba($color-primary, 0.75)
+    background: rgba($color-primary, 0.9)
     z-index: 9999
     padding: $unit * 0.5
     transition: 0.2s ease-in-out
