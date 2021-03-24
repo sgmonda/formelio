@@ -1,7 +1,8 @@
-import React, { ChangeEventHandler, Component } from 'react';
+import React, { Component } from 'react';
 import styles from '../style/index.module.sass';
 import { Field } from './typings';
 import cl from 'classnames';
+import Input from './Input';
 
 type Props<T> = Field<T> & {
   value?: T;
@@ -40,9 +41,8 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
     }
   };
 
-  private onChange: ChangeEventHandler<HTMLInputElement> = async (ev) => {
+  private onChange = async (value: T) => {
     const { validator } = this.props;
-    const value = (ev.target.value as any) as T;
     const errors = (await validator?.(value)) || [];
     this.setState({ errors, value });
     this.props.onChange(value, !errors.length);
@@ -94,44 +94,20 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
     );
   };
 
-  private renderCommonInput = () => {
+  private renderInput = () => {
+    const { options, placeholder } = this.props;
     const { errors, value } = this.state;
     return (
-      <input
-        className={cl({
-          [styles.isErrored]: !!errors.length,
-        })}
-        type="text"
-        defaultValue={value as any}
+      <Input
+        isErrored={!!errors.length}
+        value={value}
+        options={options}
+        placeholder={placeholder}
+        onChange={this.onChange}
         onFocus={() => this.setState({ isFocused: true })}
         onBlur={() => this.setState({ isFocused: false })}
-        onChange={this.onChange}
       />
     );
-  };
-
-  private renderSelect = () => {
-    const { options } = this.props;
-    const { errors, value } = this.state;
-    return (
-      <select
-        className={cl({
-          [styles.isErrored]: !!errors.length,
-        })}
-      >
-        {Object.entries(options || {}).map(([key, { label }]) => (
-          <option key={key} value={key} selected={String(value) === key}>
-            {label}
-          </option>
-        ))}
-      </select>
-    );
-  };
-
-  private renderInput = () => {
-    const { options } = this.props;
-    if (options) return this.renderSelect();
-    return this.renderCommonInput();
   };
 
   private renderLabel = () => {

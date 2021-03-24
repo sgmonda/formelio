@@ -23,11 +23,11 @@ const App = () => {
     { name: 'surname2', size: 0.25 },
     {
       name: 'city',
-      options: {
-        val1: { label: 'First value' },
-        val2: { label: 'Seconds value' },
-        val3: { label: 'Third value' },
-      },
+      options: [
+        { value: 'val1', label: 'First value' },
+        { value: 'val2', label: 'Second value' },
+        { value: 'val3', label: 'Third value' },
+      ],
     },
     {
       help: 'Esto es algo de ayuda. Bla bla bla',

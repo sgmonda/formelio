@@ -26,7 +26,6 @@
     "deploy:page": "gh-pages -d site/build"
   },
   "peerDependencies": {
-    "classnames": "^2.2.6",
     "react": "^16.0.0"
   },
   "devDependencies": {
@@ -41,10 +40,12 @@
     "@types/node": "^12.12.38",
     "@types/react": "^16.9.27",
     "@types/react-dom": "^16.9.7",
+    "@types/react-select": "^4.0.13",
     "@typescript-eslint/eslint-plugin": "^2.26.0",
     "@typescript-eslint/parser": "^2.26.0",
     "babel-eslint": "^10.0.3",
     "bulma": "^0.9.2",
+    "classnames": "^2.2.6",
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.7.0",
@@ -80,5 +81,8 @@
     "*.{js,jsx,ts,tsx,json}": [
       "eslint --fix -c .eslintrc"
     ]
+  },
+  "dependencies": {
+    "react-select": "^4.3.0"
   }
 }
