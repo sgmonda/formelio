@@ -48,50 +48,84 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
     this.props.onChange(value, !errors.length);
   };
 
+  private renderHint = () => {
+    const { help } = this.props;
+    const { errors, isFocused } = this.state;
+    return (
+      <div
+        className={cl({
+          [styles.hint]: true,
+          [styles.isFocused]: isFocused,
+          [styles.hidden]: !isFocused,
+          [styles.isErrored]: !!errors.length,
+        })}
+      >
+        <div className={styles.spike} />
+        {!!errors.length && (
+          <div>
+            {errors.map((err) => (
+              <div key={err}>
+                {err}
+                <br />
+              </div>
+            ))}
+          </div>
+        )}
+        {!errors.length && <span>{help}</span>}
+      </div>
+    );
+  };
+
+  private renderIcon = () => {
+    const { errors, isFocused } = this.state;
+    return (
+      <div
+        className={cl({
+          [styles.icon]: true,
+          [styles.isFocused]: isFocused,
+          [styles.isErrored]: !!errors.length,
+        })}
+      >
+        <img
+          src={require(`../assets/img/${errors.length ? 'exclamation' : 'info'}.png`)}
+          style={{ height: '100%', width: '100%' }}
+        />
+      </div>
+    );
+  };
+
+  private renderInput = () => {
+    const { errors, value } = this.state;
+    return (
+      <input
+        className={cl({
+          [styles.isErrored]: !!errors.length,
+        })}
+        type="text"
+        defaultValue={value as any}
+        onFocus={() => this.setState({ isFocused: true })}
+        onBlur={() => this.setState({ isFocused: false })}
+        onChange={this.onChange}
+      />
+    );
+  };
+
+  private renderLabel = () => {
+    const { label, name } = this.props;
+    const { isFocused, value } = this.state;
+    return <label className={isFocused ? styles.isFocused : value ? '' : styles.isEmpty}>{label || name}</label>;
+  };
+
   public render = () => {
-    const { help, label, name } = this.props;
-    const { errors, isFocused, value } = this.state;
-    const hint = errors.join(' / ') || help;
+    const { help } = this.props;
+    const { errors } = this.state;
+    const isThereHint = errors.length > 0 || help;
     return (
       <div className={`${styles.field} ${errors.length ? styles.isErrored : ''}`}>
-        <label className={isFocused ? styles.isFocused : value ? '' : styles.isEmpty}>{label || name}</label>
-        <input
-          className={cl({
-            [styles.isErrored]: !!errors.length,
-          })}
-          type="text"
-          defaultValue={value as any}
-          onFocus={() => this.setState({ isFocused: true })}
-          onBlur={() => this.setState({ isFocused: false })}
-          onChange={this.onChange}
-        />
-        {hint && (
-          <div
-            className={cl({
-              [styles.icon]: true,
-              [styles.isFocused]: isFocused,
-              [styles.isErrored]: !!errors.length,
-            })}
-          >
-            <img
-              src={require(`../assets/img/${errors.length ? 'exclamation' : 'info'}.png`)}
-              style={{ height: '100%', width: '100%' }}
-            />
-          </div>
-        )}
-        {hint && (
-          <div
-            className={cl({
-              [styles.hint]: true,
-              [styles.isFocused]: isFocused,
-              [styles.hidden]: !isFocused,
-              [styles.isErrored]: !!errors.length,
-            })}
-          >
-            <div className={styles.spike} />
-            {hint}
-          </div>
-        )}
+        {this.renderLabel()}
+        {this.renderInput()}
+        {isThereHint && this.renderIcon()}
+        {isThereHint && this.renderHint()}
       </div>
     );
   };

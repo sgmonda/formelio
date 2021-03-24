@@ -19,8 +19,8 @@ const App = () => {
 
   const fields: FieldProps<any>[] = [
     { label: 'Nombre', name: 'firstName', size: 0.5 },
-    { help: 'Esto es algo de ayuda. Bla bla bla', label: 'Primer apellido', name: 'surname1', size: 0.2 },
-    { name: 'surname2' },
+    { help: 'Esto es algo de ayuda. Bla bla bla', label: 'Primer apellido', name: 'surname1', size: 0.25 },
+    { name: 'surname2', size: 0.25 },
     {
       help: 'Esto es algo de ayuda. Bla bla bla',
       label: 'Nombre',

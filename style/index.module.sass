@@ -1,11 +1,12 @@
 @import './theme.sass'
 
-.formelio
+.fieldsWrapper
   flex: 1
   flex-wrap: wrap
   display: flex
   flex-direction: row
   justify-content: space-between
+  margin: -$unit * 0.5
 
   @media screen and ( max-width: $mobile-width )
     flex-direction: column
@@ -13,11 +14,16 @@
   // .field:not(:last-child)
   //   margin-right: $unit * 0.5
 
+.formelio
+  // background: #ddd
+
+.fieldWrapper
+  padding: $unit * 0.5
+  flex: 1
+
 .field
   flex-direction: column
   position: relative
-  margin: $unit * 0.2 0
-  flex: 1
 
   .icon
     position: absolute
@@ -109,8 +115,19 @@
     border-bottom: $unit * 0.13 solid $color-input
     outline: none !important
     transition: 0.2s ease-in-out
+    background: none
 
     &:focus
       border-color: $color-primary
     &.isErrored
       border-color: $color-error
+
+  // Avoid blue background on autocompleted fields under Google Chrome
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus
+    -webkit-box-shadow: 0 0 0px 1000px #ffffffff inset !important

@@ -31,15 +31,19 @@ export class Formelio<T> extends Component<Props<T>, State<T>> {
     const { value } = this.state;
     return (
       <div className={styles.formelio}>
-        {fields.map((field) => (
-          <div key={field.name} className={styles.field} style={{ flexBasis: (field.size || 1) * 100 + '%' }}>
-            <FormelioField<string>
-              {...field}
-              value={value[field.name]}
-              onChange={(value: string, isValid: boolean) => this.onChange(field, value, isValid)}
-            />
-          </div>
-        ))}
+        <div className={styles.fieldsWrapper}>
+          {fields.map((field) => (
+            <div key={field.name} className={styles.fieldWrapper} style={{ flexBasis: (field.size || 1) * 100 + '%' }}>
+              <div className={styles.field}>
+                <FormelioField<string>
+                  {...field}
+                  value={value[field.name]}
+                  onChange={(value: string, isValid: boolean) => this.onChange(field, value, isValid)}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   };
