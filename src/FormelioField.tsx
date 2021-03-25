@@ -113,19 +113,15 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
   };
 
   private renderInput = () => {
-    const { autocomplete, help, disabled, name, options, type } = this.props;
+    const { help } = this.props;
     const { errors, isTyping, value } = this.state;
     const isError = !!errors.length && !isTyping;
     return (
       <Input
-        autocomplete={autocomplete}
-        name={name}
+        {...this.props}
         hasHint={isError || !!help}
         isErrored={isError}
-        disabled={disabled}
         value={value}
-        options={options}
-        type={type}
         onChange={this.onChange}
         onFocus={() => this.setState({ isFocused: true })}
         onBlur={() => this.setState({ isFocused: false })}

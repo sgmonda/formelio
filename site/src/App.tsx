@@ -87,7 +87,13 @@ const App = () => {
         v === 'val2' && form.region === 'val1' ? ['no vale la opción 2 si region es "First value"'] : [],
     },
     { label: 'Número', name: 'number', size: 0.5, type: 'number' },
-    { label: 'Fecha', name: 'd', size: 0.5, type: 'date' },
+    {
+      label: 'Fecha',
+      name: 'd',
+      size: 0.5,
+      type: 'date',
+      format: 'dd / MMM / yyyy',
+    },
   ];
 
   return (

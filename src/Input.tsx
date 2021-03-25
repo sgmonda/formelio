@@ -3,6 +3,8 @@ import styles from '../style/index.module.sass';
 import cl from 'classnames';
 import RSelect, { StylesConfig } from 'react-select';
 import { InputAttributes } from './typings';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 // @TODO Move this to other place to support theming
 const COLOR_PRIMARY = '#5196D5';
@@ -35,7 +37,18 @@ const CommonInput = (props: Props<any>) => {
 };
 
 const DateInput = (props: Props<any>) => {
-  return <CommonInput {...props} type="text" />;
+  return (
+    <div className={styles.datepicker}>
+      <DatePicker
+        selected={props.value ? new Date(props.value) : undefined}
+        onChange={(date: Date) => props.onChange(date)}
+        onFocus={props.onFocus}
+        onBlur={props.onBlur}
+        showTimeInput={true}
+        dateFormat={props.format}
+      />
+    </div>
+  );
 };
 
 const Select = (props: Props<string>) => {

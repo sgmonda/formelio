@@ -19,6 +19,7 @@ declare module '*.svg' {
 export type FieldOption = { value: string; label: string } & { metadata: any };
 
 export type InputAttributes = {
+  format?: string;
   disabled?: boolean;
   autocomplete?: string;
   name: string;
