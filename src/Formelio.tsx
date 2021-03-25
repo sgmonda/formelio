@@ -35,7 +35,7 @@ export class Formelio<T> extends Component<Props<T>, State<T>> {
         <div className={styles.fieldsWrapper}>
           {fields.map((field) => (
             <div key={field.name} className={styles.fieldWrapper} style={{ flexBasis: (field.size || 1) * 100 + '%' }}>
-              <div className={cl({ [styles.field]: true, [styles.isDisabled]: field.isDisabled })}>
+              <div className={cl({ [styles.field]: true, [styles.isDisabled]: field.disabled })}>
                 <FormelioField<string>
                   {...field}
                   value={value[field.name]}

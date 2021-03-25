@@ -4,6 +4,8 @@ import { Field } from './typings';
 import cl from 'classnames';
 import Input from './Input';
 
+const ERROR_HIDE_DELAY = 1000;
+
 type Props<T> = Field<T> & {
   formValue: { [key: string]: any };
   value?: T;
@@ -13,12 +15,14 @@ type Props<T> = Field<T> & {
 type State<T> = {
   errors: string[];
   isFocused: boolean;
+  isTyping: boolean;
   value: T | undefined;
 };
 
 export type FieldProps<T> = Props<T>;
 export class FormelioField<T> extends Component<Props<T>, State<T>> {
-  static initialState = { errors: [], isFocused: false, value: undefined };
+  static initialState = { errors: [], isFocused: false, isTyping: false, value: undefined };
+  private typingTimeout: NodeJS.Timeout | undefined = undefined;
 
   constructor(props: Props<T>) {
     super(props);
@@ -38,32 +42,43 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
 
   public componentDidUpdate = (prevProps: Props<T>) => {
     if (prevProps.value !== this.state.value || prevProps.formValue !== this.props.formValue) {
-      const newState = { ...this.getStateAndValidate(this.props), isFocused: this.state.isFocused };
+      const newState = {
+        ...this.getStateAndValidate(this.props),
+        isFocused: this.state.isFocused,
+        isTyping: this.state.isTyping,
+      };
       this.setState(newState);
     }
   };
 
   private onChange = async (value: T) => {
+    // Do not show errors while typing
+    clearTimeout(this.typingTimeout as any);
+    this.typingTimeout = setTimeout(() => {
+      this.setState({ isTyping: false });
+    }, ERROR_HIDE_DELAY);
+
     const { formValue, validator } = this.props;
     const errors = (await validator?.(value, formValue)) || [];
-    this.setState({ errors, value });
+    this.setState({ errors, isTyping: true, value });
     this.props.onChange(value, !errors.length);
   };
 
   private renderHint = () => {
     const { help } = this.props;
-    const { errors, isFocused } = this.state;
+    const { errors, isFocused, isTyping } = this.state;
+    const isError = !!errors.length && !isTyping;
     return (
       <div
         className={cl({
           [styles.hint]: true,
           [styles.isFocused]: isFocused,
           [styles.hidden]: !isFocused,
-          [styles.isErrored]: !!errors.length,
+          [styles.isErrored]: isError,
         })}
       >
         <div className={styles.spike} />
-        {!!errors.length && (
+        {isError && (
           <div>
             {errors.map((err) => (
               <div key={err}>
@@ -73,23 +88,24 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
             ))}
           </div>
         )}
-        {!errors.length && <span>{help}</span>}
+        {!isError && <span>{help}</span>}
       </div>
     );
   };
 
   private renderIcon = () => {
-    const { errors, isFocused } = this.state;
+    const { errors, isFocused, isTyping } = this.state;
+    const isError = !!errors.length && !isTyping;
     return (
       <div
         className={cl({
           [styles.icon]: true,
           [styles.isFocused]: isFocused,
-          [styles.isErrored]: !!errors.length,
+          [styles.isErrored]: isError,
         })}
       >
         <img
-          src={require(`../assets/img/${errors.length ? 'exclamation' : 'info'}.png`)}
+          src={require(`../assets/img/${isError ? 'exclamation' : 'info'}.png`)}
           style={{ height: '100%', width: '100%' }}
         />
       </div>
@@ -97,17 +113,19 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
   };
 
   private renderInput = () => {
-    const { help, isDisabled, name, options, placeholder } = this.props;
-    const { errors, value } = this.state;
+    const { autocomplete, help, disabled, name, options, type } = this.props;
+    const { errors, isTyping, value } = this.state;
+    const isError = !!errors.length && !isTyping;
     return (
       <Input
+        autocomplete={autocomplete}
         name={name}
-        hasHint={!!errors.length || !!help}
-        isErrored={!!errors.length}
-        isDisabled={isDisabled}
+        hasHint={isError || !!help}
+        isErrored={isError}
+        disabled={disabled}
         value={value}
         options={options}
-        placeholder={placeholder}
+        type={type}
         onChange={this.onChange}
         onFocus={() => this.setState({ isFocused: true })}
         onBlur={() => this.setState({ isFocused: false })}
@@ -116,7 +134,7 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
   };
 
   private renderLabel = () => {
-    const { isDisabled, label, name } = this.props;
+    const { disabled, label, name } = this.props;
     const { isFocused, value } = this.state;
     const isEmpty = !value;
     return (
@@ -124,7 +142,7 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
         className={cl({
           [styles.isFocused]: isFocused,
           [styles.isEmpty]: isEmpty,
-          [styles.isDisabled]: isDisabled,
+          [styles.isDisabled]: disabled,
         })}
       >
         {label || name}
@@ -134,10 +152,11 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
 
   public render = () => {
     const { help } = this.props;
-    const { errors } = this.state;
-    const hasHint = errors.length > 0 || help;
+    const { errors, isTyping } = this.state;
+    const hasHint = (errors.length > 0 && !isTyping) || help;
+    const isError = !!errors.length && !isTyping;
     return (
-      <div className={`${styles.field} ${errors.length ? styles.isErrored : ''}`}>
+      <div className={`${styles.field} ${isError ? styles.isErrored : ''}`}>
         {this.renderLabel()}
         {this.renderInput()}
         {hasHint && this.renderIcon()}

@@ -18,15 +18,18 @@ declare module '*.svg' {
 
 export type FieldOption = { value: string; label: string } & { metadata: any };
 
-export type Field<T> = {
+export type InputAttributes = {
+  disabled?: boolean;
+  autocomplete?: string;
   name: string;
   options?: Array<FieldOption>;
-  placeholder?: string;
-  /** bla bla size */
+  disabled?: boolean;
+  type: 'number' | 'text' | 'date';
+};
+
+export type Field<T> = InputAttributes & {
   size?: number;
   label?: string;
-  isDisabled?: boolean;
   help?: string;
   validator?: (value: T, otherValues?: { [key: string]: any }) => Promise<string[]>;
-  // @TODO Add more props
 };

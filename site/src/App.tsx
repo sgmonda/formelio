@@ -4,6 +4,7 @@ import cities from './data/geo/municipios.json';
 import provinces from './data/geo/provincias.json';
 import regions from './data/geo/regiones.json';
 import 'formelio/dist/index.css';
+import { validateDNI } from './modules';
 
 type TFormValue = {
   firstname: string;
@@ -44,9 +45,26 @@ const App = () => {
   };
 
   const fields: FieldProps<any>[] = [
-    { label: 'Nombre', name: 'firstName', size: 0.5 },
-    { help: 'Esto es algo de ayuda. Bla bla bla', label: 'Primer apellido', name: 'surname1', size: 0.25 },
-    { name: 'surname2', size: 0.25 },
+    { label: 'Nombre', name: 'name', size: 0.5 },
+    {
+      label: 'Primer apellido',
+      name: 'surname1',
+      size: 0.25,
+      autocomplete: 'additional-name',
+    },
+    {
+      label: 'Segundo apellido',
+      name: 'surname1',
+      size: 0.25,
+      autocomplete: 'family-name',
+    },
+    {
+      help: 'Introduce sólo números y letras',
+      label: 'DNI',
+      size: 0.5,
+      name: 'dni',
+      validator: validateDNI,
+    },
     {
       name: 'region',
       size: 0.333,
@@ -54,7 +72,7 @@ const App = () => {
     },
     {
       name: 'province',
-      isDisabled: !value.region,
+      disabled: !value.region,
       size: 0.333,
       options: availableProvinces.map((item) => ({ label: item.name, value: item.name, metadata: item })),
       validator: async (v: string, form: any) =>
@@ -62,20 +80,14 @@ const App = () => {
     },
     {
       name: 'city',
-      // isDisabled: !value.province,
+      disabled: !value.province,
       size: 0.333,
       options: availableCities.map((item) => ({ label: item.name, value: item.name, metadata: item })),
       validator: async (v: string, form: any) =>
         v === 'val2' && form.region === 'val1' ? ['no vale la opción 2 si region es "First value"'] : [],
     },
-    {
-      help: 'Esto es algo de ayuda. Bla bla bla',
-      label: 'Nombre',
-      name: 'firstName2',
-      validator: async (v: string) => (v === 'error' ? ['error 1', 'error 2'] : []),
-    },
-    { label: 'Primer apellido', name: 'surname1b', size: 0.5 },
-    { name: 'surname2b', size: 0.5 },
+    { label: 'Número', name: 'number', size: 0.5, type: 'number' },
+    { label: 'Fecha', name: 'd', size: 0.5, type: 'date' },
   ];
 
   return (
