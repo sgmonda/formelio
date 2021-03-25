@@ -1,0 +1,210 @@
+[
+  {
+    "name": "Valencia",
+    "region": "Comunidad Valenciana"
+  },
+  {
+    "name": "Tarragona",
+    "region": "Cataluña"
+  },
+  {
+    "name": "Segovia",
+    "region": "Castilla y León"
+  },
+  {
+    "name": "Soria",
+    "region": "Castilla y León"
+  },
+  {
+    "name": "Guadalajara",
+    "region": "Castilla-La Mancha"
+  },
+  {
+    "name": "Málaga",
+    "region": "Andalucía"
+  },
+  {
+    "name": "Teruel",
+    "region": "Aragón"
+  },
+  {
+    "name": "Salamanca",
+    "region": "Castilla y León"
+  },
+  {
+    "name": "Cádiz",
+    "region": "Andalucía"
+  },
+  {
+    "name": "Girona",
+    "region": "Cataluña"
+  },
+  {
+    "name": "Madrid",
+    "region": "Comunidad de Madrid"
+  },
+  {
+    "name": "Alicante",
+    "region": "Comunidad Valenciana"
+  },
+  {
+    "name": "La Rioja",
+    "region": "La Rioja"
+  },
+  {
+    "name": "Navarra",
+    "region": "Comunidad Foral de Navarra"
+  },
+  {
+    "name": "Castellón",
+    "region": "Comunidad Valenciana"
+  },
+  {
+    "name": "Valladolid",
+    "region": "Castilla y León"
+  },
+  {
+    "name": "Barcelona",
+    "region": "Cataluña"
+  },
+  {
+    "name": "Palencia",
+    "region": "Castilla y León"
+  },
+  {
+    "name": "Albacete",
+    "region": "Castilla-La Mancha"
+  },
+  {
+    "name": "Burgos",
+    "region": "Castilla y León"
+  },
+  {
+    "name": "Zaragoza",
+    "region": "Aragón"
+  },
+  {
+    "name": "León",
+    "region": "Castilla y León"
+  },
+  {
+    "name": "Córdoba",
+    "region": "Andalucía"
+  },
+  {
+    "name": "Jaén",
+    "region": "Andalucía"
+  },
+  {
+    "name": "Cuenca",
+    "region": "Castilla-La Mancha"
+  },
+  {
+    "name": "Toledo",
+    "region": "Castilla-La Mancha"
+  },
+  {
+    "name": "A Coruña",
+    "region": "Galicia"
+  },
+  {
+    "name": "Vizcaya",
+    "region": "País Vasco"
+  },
+  {
+    "name": "Lleida",
+    "region": "Cataluña"
+  },
+  {
+    "name": "Ávila",
+    "region": "Castilla y León"
+  },
+  {
+    "name": "Guipúzcoa",
+    "region": "País Vasco"
+  },
+  {
+    "name": "Almería",
+    "region": "Andalucía"
+  },
+  {
+    "name": "Granada",
+    "region": "Andalucía"
+  },
+  {
+    "name": "Huesca",
+    "region": "Aragón"
+  },
+  {
+    "name": "Huelva",
+    "region": "Andalucía"
+  },
+  {
+    "name": "Lugo",
+    "region": "Galicia"
+  },
+  {
+    "name": "Zamora",
+    "region": "Castilla y León"
+  },
+  {
+    "name": "Las Palmas",
+    "region": "Islas Canarias"
+  },
+  {
+    "name": "Badajoz",
+    "region": "Extremadura"
+  },
+  {
+    "name": "Cantabria",
+    "region": "Cantabria"
+  },
+  {
+    "name": "Álava",
+    "region": "País Vasco"
+  },
+  {
+    "name": "Asturias",
+    "region": "Principado de Asturias"
+  },
+  {
+    "name": "Baleares",
+    "region": "Islas Baleares"
+  },
+  {
+    "name": "Cáceres",
+    "region": "Extremadura"
+  },
+  {
+    "name": "Pontevedra",
+    "region": "Galicia"
+  },
+  {
+    "name": "Ciudad Real",
+    "region": "Castilla-La Mancha"
+  },
+  {
+    "name": "Murcia",
+    "region": "Región de Murcia"
+  },
+  {
+    "name": "Ourense",
+    "region": "Galicia"
+  },
+  {
+    "name": "Sevilla",
+    "region": "Andalucía"
+  },
+  {
+    "name": "Melilla",
+    "region": "Ceuta y Melilla"
+  },
+  {
+    "name": "Santa Cruz de Tenerife",
+    "region": "Islas Canarias"
+  },
+  {
+    "name": "Ceuta",
+    "region": "Ceuta y Melilla"
+  }
+]

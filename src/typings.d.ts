@@ -16,13 +16,16 @@ declare module '*.svg' {
   export { svgComponent as ReactComponent };
 }
 
+export type FieldOption = { value: string; label: string } & { metadata: any };
+
 export type Field<T> = {
   name: string;
-  options?: Array<{ value: string; label: string }>;
+  options?: Array<FieldOption>;
   placeholder?: string;
   /** bla bla size */
   size?: number;
   label?: string;
+  isDisabled?: boolean;
   help?: string;
   validator?: (value: T, otherValues?: { [key: string]: any }) => Promise<string[]>;
   // @TODO Add more props

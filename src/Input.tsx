@@ -2,6 +2,7 @@ import React from 'react';
 import styles from '../style/index.module.sass';
 import cl from 'classnames';
 import RSelect, { StylesConfig } from 'react-select';
+import { FieldOption } from './typings';
 
 // @TODO Move this to other place to support theming
 const COLOR_PRIMARY = '#5196D5';
@@ -9,11 +10,13 @@ const COLOR_INPUT = '#ECEFEE';
 const COLOR_ERROR = '#D65947';
 
 type Props<T> = {
+  name?: string;
   value?: T;
   hasHint?: boolean;
   placeholder?: string;
-  options?: Array<{ value: string; label: string }>;
+  options?: Array<FieldOption>;
   isErrored: boolean;
+  isDisabled?: boolean;
   onFocus: () => void;
   onBlur: () => void;
   onChange: (value: T) => Promise<T>;
@@ -22,10 +25,12 @@ type Props<T> = {
 const CommonInput = (props: Props<any>) => {
   return (
     <input
+      name={props.name}
       className={cl({
         [styles.isErrored]: props.isErrored,
       })}
       type="text"
+      disabled={props.isDisabled}
       defaultValue={props.value as any}
       onFocus={props.onFocus}
       onBlur={props.onBlur}
@@ -54,20 +59,26 @@ const Select = (props: Props<string>) => {
     singleValue: () => ({ color: props.isErrored ? COLOR_ERROR : 'inherit' }),
     valueContainer: (provided: any) => ({
       ...provided,
-      'align-items': 'flex-end',
+      alignItems: 'flex-end',
       margin: '0',
       marginTop: '0.5em',
       padding: '0',
     }),
   };
+  const onChange = (item: any) => {
+    props.onChange(item && item.value);
+  };
   return (
     <RSelect
+      name={props.name}
       menuPlacement={props.hasHint ? 'top' : 'auto'}
       options={props.options}
       styles={customStyles}
+      isDisabled={props.isDisabled}
       onFocus={props.onFocus}
       onBlur={props.onBlur}
-      onChange={(ev) => props.onChange((ev && ev.value) || '')}
+      onChange={onChange}
+      value={props.options?.filter((option) => option.value === props.value)}
     />
   );
 };

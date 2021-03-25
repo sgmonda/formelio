@@ -25,6 +25,9 @@
   flex-direction: column
   position: relative
 
+  &.isDisabled
+    cursor: not-allowed
+
   .icon
     position: absolute
     right: $unit * 0.5
@@ -57,15 +60,18 @@
     overflow: hidden
     whitespace: nowrap
 
-    &.isFocused
-      color: $color-primary
+    &.isDisabled
+      opacity: 0.5
 
-    &.isEmpty
+    &.isEmpty:not(.isFocused)
       color: $color-placeholder
       font-size: initial
       transform: translateY($unit * 1.3)
       pointer-events: none
       // font-weight: normal
+
+    &.isFocused
+      color: $color-primary
 
   &.isErrored
     label

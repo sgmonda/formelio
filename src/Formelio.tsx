@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styles from '../style/index.module.sass';
 import { FormelioField } from './FormelioField';
 import { Field } from './typings';
+import cl from 'classnames';
 
 export type Props<T> = {
   fields: Field<any>[]; // @TODO Could this "any" be avoided?
@@ -34,7 +35,7 @@ export class Formelio<T> extends Component<Props<T>, State<T>> {
         <div className={styles.fieldsWrapper}>
           {fields.map((field) => (
             <div key={field.name} className={styles.fieldWrapper} style={{ flexBasis: (field.size || 1) * 100 + '%' }}>
-              <div className={styles.field}>
+              <div className={cl({ [styles.field]: true, [styles.isDisabled]: field.isDisabled })}>
                 <FormelioField<string>
                   {...field}
                   value={value[field.name]}

@@ -35,7 +35,7 @@
     "import/export": 0,
 
     "camelcase": "off",
-    "comma-dangle": ["error", "always-multiline"],
+    // "comma-dangle": ["error", "always-multiline"],
     "consistent-return": "off",
     "complexity": ["error", 10],
     "global-require": "off",

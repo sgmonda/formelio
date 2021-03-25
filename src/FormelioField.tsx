@@ -17,7 +17,6 @@ type State<T> = {
 };
 
 export type FieldProps<T> = Props<T>;
-
 export class FormelioField<T> extends Component<Props<T>, State<T>> {
   static initialState = { errors: [], isFocused: false, value: undefined };
 
@@ -98,12 +97,14 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
   };
 
   private renderInput = () => {
-    const { help, options, placeholder } = this.props;
+    const { help, isDisabled, name, options, placeholder } = this.props;
     const { errors, value } = this.state;
     return (
       <Input
+        name={name}
         hasHint={!!errors.length || !!help}
         isErrored={!!errors.length}
+        isDisabled={isDisabled}
         value={value}
         options={options}
         placeholder={placeholder}
@@ -115,10 +116,20 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
   };
 
   private renderLabel = () => {
-    const { label, name } = this.props;
+    const { isDisabled, label, name } = this.props;
     const { isFocused, value } = this.state;
     const isEmpty = !value;
-    return <label className={isFocused ? styles.isFocused : isEmpty ? styles.isEmpty : ''}>{label || name}</label>;
+    return (
+      <label
+        className={cl({
+          [styles.isFocused]: isFocused,
+          [styles.isEmpty]: isEmpty,
+          [styles.isDisabled]: isDisabled,
+        })}
+      >
+        {label || name}
+      </label>
+    );
   };
 
   public render = () => {
