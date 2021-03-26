@@ -15,6 +15,7 @@ type Props<T> = TInput<T> & {
   value?: T;
   hasHint?: boolean;
   isErrored: boolean;
+  isFocused: boolean;
   onFocus: () => void;
   onBlur: () => void;
   onChange: (value: T) => Promise<T>;
@@ -26,7 +27,9 @@ const CommonInput = (props: Props<any>) => {
       {...props}
       className={cl({
         [styles.isErrored]: props.isErrored,
+        [styles.hasHint]: props.hasHint,
       })}
+      readOnly={!props.isFocused}
       type={props.type || 'text'}
       defaultValue={props.value as any}
       onFocus={props.onFocus}
@@ -45,6 +48,7 @@ const DateInput = (props: Props<any>) => {
         onFocus={props.onFocus}
         onBlur={props.onBlur}
         dateFormat={props.format}
+        readOnly={!props.isFocused}
       />
     </div>
   );
@@ -59,9 +63,9 @@ const FileInput = (props: Props<any>) => {
     props.onFocus();
     document.body.onfocus = onCancel;
   };
-  const onChange: ChangeEventHandler<HTMLInputElement> = (ev) => {
-    console.log('FILE', ev.target.value);
-    props.onChange(ev.target.value);
+  const onChange: ChangeEventHandler<any> = (ev) => {
+    const files = ev.target.files;
+    props.onChange([...files]);
   };
   const onCancel = () => {
     props.onBlur();
@@ -83,9 +87,16 @@ const FileInput = (props: Props<any>) => {
       <input
         className={cl({
           [styles.isErrored]: props.isErrored,
+          [styles.hasHint]: props.hasHint,
         })}
+        value={
+          props.value
+            ? `${props.value.length} files: ${props.value.map((f: File) => `"${f.name}"`).join(', ')} files`
+            : undefined
+        }
         ref={ref2}
         onFocus={onFocus}
+        readOnly={true}
       />
     </Fragment>
   );

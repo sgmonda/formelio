@@ -20,4 +20,4 @@ export type TField<T, F> = TInput<T> & {
   validator?: TFieldValidator<T, F>;
 };
 
-export type TFieldValidator<T, F> = (value: T | undefined, otherValues: Partial<F>) => Promise<string[]>;
+export type TFieldValidator<T, F> = (value: T | undefined, otherValues: Partial<F>) => string[] | Promise<string[]>;

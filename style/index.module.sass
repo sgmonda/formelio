@@ -127,6 +127,12 @@
       border-color: $color-primary
     &.isErrored
       border-color: $color-error
+    &.hasHint
+      padding-right: 2em
+
+  input:not(:focus)
+    text-overflow: ellipsis
+    overflow: hidden
 
   select
     cursor: text

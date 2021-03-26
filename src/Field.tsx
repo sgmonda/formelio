@@ -115,13 +115,14 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
 
   private renderInput = () => {
     const { help } = this.props;
-    const { errors, isTyping, value } = this.state;
+    const { errors, isFocused, isTyping, value } = this.state;
     const isError = !!errors.length && !isTyping;
     return (
       <Input
         {...this.props}
         hasHint={isError || !!help}
         isErrored={isError}
+        isFocused={isFocused}
         value={value}
         onChange={this.onChange}
         onFocus={() => this.setState({ isFocused: true })}

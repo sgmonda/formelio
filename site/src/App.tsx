@@ -24,7 +24,7 @@ console.log(cities.length, 'items');
 const App = () => {
   const [value, setValue] = useState<Partial<TFormValue>>({
     name: 'error',
-    surname1: 'García',
+    surname1: 'García sdf wef wew ew rwer wer w',
     region: 'Cataluña',
   });
   const [availableCities, setAvailableCities] = useState(cities);
@@ -54,10 +54,11 @@ const App = () => {
       name: 'surname1',
       size: 0.25,
       autocomplete: 'additional-name',
+      help: 'small field with icon',
     },
     {
       label: 'Segundo apellido',
-      name: 'surname1',
+      name: 'surname2',
       size: 0.25,
       autocomplete: 'family-name',
     },
@@ -98,11 +99,11 @@ const App = () => {
       format: 'dd / MMM / yyyy',
     },
     {
-      label: 'Archivo',
+      label: 'Archivos',
       name: 'f',
       type: 'files',
       extensions: ['.png'],
-      validator: async (files: File[] | undefined) => {
+      validator: (files: File[] | undefined) => {
         if (files?.length !== 2) return ['Select exactly 2 files'];
         return [];
       },
