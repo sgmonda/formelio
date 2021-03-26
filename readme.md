@@ -1,18 +1,16 @@
-# formelio
-
-See https://sgmonda.github.io/formelio/ for documentation and usage examples.
-
-> Forms for human beings
+Forms for human beings
 
 [![NPM](https://img.shields.io/npm/v/formelio.svg)](https://www.npmjs.com/package/formelio) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-## Install
+See https://sgmonda.github.io/formelio/ for documentation and usage examples.
+
+# Installation
 
 ```bash
 npm install --save formelio
 ```
 
-## Usage
+# Usage
 
 ```tsx
 import React, { Component } from 'react';
@@ -27,11 +25,11 @@ class Example extends Component {
 }
 ```
 
-## License
+# License
 
-GPL-3.0 © [Sergio Garcia Mondaray &lt;sgmonda@gmail.com&gt; (https://sgmonda.com)](https://github.com/Sergio Garcia Mondaray &lt;sgmonda@gmail.com&gt; (https://sgmonda.com))
+GPL-3.0 © [Sergio Garcia Mondaray](https://sgmonda.com)
 
-## Development
+# Development
 
 #### Git hooks
 

@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import styles from '../style/index.module.sass';
-import { Field } from './typings';
+import { TField } from './types';
 import cl from 'classnames';
 import Input from './Input';
 
 const ERROR_HIDE_DELAY = 1000;
 
-type Props<T> = Field<T> & {
-  formValue: { [key: string]: any };
+type Props<T, F> = TField<T, F> & {
+  onChange: (value: T, isValid: boolean) => void;
+  validator: (value?: T) => Promise<string[]>;
   value?: T;
-  onChange: (value: T, isValid: boolean) => Promise<T>;
 };
 
 type State<T> = {
@@ -19,29 +19,30 @@ type State<T> = {
   value: T | undefined;
 };
 
-export type FieldProps<T> = Props<T>;
-export class FormelioField<T> extends Component<Props<T>, State<T>> {
+export class Field<T, F> extends Component<Props<T, F>, State<T>> {
   static initialState = { errors: [], isFocused: false, isTyping: false, value: undefined };
   private typingTimeout: NodeJS.Timeout | undefined = undefined;
 
-  constructor(props: Props<T>) {
+  constructor(props: Props<T, F>) {
     super(props);
     this.state = this.getStateAndValidate(props);
   }
 
-  private getStateAndValidate = (props: Props<T>): State<T> => {
+  private getStateAndValidate = (props: Props<T, F>): State<T> => {
     const state = {
-      ...FormelioField.initialState,
+      ...Field.initialState,
       value: props.value,
     };
-    props
-      .validator?.((props.value || '') as any, props.formValue)
-      .then((errors) => this.setState({ errors: errors || [] }));
+    this.validate(props);
     return state;
   };
 
-  public componentDidUpdate = (prevProps: Props<T>) => {
-    if (prevProps.value !== this.state.value || prevProps.formValue !== this.props.formValue) {
+  public validate = (props: Props<T, F> = this.props) => {
+    props.validator(props.value).then((errors) => this.setState({ errors: errors || [] }));
+  };
+
+  public componentDidUpdate = (prevProps: Props<T, F>) => {
+    if (prevProps.value !== this.state.value) {
       const newState = {
         ...this.getStateAndValidate(this.props),
         isFocused: this.state.isFocused,
@@ -58,8 +59,8 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
       this.setState({ isTyping: false });
     }, ERROR_HIDE_DELAY);
 
-    const { formValue, validator } = this.props;
-    const errors = (await validator?.(value, formValue)) || [];
+    const { validator } = this.props;
+    const errors = (await validator(value)) || [];
     this.setState({ errors, isTyping: true, value });
     this.props.onChange(value, !errors.length);
   };
@@ -148,7 +149,7 @@ export class FormelioField<T> extends Component<Props<T>, State<T>> {
 
   public render = () => {
     const { help } = this.props;
-    const { errors, isTyping } = this.state;
+    const { errors = [], isTyping } = this.state;
     const hasHint = (errors.length > 0 && !isTyping) || help;
     const isError = !!errors.length && !isTyping;
     return (

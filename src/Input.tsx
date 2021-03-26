@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { ChangeEventHandler, createRef, FocusEventHandler, Fragment } from 'react';
 import styles from '../style/index.module.sass';
 import cl from 'classnames';
 import RSelect, { StylesConfig } from 'react-select';
-import { InputAttributes } from './typings';
+import { TInput } from './types';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -11,7 +11,7 @@ const COLOR_PRIMARY = '#5196D5';
 const COLOR_INPUT = '#ECEFEE';
 const COLOR_ERROR = '#D65947';
 
-type Props<T> = InputAttributes & {
+type Props<T> = TInput<T> & {
   value?: T;
   hasHint?: boolean;
   isErrored: boolean;
@@ -44,10 +44,50 @@ const DateInput = (props: Props<any>) => {
         onChange={(date: Date) => props.onChange(date)}
         onFocus={props.onFocus}
         onBlur={props.onBlur}
-        showTimeInput={true}
         dateFormat={props.format}
       />
     </div>
+  );
+};
+
+const FileInput = (props: Props<any>) => {
+  const ref = createRef<HTMLInputElement>();
+  const ref2 = createRef<HTMLInputElement>();
+  const onFocus: FocusEventHandler<HTMLInputElement> = () => {
+    ref2.current?.blur();
+    ref.current?.click();
+    props.onFocus();
+    document.body.onfocus = onCancel;
+  };
+  const onChange: ChangeEventHandler<HTMLInputElement> = (ev) => {
+    console.log('FILE', ev.target.value);
+    props.onChange(ev.target.value);
+  };
+  const onCancel = () => {
+    props.onBlur();
+    document.body.onfocus = null;
+  };
+  return (
+    <Fragment>
+      <input
+        {...props}
+        value=""
+        ref={ref}
+        style={{ display: 'none' }}
+        type="file"
+        multiple={true}
+        accept={props.extensions?.join(',') || undefined}
+        onChange={onChange}
+        onBlur={onCancel}
+      />
+      <input
+        className={cl({
+          [styles.isErrored]: props.isErrored,
+        })}
+        ref={ref2}
+        onFocus={onFocus}
+      />
+    </Fragment>
   );
 };
 
@@ -73,7 +113,7 @@ const Select = (props: Props<string>) => {
       ...provided,
       alignItems: 'flex-end',
       margin: '0',
-      marginTop: '0.5em',
+      marginTop: '0.3em',
       padding: '0',
     }),
   };
@@ -99,6 +139,7 @@ const Input = (props: Props<any>) => {
   const { options } = props;
   if (options) return Select(props);
   if (props.type === 'date') return DateInput(props);
+  if (props.type === 'files') return FileInput(props);
   return CommonInput(props);
 };
 

@@ -1,6 +1,7 @@
-import { Formelio } from './Formelio';
+import { Form } from './Form';
 
-export * from './Formelio';
-export * from './FormelioField';
+export * from './Form';
+export * from './Field';
+export * from './types';
 
-export default Formelio;
+export default Form;

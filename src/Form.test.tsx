@@ -1,7 +1,7 @@
-import Formelio from '.';
+import Form from '.';
 
 describe('Formelio', () => {
   it('is truthy', () => {
-    expect(Formelio).toBeTruthy();
+    expect(Form).toBeTruthy();
   });
 });

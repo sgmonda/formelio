@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Formelio, { FieldProps, Props } from 'formelio';
+import Form, { TForm } from 'formelio';
 import cities from './data/geo/municipios.json';
 import provinces from './data/geo/provincias.json';
 import regions from './data/geo/regiones.json';
@@ -7,27 +7,30 @@ import 'formelio/dist/index.css';
 import { validateDNI } from './modules';
 
 type TFormValue = {
-  firstname: string;
-  firstName2: string;
+  dni: string;
+  name: string;
   surname1: string;
   surname2: string;
   province: string;
   region: string;
   city: string;
+  number: number;
+  d: Date;
+  f: File[];
 };
 
 console.log(cities.length, 'items');
 
 const App = () => {
   const [value, setValue] = useState<Partial<TFormValue>>({
-    firstName2: 'error',
+    name: 'error',
     surname1: 'García',
     region: 'Cataluña',
   });
   const [availableCities, setAvailableCities] = useState(cities);
   const [availableProvinces, setAvailableProvinces] = useState(provinces);
 
-  const onChange: Props<TFormValue>['onChange'] = async (v) => {
+  const onChange: TForm<TFormValue>['onChange'] = async (v) => {
     setAvailableProvinces(provinces.filter(({ region }) => region === v.region));
     setAvailableCities(
       cities.filter(({ provincia, region }) => {
@@ -44,8 +47,8 @@ const App = () => {
     setValue(v);
   };
 
-  const fields: FieldProps<any>[] = [
-    { label: 'Nombre', name: 'name', size: 0.5 },
+  const fields: TForm<TFormValue>['fields'] = [
+    { label: 'Nombre', name: 'name', size: 0.5, type: 'text' },
     {
       label: 'Primer apellido',
       name: 'surname1',
@@ -63,7 +66,7 @@ const App = () => {
       label: 'DNI',
       size: 0.5,
       name: 'dni',
-      validator: validateDNI,
+      validator: async (v?: string) => validateDNI(v || ''),
     },
     {
       name: 'region',
@@ -75,7 +78,7 @@ const App = () => {
       disabled: !value.region,
       size: 0.333,
       options: availableProvinces.map((item) => ({ label: item.name, value: item.name, metadata: item })),
-      validator: async (v: string, form: any) =>
+      validator: async (v: string | undefined, form: Partial<TFormValue>) =>
         v === 'val2' && form.region === 'val1' ? ['no vale la opción 2 si region es "First value"'] : [],
     },
     {
@@ -83,7 +86,7 @@ const App = () => {
       disabled: !value.province,
       size: 0.333,
       options: availableCities.map((item) => ({ label: item.name, value: item.name, metadata: item })),
-      validator: async (v: string, form: any) =>
+      validator: async (v: string | undefined, form: Partial<TFormValue>) =>
         v === 'val2' && form.region === 'val1' ? ['no vale la opción 2 si region es "First value"'] : [],
     },
     { label: 'Número', name: 'number', size: 0.5, type: 'number' },
@@ -94,12 +97,22 @@ const App = () => {
       type: 'date',
       format: 'dd / MMM / yyyy',
     },
+    {
+      label: 'Archivo',
+      name: 'f',
+      type: 'files',
+      extensions: ['.png'],
+      validator: async (files: File[] | undefined) => {
+        if (files?.length !== 2) return ['Select exactly 2 files'];
+        return [];
+      },
+    },
   ];
 
   return (
     <div className="panel" style={{ margin: '5em' }}>
       <div className="panel-block">
-        <Formelio<TFormValue> fields={fields} value={value} onChange={onChange} />
+        <Form<TFormValue> fields={fields} value={value} onChange={onChange} />
       </div>
       <div className="panel-block">
         <pre style={{ height: '100%', width: '100%' }}>{JSON.stringify(value, null, 2)}</pre>
