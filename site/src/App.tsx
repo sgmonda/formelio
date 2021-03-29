@@ -104,6 +104,7 @@ const App = () => {
     {
       label: 'Archivos',
       name: 'f',
+      size: 0.5,
       icon: 'file',
       type: 'files',
       extensions: ['.png'],
@@ -115,14 +116,12 @@ const App = () => {
     {
       label: `
 Acepto las [condiciones de uso](http://google.com), pero con un texto muy
-largo para ver qué tal se ve. Bla bla probando,
+largo para ver qué tal se ve. <a href="/" target="_blank">Bla bla</a> probando,
 bla progando uno y no sé qué más decir
       `,
       name: 'tos',
       type: 'check',
-      size: 0.5,
     },
-    { label: 'Acepto otra cosa', name: 'tos2', type: 'check', size: 0.5 },
     { label: 'Número', name: 'number', type: 'number' },
   ];
 

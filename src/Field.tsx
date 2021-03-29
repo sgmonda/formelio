@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdownWithHtml from 'react-markdown/with-html';
 import styles from '../style/index.module.sass';
 import { TField } from './types';
 import cl from 'classnames';
@@ -156,9 +156,9 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
       <div className={`${styles.checkbox}`}>
         {this.renderInput()}
         <label htmlFor={name}>
-          <ReactMarkdown disallowedTypes={['paragraph']} unwrapDisallowed>
+          <ReactMarkdownWithHtml disallowedTypes={['paragraph']} allowDangerousHtml unwrapDisallowed>
             {label || name}
-          </ReactMarkdown>
+          </ReactMarkdownWithHtml>
         </label>
       </div>
     );
