@@ -40,6 +40,24 @@ const CommonInput = (props: Props<any>) => {
   );
 };
 
+const TextArea = (props: Props<any>) => {
+  return (
+    <textarea
+      {...props}
+      className={cl({
+        [styles.isErrored]: props.isErrored,
+        [styles.hasHint]: props.hasHint,
+      })}
+      autoComplete={props.autocomplete}
+      readOnly={!props.isFocused}
+      defaultValue={props.value as any}
+      onFocus={props.onFocus}
+      onBlur={props.onBlur}
+      onChange={(ev) => props.onChange(ev.target.value)}
+    ></textarea>
+  );
+};
+
 const CheckboxInput = (props: Props<any>) => {
   return (
     <input
@@ -164,6 +182,7 @@ const Input = (props: Props<any>) => {
   if (props.type === 'date') return DateInput(props);
   if (props.type === 'files') return FileInput(props);
   if (props.type === 'check') return CheckboxInput(props);
+  if (props.type === 'text-multiline') return TextArea(props);
   return CommonInput(props);
 };
 

@@ -112,11 +112,11 @@
       right: $unit * 0.5
       top: -$unit * 0.5
 
-  input, select
-    margin-top: $unit * 0.75
+  input, select, textarea
+    margin-top: $unit * 0.8
     font-size: $unit
-    width: 100%
-    padding: $unit * 0.75 0 $unit * 0.25 0
+    width: 100% !important
+    padding: $unit * 0.8 0 $unit * 0.25 0
     border: none
     border-bottom: $unit * 0.13 solid $color-input
     outline: none !important
@@ -129,6 +129,9 @@
       border-color: $color-error
     &.hasHint
       padding-right: 2em
+
+  textarea
+    height: 5 * $unit
 
   input:not(:focus)
     text-overflow: ellipsis

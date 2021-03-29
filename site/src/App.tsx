@@ -12,6 +12,7 @@ type TFormValue = {
   surname1: string;
   surname2: string;
   province: string;
+  comentario: string;
   region: string;
   city: string;
   number: number;
@@ -94,6 +95,7 @@ const App = () => {
       validator: async (v: string | undefined, form: Partial<TFormValue>) =>
         v === 'val2' && form.region === 'val1' ? ['no vale la opción 2 si region es "First value"'] : [],
     },
+    { label: 'Comentario', name: 'comentario', type: 'text-multiline' },
     {
       label: 'Fecha',
       name: 'd',

@@ -8,7 +8,7 @@ export type TInput<T> = {
   max?: number;
   min?: number;
   name: string;
-  type?: 'number' | 'text' | 'date' | 'files' | 'check';
+  type?: 'number' | 'text' | 'text-multiline' | 'date' | 'files' | 'check';
   options?: FieldOption<T>[];
 };
 
