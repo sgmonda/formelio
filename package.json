@@ -92,6 +92,7 @@
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "@fortawesome/react-fontawesome": "0.1.14",
     "react-datepicker": "3.6.0",
+    "react-markdown": "^5.0.3",
     "react-select": "4.3.0"
   }
 }

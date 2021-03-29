@@ -17,6 +17,8 @@ type TFormValue = {
   number: number;
   d: Date;
   f: File[];
+  tos: boolean;
+  tos2: boolean;
 };
 
 console.log(cities.length, 'items');
@@ -92,7 +94,6 @@ const App = () => {
       validator: async (v: string | undefined, form: Partial<TFormValue>) =>
         v === 'val2' && form.region === 'val1' ? ['no vale la opción 2 si region es "First value"'] : [],
     },
-    { label: 'Número', name: 'number', size: 0.5, type: 'number' },
     {
       label: 'Fecha',
       name: 'd',
@@ -111,6 +112,18 @@ const App = () => {
         return [];
       },
     },
+    {
+      label: `
+Acepto las [condiciones de uso](http://google.com), pero con un texto muy
+largo para ver qué tal se ve. Bla bla probando,
+bla progando uno y no sé qué más decir
+      `,
+      name: 'tos',
+      type: 'check',
+      size: 0.5,
+    },
+    { label: 'Acepto otra cosa', name: 'tos2', type: 'check', size: 0.5 },
+    { label: 'Número', name: 'number', type: 'number' },
   ];
 
   return (

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactMarkdown from 'react-markdown';
 import styles from '../style/index.module.sass';
 import { TField } from './types';
 import cl from 'classnames';
@@ -149,13 +150,34 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     );
   };
 
+  private renderCheckbox = () => {
+    const { label, name } = this.props;
+    return (
+      <div className={`${styles.checkbox}`}>
+        {this.renderInput()}
+        <label htmlFor={name}>
+          <ReactMarkdown disallowedTypes={['paragraph']} unwrapDisallowed>
+            {label || name}
+          </ReactMarkdown>
+        </label>
+      </div>
+    );
+  };
+
   public render = () => {
-    const { help } = this.props;
+    const { disabled, help, type } = this.props;
     const { errors = [], isTyping } = this.state;
     const hasHint = (errors.length > 0 && !isTyping) || help;
     const isError = !!errors.length && !isTyping;
+    if (type === 'check') return this.renderCheckbox();
     return (
-      <div className={`${styles.field} ${isError ? styles.isErrored : ''}`}>
+      <div
+        className={cl({
+          [styles.field]: true,
+          [styles.isErrored]: isError,
+          [styles.isDisabled]: disabled,
+        })}
+      >
         {this.renderLabel()}
         {this.renderInput()}
         {hasHint && this.renderStateIcon()}

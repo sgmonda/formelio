@@ -29,11 +29,25 @@ const CommonInput = (props: Props<any>) => {
         [styles.isErrored]: props.isErrored,
         [styles.hasHint]: props.hasHint,
       })}
+      autoComplete={props.autocomplete}
       readOnly={!props.isFocused}
       type={props.type || 'text'}
       defaultValue={props.value as any}
       onFocus={props.onFocus}
       onBlur={props.onBlur}
+      onChange={(ev) => props.onChange(ev.target.value)}
+    />
+  );
+};
+
+const CheckboxInput = (props: Props<any>) => {
+  return (
+    <input
+      {...props}
+      id={props.name}
+      autoComplete={props.autocomplete}
+      type="checkbox"
+      defaultValue={props.value as any}
       onChange={(ev) => props.onChange(ev.target.value)}
     />
   );
@@ -75,6 +89,7 @@ const FileInput = (props: Props<any>) => {
     <Fragment>
       <input
         {...props}
+        autoComplete={undefined}
         value=""
         ref={ref}
         style={{ display: 'none' }}
@@ -85,15 +100,12 @@ const FileInput = (props: Props<any>) => {
         onBlur={onCancel}
       />
       <input
+        autoComplete={props.autocomplete}
         className={cl({
           [styles.isErrored]: props.isErrored,
           [styles.hasHint]: props.hasHint,
         })}
-        value={
-          props.value
-            ? `${props.value.length} files: ${props.value.map((f: File) => `"${f.name}"`).join(', ')} files`
-            : undefined
-        }
+        value={props.value ? props.value.map((f: File) => `"${f.name}"`).join(', ') : undefined}
         ref={ref2}
         onFocus={onFocus}
         readOnly={true}
@@ -151,6 +163,7 @@ const Input = (props: Props<any>) => {
   if (options) return Select(props);
   if (props.type === 'date') return DateInput(props);
   if (props.type === 'files') return FileInput(props);
+  if (props.type === 'check') return CheckboxInput(props);
   return CommonInput(props);
 };
 

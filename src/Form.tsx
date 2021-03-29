@@ -2,13 +2,13 @@ import React, { Component, createRef, useEffect } from 'react';
 import styles from '../style/index.module.sass';
 import { Field } from './Field';
 import { TField } from './types';
-import cl from 'classnames';
 
 type TypedTField<T> =
   | (TField<string, T> & { type: 'text' })
   | (TField<Date, T> & { type: 'date' })
   | (TField<File[], T> & { type: 'files' })
   | (TField<number, T> & { type: 'number' })
+  | (TField<boolean, T> & { type: 'check' })
   | Omit<TField<string, T>, 'type'>;
 
 export type TForm<T> = {
@@ -41,33 +41,29 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
         <div className={styles.fieldsWrapper}>
           {fields.map((field) => (
             <div key={field.name} className={styles.fieldWrapper} style={{ flexBasis: (field.size || 1) * 100 + '%' }}>
-              <div className={cl({ [styles.field]: true, [styles.isDisabled]: field.disabled })}>
-                {/* @TODO Refactor this */}
-                {(!('type' in field) || field.type === 'text') && (
-                  <FieldWrapper<string, T> {...{ field, formValue: value, onChange: this.onChange.bind(this) }} />
-                )}
-                {'type' in field && field.type === 'date' && (
-                  <FieldWrapper<Date, T> {...{ field, formValue: value, onChange: this.onChange.bind(this) }} />
-                )}
-                {'type' in field && field.type === 'number' && (
-                  <FieldWrapper<number, T> {...{ field, formValue: value, onChange: this.onChange.bind(this) }} />
-                )}
-                {'type' in field && field.type === 'files' && (
-                  <FieldWrapper<File[], T> {...{ field, formValue: value, onChange: this.onChange.bind(this) }} />
-                )}
-                {/* <Field<string>
-                  {...field}
-                  value={value[field.name]}
-                  formValue={value}
-                  onChange={}
-                /> */}
-              </div>
+              {getField<T>(field, value, this.onChange.bind(this))}
             </div>
           ))}
         </div>
       </div>
     );
   };
+}
+
+// @TODO Don't use "any" here
+function getField<T>(field: any, value: any, onChange: any) {
+  switch (field.type) {
+    case 'date':
+      return <FieldWrapper<Date, T> {...{ field, formValue: value, onChange }} />;
+    case 'number':
+      return <FieldWrapper<number, T> {...{ field, formValue: value, onChange }} />;
+    case 'files':
+      return <FieldWrapper<File[], T> {...{ field, formValue: value, onChange }} />;
+    case 'check':
+      return <FieldWrapper<boolean, T> {...{ field, formValue: value, onChange }} />;
+    default:
+      return <FieldWrapper<string, T> {...{ field, formValue: value, onChange }} />;
+  }
 }
 
 /**
