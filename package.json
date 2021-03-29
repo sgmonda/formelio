@@ -39,6 +39,7 @@
     "@testing-library/user-event": "^7.2.1",
     "@types/classnames": "^2.2.11",
     "@types/jest": "^25.1.4",
+    "@types/lodash": "^4.14.168",
     "@types/node": "^12.12.38",
     "@types/react": "^16.9.27",
     "@types/react-datepicker": "^3.1.8",
@@ -70,9 +71,9 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.4",
     "react": "^16.13.1",
+    "react-datepicker": "^3.6.0",
     "react-dom": "^16.13.1",
     "react-scripts": "^3.4.1",
-    "react-datepicker": "^3.6.0",
     "react-select": "^4.3.0",
     "typescript": "^3.7.5"
   },
@@ -91,6 +92,7 @@
     "@fortawesome/fontawesome-svg-core": "1.2.35",
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "@fortawesome/react-fontawesome": "0.1.14",
+    "lodash": "^4.17.21",
     "react-datepicker": "3.6.0",
     "react-markdown": "^5.0.3",
     "react-select": "4.3.0"

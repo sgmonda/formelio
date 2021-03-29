@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component, createRef, useEffect } from 'react';
 import styles from '../style/index.module.sass';
 import { Field } from './Field';
@@ -13,6 +14,7 @@ type TypedTField<T> =
   | Omit<TField<string, T>, 'type'>;
 
 export type TForm<T> = {
+  delay?: number;
   fields: TypedTField<T>[]; // @TODO Could this "any" be avoided?
   onChange: (value: Partial<T>) => Promise<void>;
   value?: Partial<T>;
@@ -26,12 +28,16 @@ type State<T> = {
 export class Form<T> extends Component<TForm<T>, State<T>> {
   public state = { validity: {}, value: this.props.value || {} };
 
+  private propagateOnChange = _.debounce(() => {
+    this.props.onChange(this.state.value);
+  }, this.props.delay || 500);
+
   private onChange<X>(field: TField<X, T>, value: X, isValid: boolean): void {
     this.setState({
       validity: { ...this.state.validity, [field.name]: isValid },
       value: { ...this.state.value, [field.name]: value },
     });
-    this.props.onChange(this.state.value);
+    this.propagateOnChange();
   }
 
   public render = () => {
