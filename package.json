@@ -16,7 +16,7 @@
     "build": "microbundle-crl --no-compress --format modern,cjs",
     "lint": "eslint --fix -c .eslintrc . --ext .tsx,.ts,.json --ignore-path .gitignore",
     "dev": "microbundle-crl watch --no-compress --format modern,cjs",
-    "dev:site": "cd site && npm start",
+    "dev:site": "npm run site:build && cd site && npm start",
     "dev:test": "react-scripts test --env=jsdom",
     "prepare": "husky install",
     "test": "run-s lint test:unit test:build",
@@ -28,9 +28,7 @@
     "site:deploy": "gh-pages -d site/build"
   },
   "peerDependencies": {
-    "react": "^16.0.0",
-    "react-datepicker": "^3.6.0",
-    "react-select": "^4.3.0"
+    "react": "^16.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.0.1",
@@ -88,5 +86,12 @@
     "*.{js,jsx,ts,tsx,json}": [
       "eslint --fix -c .eslintrc"
     ]
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "1.2.35",
+    "@fortawesome/free-solid-svg-icons": "5.15.3",
+    "@fortawesome/react-fontawesome": "0.1.14",
+    "react-datepicker": "3.6.0",
+    "react-select": "4.3.0"
   }
 }

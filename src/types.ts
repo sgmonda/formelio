@@ -16,6 +16,7 @@ export type TField<T, F> = TInput<T> & {
   help?: string;
   label?: string;
   size?: number;
+  icon?: string; // Solid supported, search icon names in https://fontawesome.com/icons
   name: keyof F;
   validator?: TFieldValidator<T, F>;
 };

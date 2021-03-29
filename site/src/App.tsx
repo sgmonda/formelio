@@ -48,7 +48,7 @@ const App = () => {
   };
 
   const fields: TForm<TFormValue>['fields'] = [
-    { label: 'Nombre', name: 'name', size: 0.5, type: 'text' },
+    { label: 'Nombre', name: 'name', icon: 'user', size: 0.5, type: 'text' },
     {
       label: 'Primer apellido',
       name: 'surname1',
@@ -65,6 +65,7 @@ const App = () => {
     {
       help: 'Introduce sólo números y letras',
       label: 'DNI',
+      icon: 'id-card',
       size: 0.5,
       name: 'dni',
       validator: async (v?: string) => validateDNI(v || ''),
@@ -85,6 +86,7 @@ const App = () => {
     {
       name: 'city',
       disabled: !value.province,
+      icon: 'home',
       size: 0.333,
       options: availableCities.map((item) => ({ label: item.name, value: item.name, metadata: item })),
       validator: async (v: string | undefined, form: Partial<TFormValue>) =>
@@ -101,6 +103,7 @@ const App = () => {
     {
       label: 'Archivos',
       name: 'f',
+      icon: 'file',
       type: 'files',
       extensions: ['.png'],
       validator: (files: File[] | undefined) => {

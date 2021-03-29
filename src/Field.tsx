@@ -3,6 +3,7 @@ import styles from '../style/index.module.sass';
 import { TField } from './types';
 import cl from 'classnames';
 import Input from './Input';
+import Icon from './Icon';
 
 const ERROR_HIDE_DELAY = 1000;
 
@@ -94,7 +95,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     );
   };
 
-  private renderIcon = () => {
+  private renderStateIcon = () => {
     const { errors, isFocused, isTyping } = this.state;
     const isError = !!errors.length && !isTyping;
     return (
@@ -132,7 +133,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
   };
 
   private renderLabel = () => {
-    const { disabled, label, name } = this.props;
+    const { disabled, icon, label, name } = this.props;
     const { isFocused, value } = this.state;
     const isEmpty = !value;
     return (
@@ -143,7 +144,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
           [styles.isDisabled]: disabled,
         })}
       >
-        {label || name}
+        {icon && <Icon id={icon} />} {label || name}
       </label>
     );
   };
@@ -157,7 +158,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
       <div className={`${styles.field} ${isError ? styles.isErrored : ''}`}>
         {this.renderLabel()}
         {this.renderInput()}
-        {hasHint && this.renderIcon()}
+        {hasHint && this.renderStateIcon()}
         {hasHint && this.renderHint()}
       </div>
     );
