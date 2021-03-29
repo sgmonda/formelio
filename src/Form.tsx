@@ -39,13 +39,13 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
     const { value } = this.state;
     return (
       <div className={styles.formelio}>
-        <div className={styles.fieldsWrapper}>
+        <form>
           {fields.map((field) => (
             <div key={field.name} className={styles.fieldWrapper} style={{ flexBasis: (field.size || 1) * 100 + '%' }}>
               {getField<T>(field, value, this.onChange.bind(this))}
             </div>
           ))}
-        </div>
+        </form>
       </div>
     );
   };
