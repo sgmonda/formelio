@@ -22,24 +22,29 @@ type TFormValue = {
   tos2: boolean;
 };
 
-console.log(cities.length, 'items');
+const filterGeo = (v: any) => {
+  const prov = provinces.filter(({ region }) => region === v.region);
+  const cit = cities.filter(({ provincia, region }) => {
+    return v.province === provincia && v.region === region;
+  });
+  return { prov, cit };
+};
 
 const App = () => {
-  const [value, setValue] = useState<Partial<TFormValue>>({
+  const initialFormValue = {
     name: 'error',
     surname1: 'García sdf wef wew ew rwer wer w',
     region: 'Cataluña',
-  });
-  const [availableCities, setAvailableCities] = useState(cities);
-  const [availableProvinces, setAvailableProvinces] = useState(provinces);
+  };
+  const [value, setValue] = useState<Partial<TFormValue>>(initialFormValue);
+  const { prov, cit } = filterGeo(initialFormValue);
+  const [availableCities, setAvailableCities] = useState(cit);
+  const [availableProvinces, setAvailableProvinces] = useState(prov);
 
   const onChange: TForm<TFormValue>['onChange'] = async (v) => {
-    setAvailableProvinces(provinces.filter(({ region }) => region === v.region));
-    setAvailableCities(
-      cities.filter(({ provincia, region }) => {
-        return v.province === provincia && v.region === region;
-      })
-    );
+    const { prov, cit } = filterGeo(v);
+    setAvailableProvinces(prov);
+    setAvailableCities(cit);
     if (value.region !== v.region) {
       v.province = undefined;
       v.city = undefined;

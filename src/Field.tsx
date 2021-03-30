@@ -150,7 +150,10 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
         })}
         style={{ color }}
       >
-        {icon && <Icon id={icon} />} {label || name}
+        <span style={{ flex: 1 }}>
+          {icon && <Icon id={icon} />} {label || name}
+        </span>
+        {Array.isArray(value) && !!value.length && <span>({value.length})</span>}
       </label>
     );
   };
