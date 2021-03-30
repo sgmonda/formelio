@@ -2,14 +2,11 @@ import React, { ChangeEventHandler, createRef, FocusEventHandler, Fragment } fro
 import styles from '../style/index.module.sass';
 import cl from 'classnames';
 import RSelect, { StylesConfig } from 'react-select';
+import { createGlobalStyle } from 'styled-components';
 import { TInput } from './types';
 import DatePicker from 'react-datepicker';
+import COLORS from './Colors';
 import 'react-datepicker/dist/react-datepicker.css';
-
-// @TODO Move this to other place to support theming
-const COLOR_PRIMARY = '#5196D5';
-const COLOR_INPUT = '#ECEFEE';
-const COLOR_ERROR = '#D65947';
 
 type Props<T> = TInput<T> & {
   value?: T;
@@ -21,6 +18,14 @@ type Props<T> = TInput<T> & {
   onChange: (value: T) => Promise<T>;
 };
 
+const getBorderColor = (props: Props<any>) => {
+  const { colors, isErrored, isFocused } = props;
+  let borderColor = 'inherit';
+  if (isErrored) borderColor = colors?.error || COLORS.ERROR;
+  else if (isFocused) borderColor = colors?.accent || COLORS.ACCENT;
+  return borderColor;
+};
+
 const CommonInput = (props: Props<any>) => {
   return (
     <input
@@ -29,6 +34,7 @@ const CommonInput = (props: Props<any>) => {
         [styles.isErrored]: props.isErrored,
         [styles.hasHint]: props.hasHint,
       })}
+      style={{ borderColor: getBorderColor(props), color: 'inherit' }}
       autoComplete={props.autocomplete}
       readOnly={!props.isFocused}
       type={props.type || 'text'}
@@ -48,6 +54,7 @@ const TextArea = (props: Props<any>) => {
         [styles.isErrored]: props.isErrored,
         [styles.hasHint]: props.hasHint,
       })}
+      style={{ borderColor: getBorderColor(props), color: 'inherit' }}
       autoComplete={props.autocomplete}
       readOnly={!props.isFocused}
       defaultValue={props.value as any}
@@ -72,16 +79,28 @@ const CheckboxInput = (props: Props<any>) => {
 };
 
 const DateInput = (props: Props<any>) => {
+  const DatePickerWrapperStyles = createGlobalStyle`
+    .date_picker input {
+      color: inherit;
+      border-color: ${getBorderColor(props)};
+    }
+  `;
+  const onChange = (date: Date) => {
+    props.onChange(date);
+    props.onBlur();
+  };
   return (
     <div className={styles.datepicker}>
       <DatePicker
         selected={props.value ? new Date(props.value) : undefined}
-        onChange={(date: Date) => props.onChange(date)}
+        onChange={onChange}
         onFocus={props.onFocus}
         onBlur={props.onBlur}
         dateFormat={props.format}
         readOnly={!props.isFocused}
+        wrapperClassName={'date_picker'}
       />
+      <DatePickerWrapperStyles />
     </div>
   );
 };
@@ -123,6 +142,7 @@ const FileInput = (props: Props<any>) => {
           [styles.isErrored]: props.isErrored,
           [styles.hasHint]: props.hasHint,
         })}
+        style={{ borderColor: getBorderColor(props), color: 'inherit' }}
         value={props.value ? props.value.map((f: File) => `"${f.name}"`).join(', ') : undefined}
         ref={ref2}
         onFocus={onFocus}
@@ -134,22 +154,38 @@ const FileInput = (props: Props<any>) => {
 
 const Select = (props: Props<string>) => {
   const customStyles: StylesConfig<any, any, any> = {
-    control: (_: any, state: any) => ({
+    control: () => ({
       background: 'none !important',
-      borderBottom: `solid 0.13em ${props.isErrored ? COLOR_ERROR : state.isFocused ? COLOR_PRIMARY : COLOR_INPUT}`,
+      borderBottom: `solid 0.13em`,
+      borderColor: getBorderColor(props),
       cursor: 'text',
       display: 'flex',
       transition: '0.2s ease-in-out',
     }),
     indicatorSeparator: () => ({ display: 'none' }),
     indicatorsContainer: () => ({ display: 'none' }),
+    input: (provided: any) => ({
+      ...provided,
+      color: 'inherit',
+    }),
     option: (_: any, state) => ({
-      background: state.isSelected ? COLOR_PRIMARY : state.isFocused ? COLOR_PRIMARY + '1F' : 'white',
-      color: state.isSelected ? 'white' : 'inerit',
+      background: state.isSelected
+        ? props.colors?.accent || COLORS.ACCENT
+        : state.isFocused
+        ? (props.colors?.accent || COLORS.ACCENT) + '1F'
+        : 'white',
+      color: state.isSelected ? 'white' : '#555',
       padding: '0.25em 0.5em',
     }),
     placeholder: () => ({ display: 'none' }),
-    singleValue: () => ({ color: props.isErrored ? COLOR_ERROR : 'inherit' }),
+    singleValue: () => ({
+      color: props.isErrored ? props.colors?.error || COLORS.ERROR : 'inherit',
+      overflow: 'hidden',
+      position: 'absolute',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      width: '100%',
+    }),
     valueContainer: (provided: any) => ({
       ...provided,
       alignItems: 'flex-end',

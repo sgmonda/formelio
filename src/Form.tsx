@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { Component, createRef, useEffect } from 'react';
 import styles from '../style/index.module.sass';
 import { Field } from './Field';
-import { TField } from './types';
+import { TColors, TField } from './types';
 
 type TypedTField<T> =
   | (TField<string, T> & { type: 'text' })
@@ -15,6 +15,7 @@ type TypedTField<T> =
 
 export type TForm<T> = {
   delay?: number;
+  colors?: TColors;
   fields: TypedTField<T>[]; // @TODO Could this "any" be avoided?
   onChange: (value: Partial<T>) => Promise<void>;
   value?: Partial<T>;
@@ -40,6 +41,12 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
     this.propagateOnChange();
   }
 
+  public componentDidUpdate = (prevProps: TForm<T>) => {
+    if (prevProps.value !== this.props.value) {
+      this.setState({ value: this.props.value || {} });
+    }
+  };
+
   public render = () => {
     const { fields } = this.props;
     const { value } = this.state;
@@ -48,7 +55,7 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
         <form>
           {fields.map((field) => (
             <div key={field.name} className={styles.fieldWrapper} style={{ flexBasis: (field.size || 1) * 100 + '%' }}>
-              {getField<T>(field, value, this.onChange.bind(this))}
+              {getField<T>(field, value, this.onChange.bind(this), this.props.colors)}
             </div>
           ))}
         </form>
@@ -58,18 +65,18 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
 }
 
 // @TODO Don't use "any" here
-function getField<T>(field: any, value: any, onChange: any) {
+function getField<T>(field: any, value: any, onChange: any, colors?: TColors) {
   switch (field.type) {
     case 'date':
-      return <FieldWrapper<Date, T> {...{ field, formValue: value, onChange }} />;
+      return <FieldWrapper<Date, T> {...{ colors, field, formValue: value, onChange }} />;
     case 'number':
-      return <FieldWrapper<number, T> {...{ field, formValue: value, onChange }} />;
+      return <FieldWrapper<number, T> {...{ colors, field, formValue: value, onChange }} />;
     case 'files':
-      return <FieldWrapper<File[], T> {...{ field, formValue: value, onChange }} />;
+      return <FieldWrapper<File[], T> {...{ colors, field, formValue: value, onChange }} />;
     case 'check':
-      return <FieldWrapper<boolean, T> {...{ field, formValue: value, onChange }} />;
+      return <FieldWrapper<boolean, T> {...{ colors, field, formValue: value, onChange }} />;
     default:
-      return <FieldWrapper<string, T> {...{ field, formValue: value, onChange }} />;
+      return <FieldWrapper<string, T> {...{ colors, field, formValue: value, onChange }} />;
   }
 }
 
@@ -81,6 +88,7 @@ function FieldWrapper<T, F>(props: {
   field: TField<T, F>;
   formValue: Partial<F>;
   onChange: (field: TField<T, F>, value: T, isValid: boolean) => void;
+  colors?: TColors;
 }) {
   const ref = createRef<Field<T, F>>();
   const onChange = (value: T, isValid: boolean) => props.onChange(props.field, value, isValid);
@@ -94,6 +102,7 @@ function FieldWrapper<T, F>(props: {
   return (
     <Field<T, F>
       {...props.field}
+      colors={props.colors}
       ref={ref}
       value={props.formValue[props.field.name] as any}
       onChange={onChange}

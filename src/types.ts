@@ -2,6 +2,7 @@ export type FieldOption<T> = { value: T; label: string } & { metadata?: any };
 
 export type TInput<T> = {
   autocomplete?: string;
+  colors?: TColors;
   disabled?: boolean;
   extensions?: string[];
   format?: string;
@@ -19,6 +20,12 @@ export type TField<T, F> = TInput<T> & {
   icon?: string; // Solid supported, search icon names in https://fontawesome.com/icons
   name: keyof F;
   validator?: TFieldValidator<T, F>;
+};
+
+export type TColors = {
+  base?: string;
+  accent?: string;
+  error?: string;
 };
 
 export type TFieldValidator<T, F> = (value: T | undefined, otherValues: Partial<F>) => string[] | Promise<string[]>;

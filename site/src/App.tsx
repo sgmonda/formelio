@@ -83,8 +83,8 @@ const App = () => {
       disabled: !value.region,
       size: 0.333,
       options: availableProvinces.map((item) => ({ label: item.name, value: item.name, metadata: item })),
-      validator: async (v: string | undefined, form: Partial<TFormValue>) =>
-        v === 'val2' && form.region === 'val1' ? ['no vale la opción 2 si region es "First value"'] : [],
+      validator: async (v: string | undefined) =>
+        v === 'Barcelona' ? ['Barcelona es la única ciudad que no vale'] : [],
     },
     {
       name: 'city',
@@ -102,6 +102,7 @@ const App = () => {
       size: 0.5,
       type: 'date',
       format: 'dd / MMM / yyyy',
+      help: 'Esto es un mensaje',
     },
     {
       label: 'Archivos',
@@ -128,15 +129,43 @@ bla progando uno y no sé qué más decir
   ];
 
   return (
-    <div className="panel" style={{ margin: '5em' }}>
-      <div className="panel-block">
-        <Form<TFormValue> fields={fields} value={value} onChange={onChange} />
-      </div>
-      <div className="panel-block">
-        <pre style={{ height: '100%', width: '100%' }}>{JSON.stringify(value, null, 2)}</pre>
-      </div>
+    <div>
+      <FormExample<TFormValue>
+        {...{ fields, value, onChange }}
+        tileClass="is-dark"
+        colors={{ base: 'blue', accent: 'hsl(141, 53%, 53%)', error: 'orange' }}
+      />
+      <FormExample<TFormValue>
+        {...{ fields, value, onChange }}
+        tileClass="is-light"
+        colors={{ base: '#333', accent: 'orange' }}
+      />
+      <FormExample<TFormValue> {...{ fields, value, onChange }} tileClass="is-info" colors={{ base: 'yellow' }} />
+      <FormExample<TFormValue> {...{ fields, value, onChange }} tileClass="is-success" />
+      <FormExample<TFormValue> {...{ fields, value, onChange }} tileClass="is-warning" />
     </div>
   );
 };
+
+function FormExample<T>(props: TForm<T> & { tileClass: string }) {
+  return (
+    <div className="tile is-parent" style={{ margin: '3em' }}>
+      <div
+        className={`tile is-child notification ${props.tileClass} is-8`}
+        style={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
+      >
+        <Form<T> fields={props.fields} value={props.value} onChange={props.onChange} colors={props.colors} />
+      </div>
+      <div
+        className="tile is-child notification is-light"
+        style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0, overflow: 'hidden', padding: 0 }}
+      >
+        <pre style={{ height: '100%', width: '100%', background: 'none', whiteSpace: 'pre-wrap' }}>
+          {JSON.stringify(props.value, null, 2)}
+        </pre>
+      </div>
+    </div>
+  );
+}
 
 export default App;

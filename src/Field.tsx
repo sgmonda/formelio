@@ -5,6 +5,7 @@ import { TField } from './types';
 import cl from 'classnames';
 import Input from './Input';
 import Icon from './Icon';
+import COLORS from './Colors';
 
 const ERROR_HIDE_DELAY = 1000;
 
@@ -62,15 +63,18 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     }, ERROR_HIDE_DELAY);
 
     const { validator } = this.props;
-    const errors = (await validator(value)) || [];
+    const errors = (await validator(value)) || ['x'];
     this.setState({ errors, isTyping: true, value });
     this.props.onChange(value, !errors.length);
   };
 
   private renderHint = () => {
-    const { help } = this.props;
+    const { colors, help } = this.props;
     const { errors, isFocused, isTyping } = this.state;
     const isError = !!errors.length && !isTyping;
+    let backgroundColor = undefined;
+    if (isError) backgroundColor = colors?.error || COLORS.ERROR;
+    else if (isFocused) backgroundColor = colors?.accent || COLORS.ACCENT;
     return (
       <div
         className={cl({
@@ -79,8 +83,9 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
           [styles.hidden]: !isFocused,
           [styles.isErrored]: isError,
         })}
+        style={{ backgroundColor }}
       >
-        <div className={styles.spike} />
+        <div className={styles.spike} style={{ borderBottomColor: backgroundColor }} />
         {isError && (
           <div>
             {errors.map((err) => (
@@ -97,8 +102,12 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
   };
 
   private renderStateIcon = () => {
+    const { colors } = this.props;
     const { errors, isFocused, isTyping } = this.state;
     const isError = !!errors.length && !isTyping;
+    let color = 'inherit' || undefined;
+    if (isError) color = colors?.error || COLORS.ERROR;
+    else if (isFocused) color = colors?.accent || COLORS.ACCENT;
     return (
       <div
         className={cl({
@@ -106,11 +115,9 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
           [styles.isFocused]: isFocused,
           [styles.isErrored]: isError,
         })}
+        style={{ color }}
       >
-        <img
-          src={require(`../assets/img/${isError ? 'exclamation' : 'info'}.png`)}
-          style={{ height: '100%', width: '100%' }}
-        />
+        <Icon id={isError ? 'exclamation-triangle' : 'question-circle'} />
       </div>
     );
   };
@@ -134,9 +141,13 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
   };
 
   private renderLabel = () => {
-    const { disabled, icon, label, name } = this.props;
-    const { isFocused, value } = this.state;
+    const { colors, disabled, icon, label, name } = this.props;
+    const { errors, isFocused, isTyping, value } = this.state;
     const isEmpty = !value;
+    const isError = !!errors.length && !isTyping;
+    let color = 'inherit';
+    if (isError) color = colors?.error || COLORS.ERROR;
+    else if (isFocused) color = colors?.accent || COLORS.ACCENT;
     return (
       <label
         className={cl({
@@ -144,6 +155,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
           [styles.isEmpty]: isEmpty,
           [styles.isDisabled]: disabled,
         })}
+        style={{ color }}
       >
         {icon && <Icon id={icon} />} {label || name}
       </label>
@@ -153,8 +165,8 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
   private renderCheckbox = () => {
     const { label, name } = this.props;
     return (
-      <div className={`${styles.checkbox}`}>
-        {this.renderInput()}
+      <div className={`${styles.checkbox}`} style={{ color: 'inherit' }}>
+        {this.renderInput()}{' '}
         <label htmlFor={name}>
           <ReactMarkdownWithHtml disallowedTypes={['paragraph']} allowDangerousHtml unwrapDisallowed>
             {label || name}
