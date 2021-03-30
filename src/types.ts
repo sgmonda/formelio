@@ -2,6 +2,7 @@ export type FieldOption<T> = { value: T; label: string } & { metadata?: any };
 
 export type TInput<T> = {
   autocomplete?: string;
+  required?: boolean;
   colors?: TColors;
   disabled?: boolean;
   extensions?: string[];

@@ -19,11 +19,12 @@ type State<T> = {
   errors: string[];
   isFocused: boolean;
   isTyping: boolean;
+  isDirty: boolean;
   value: T | undefined;
 };
 
 export class Field<T, F> extends Component<Props<T, F>, State<T>> {
-  static initialState = { errors: [], isFocused: false, isTyping: false, value: undefined };
+  static initialState = { errors: [], isDirty: false, isFocused: false, isTyping: false, value: undefined };
   private typingTimeout: NodeJS.Timeout | undefined = undefined;
 
   constructor(props: Props<T, F>) {
@@ -48,6 +49,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     if (prevProps.value !== this.state.value) {
       const newState = {
         ...this.getStateAndValidate(this.props),
+        isDirty: this.state.isDirty,
         isFocused: this.state.isFocused,
         isTyping: this.state.isTyping,
       };
@@ -64,14 +66,14 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
 
     const { validator } = this.props;
     const errors = (await validator(value)) || ['x'];
-    this.setState({ errors, isTyping: true, value });
+    this.setState({ errors, isDirty: true, isTyping: true, value });
     this.props.onChange(value, !errors.length);
   };
 
   private renderHint = () => {
     const { colors, help } = this.props;
-    const { errors, isFocused, isTyping } = this.state;
-    const isError = !!errors.length && !isTyping;
+    const { errors, isDirty, isFocused, isTyping } = this.state;
+    const isError = !!errors.length && !isTyping && isDirty;
     let backgroundColor = undefined;
     if (isError) backgroundColor = colors?.error || COLORS.ERROR;
     else if (isFocused) backgroundColor = colors?.accent || COLORS.ACCENT;
@@ -96,8 +98,8 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
 
   private renderStateIcon = () => {
     const { colors } = this.props;
-    const { errors, isFocused, isTyping } = this.state;
-    const isError = !!errors.length && !isTyping;
+    const { errors, isDirty, isFocused, isTyping } = this.state;
+    const isError = !!errors.length && !isTyping && isDirty;
     let color = 'inherit' || undefined;
     if (isError) color = colors?.error || COLORS.ERROR;
     else if (isFocused) color = colors?.accent || COLORS.ACCENT;
@@ -117,8 +119,8 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
 
   private renderInput = () => {
     const { help } = this.props;
-    const { errors, isFocused, isTyping, value } = this.state;
-    const isError = !!errors.length && !isTyping;
+    const { errors, isDirty, isFocused, isTyping, value } = this.state;
+    const isError = !!errors.length && !isTyping && isDirty;
     return (
       <Input
         {...this.props}
@@ -133,11 +135,12 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     );
   };
 
+  // eslint-disable-next-line complexity
   private renderLabel = () => {
-    const { colors, disabled, icon, label, name } = this.props;
-    const { errors, isFocused, isTyping, value } = this.state;
+    const { colors, disabled, icon, label, name, required } = this.props;
+    const { errors, isDirty, isFocused, isTyping, value } = this.state;
     const isEmpty = !value;
-    const isError = !!errors.length && !isTyping;
+    const isError = !!errors.length && !isTyping && isDirty;
     let color = 'inherit';
     if (isError) color = colors?.error || COLORS.ERROR;
     else if (isFocused) color = colors?.accent || COLORS.ACCENT;
@@ -151,7 +154,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
         style={{ color }}
       >
         <span style={{ flex: 1 }}>
-          {icon && <Icon id={icon} />} {label || name}
+          {icon && <Icon id={icon} />} {label || name} {required && <span>*</span>}
         </span>
         {Array.isArray(value) && !!value.length && <span>({value.length})</span>}
       </label>
@@ -174,9 +177,9 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
 
   public render = () => {
     const { disabled, help, type } = this.props;
-    const { errors = [], isTyping } = this.state;
+    const { errors = [], isDirty, isTyping } = this.state;
     const hasHint = (errors.length > 0 && !isTyping) || help;
-    const isError = !!errors.length && !isTyping;
+    const isError = !!errors.length && !isTyping && isDirty;
     if (type === 'check') return this.renderCheckbox();
     return (
       <div

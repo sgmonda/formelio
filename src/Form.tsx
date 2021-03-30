@@ -17,7 +17,7 @@ export type TForm<T> = {
   delay?: number;
   colors?: TColors;
   fields: TypedTField<T>[]; // @TODO Could this "any" be avoided?
-  onChange: (value: Partial<T>) => Promise<void>;
+  onChange: (value: Partial<T>, isValid: boolean) => void;
   value?: Partial<T>;
 };
 
@@ -30,7 +30,8 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
   public state = { validity: {}, value: this.props.value || {} };
 
   private propagateOnChange = _.debounce(() => {
-    this.props.onChange(this.state.value);
+    const isValid = !Object.values(this.state.validity).some((b) => !b);
+    this.props.onChange(this.state.value, isValid);
   }, this.props.delay || 500);
 
   private onChange<X>(field: TField<X, T>, value: X, isValid: boolean): void {
@@ -93,6 +94,7 @@ function FieldWrapper<T, F>(props: {
   const ref = createRef<Field<T, F>>();
   const onChange = (value: T, isValid: boolean) => props.onChange(props.field, value, isValid);
   const validator = async (value?: T): Promise<string[]> => {
+    if (props.field.required && !value) return ['Required field'];
     if (!props.field.validator) return [];
     return props.field.validator(value, props.formValue);
   };

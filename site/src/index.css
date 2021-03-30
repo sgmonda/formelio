@@ -10,3 +10,25 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+pre {
+  background-color: transparent !important;
+  width: 100%;
+  padding: 0;
+  border: solid 1px #ddd;
+}
+
+.container {
+  padding: 1em;
+}
+
+.tile {
+  border-radius: 0;
+  display: flex;
+}
+
+.tile.is-parent {
+  border-radius: 5px;
+  overflow: hidden;
+  padding: 0;
+}
