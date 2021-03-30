@@ -95,10 +95,12 @@ const DateInput = (props: Props<any>) => {
         selected={props.value ? new Date(props.value) : undefined}
         onChange={onChange}
         onFocus={props.onFocus}
+        onCalendarClose={props.onBlur}
         onBlur={props.onBlur}
         dateFormat={props.format}
         readOnly={!props.isFocused}
         wrapperClassName={'date_picker'}
+        popperPlacement="bottom-start"
       />
       <DatePickerWrapperStyles />
     </div>
@@ -200,7 +202,7 @@ const Select = (props: Props<string>) => {
   return (
     <RSelect
       name={props.name}
-      menuPlacement={props.hasHint ? 'top' : 'auto'}
+      menuPlacement="bottom"
       options={props.options}
       styles={customStyles}
       isDisabled={props.disabled}

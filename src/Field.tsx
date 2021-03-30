@@ -75,6 +75,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     let backgroundColor = undefined;
     if (isError) backgroundColor = colors?.error || COLORS.ERROR;
     else if (isFocused) backgroundColor = colors?.accent || COLORS.ACCENT;
+    const message = isError ? errors.join('\n\n') : help;
     return (
       <div
         className={cl({
@@ -85,18 +86,10 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
         })}
         style={{ backgroundColor }}
       >
-        <div className={styles.spike} style={{ borderBottomColor: backgroundColor }} />
-        {isError && (
-          <div>
-            {errors.map((err) => (
-              <div key={err}>
-                {err}
-                <br />
-              </div>
-            ))}
-          </div>
-        )}
-        {!isError && <span>{help}</span>}
+        <div className={styles.spike} style={{ borderTopColor: backgroundColor }} />
+        <ReactMarkdownWithHtml disallowedTypes={['paragraph']} allowDangerousHtml unwrapDisallowed>
+          {message || ''}
+        </ReactMarkdownWithHtml>
       </div>
     );
   };

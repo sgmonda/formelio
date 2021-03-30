@@ -32,7 +32,7 @@
   .icon
     position: absolute
     right: $unit * 0.5
-    bottom: $unit * 0.7
+    top: $unit * 1.4
     height: $unit
     width: $unit
     text-align: right
@@ -67,17 +67,16 @@
 
   .hint
     position: absolute
-    top: 106%
+    bottom: 100%
+    margin-bottom: 0.2 * $unit
     right: 0
     left: 0
-    color: $color-tooltip-text
     font-size: small
-    background: rgba($color-primary, 0.9)
     z-index: 9999
     padding: $unit * 0.5
     transition: 0.2s ease-in-out
-    pointer-events: none
     border-radius: $unit * 0.1
+    vertical-align: bottom
 
     &.hidden
       opacity: 0
@@ -88,10 +87,10 @@
       height: 0
       border-left: $unit * 0.5 solid transparent
       border-right: $unit * 0.5 solid transparent
-      border-bottom: $unit * 0.5 solid #fff // This will be replaced in JS
+      border-top: $unit * 0.5 solid #fff // This will be replaced in JS
       position: absolute
       right: $unit * 0.5
-      top: -$unit * 0.5
+      bottom: - $unit * 0.5
 
   input, select, textarea
     margin-top: $unit * 0.8
