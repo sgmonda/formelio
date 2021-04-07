@@ -1,27 +1,17 @@
 import React, { Component } from 'react';
 import ReactMarkdownWithHtml from 'react-markdown/with-html';
-import styles from '../style/index.module.sass';
-import { TField } from './types';
+import styles from '../../style/index.module.sass';
+import { TFieldProps, TFieldState } from '../types';
 import cl from 'classnames';
-import Input from './Input';
-import Icon from './Icon';
-import COLORS from './Colors';
+import Input from '../Input';
+import Icon from '../Icon';
+import COLORS from '../Colors';
+import Hint from './Hint';
 
 const ERROR_HIDE_DELAY = 1000;
 
-type Props<T, F> = TField<T, F> & {
-  onChange: (value: T, isValid: boolean) => void;
-  validator: (value?: T) => Promise<string[]>;
-  value?: T;
-};
-
-type State<T> = {
-  errors: string[];
-  isFocused: boolean;
-  isTyping: boolean;
-  isDirty: boolean;
-  value: T | undefined;
-};
+type Props<T, F> = TFieldProps<T, F>;
+type State<T> = TFieldState<T>;
 
 export class Field<T, F> extends Component<Props<T, F>, State<T>> {
   static initialState = { errors: [], isDirty: false, isFocused: false, isTyping: false, value: undefined };
@@ -68,33 +58,6 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     const errors = (await validator(value)) || ['x'];
     this.setState({ errors, isDirty: true, isTyping: true, value });
     this.props.onChange(value, !errors.length);
-  };
-
-  private renderHint = () => {
-    const { colors, help } = this.props;
-    const { errors, isDirty, isFocused, isTyping } = this.state;
-    const isError = !!errors.length && !isTyping && isDirty;
-    let backgroundColor = undefined;
-    if (isError) backgroundColor = colors?.error || COLORS.ERROR;
-    else if (isFocused) backgroundColor = colors?.accent || COLORS.ACCENT;
-    const message = isError ? errors.join('\n\n') : help;
-    return (
-      <div
-        className={cl({
-          [styles.hintWrapper]: true,
-          [styles.isFocused]: isFocused,
-          [styles.hidden]: !isFocused,
-          [styles.isErrored]: isError,
-        })}
-      >
-        <div className={styles.hint} /*style={{ backgroundColor }}*/>
-          <ReactMarkdownWithHtml disallowedTypes={['paragraph']} allowDangerousHtml unwrapDisallowed>
-            {message || 'bla bla blabla bla blabla bla blabla bla blabla bla bla'}
-          </ReactMarkdownWithHtml>
-        </div>
-        <div className={styles.spike} style={{ borderTopColor: backgroundColor }} />
-      </div>
-    );
   };
 
   private renderStateIcon = () => {
@@ -178,9 +141,10 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
 
   public render = () => {
     const { disabled, help, type } = this.props;
-    const { errors = [], isDirty, isTyping } = this.state;
-    const hasHint = (errors.length > 0 && !isTyping) || help;
+    const { errors = [], isDirty, isTyping, isFocused } = this.state;
     const isError = !!errors.length && !isTyping && isDirty;
+    const hasIcon = isError || help;
+    const hasHint = hasIcon && isFocused;
     if (type === 'check') return this.renderCheckbox();
     return (
       <div
@@ -193,7 +157,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
         {this.renderLabel()}
         {this.renderInput()}
         {hasHint && this.renderStateIcon()}
-        {hasHint && this.renderHint()}
+        {hasHint && <Hint<T, F> {...this.props} {...this.state} />}
       </div>
     );
   };

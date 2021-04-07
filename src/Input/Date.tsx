@@ -7,6 +7,9 @@ import { TInputProps } from '../types';
 
 const DateInput = (props: TInputProps<Date>) => {
   const DatePickerWrapperStyles = createGlobalStyle`
+    .date_picker {
+      width: 100%
+    }
     .date_picker input {
       color: inherit;
       border-color: ${props.borderColor};

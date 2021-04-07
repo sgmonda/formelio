@@ -27,7 +27,25 @@ type State<T> = {
 };
 
 export class Form<T> extends Component<TForm<T>, State<T>> {
-  public state = { validity: {}, value: this.props.value || {} };
+  constructor(props: TForm<T>) {
+    super(props);
+    this.state = {
+      validity: { something: false }, // Not valid by default, until first validation
+      value: this.props.value || {},
+    };
+    Promise.all(
+      props.fields.map(async (field) => {
+        const errors = await validateField<any, any>(field, props.value?.[field.name], props.value);
+        return errors.length > 0;
+      })
+    ).then((errors) => {
+      const validity = {};
+      props.fields.forEach((field, i) => {
+        validity[field.name as string] = !errors[i];
+      });
+      this.setState({ validity });
+    });
+  }
 
   private propagateOnChange = _.debounce(() => {
     const isValid = !Object.values(this.state.validity).some((b) => !b);
@@ -94,9 +112,7 @@ function FieldWrapper<T, F>(props: {
   const ref = createRef<Field<T, F>>();
   const onChange = (value: T, isValid: boolean) => props.onChange(props.field, value, isValid);
   const validator = async (value?: T): Promise<string[]> => {
-    if (props.field.required && !value) return ['Required field'];
-    if (!props.field.validator) return [];
-    return props.field.validator(value, props.formValue);
+    return validateField(props.field, value, props.formValue);
   };
   useEffect(() => {
     ref.current?.validate();
@@ -111,4 +127,14 @@ function FieldWrapper<T, F>(props: {
       validator={validator}
     />
   );
+}
+
+async function validateField<T, F>(
+  field: TField<T, F>,
+  value: T | undefined,
+  formValue?: Partial<F>
+): Promise<string[]> {
+  if (field.required && !value) return ['Required field'];
+  if (!field.validator) return [];
+  return field.validator(value, formValue || {});
 }

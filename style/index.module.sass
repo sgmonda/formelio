@@ -66,23 +66,30 @@
       transform: translateY($unit * 1.3)
       pointer-events: none
 
-  .hint
+  .hintTarget
     position: absolute
-    bottom: 100%
-    margin-bottom: 0.2 * $unit
     right: 0
     left: 0
-    font-size: small
-    z-index: 9999
-    padding: $unit * 0.5
-    transition: 0.2s ease-in-out
-    border-radius: $unit * 0.1
-    vertical-align: bottom
+    top: 0
+    bottom: 0
+    pointer-events: none
 
     &.hidden
       opacity: 0
       visibility: hidden
 
+  .hint
+    position: relative
+    font-size: small !important
+    // z-index: 9999
+    // font-size: small
+    color: white
+    padding: $unit * 0.5
+    border-radius: $unit * 0.1
+    // vertical-align: bottom
+    width: 100%
+    // border: solid 1px blue !important
+    transition: all 0.2s ease-in-out
     .spike
       width: 0
       height: 0
@@ -157,3 +164,34 @@
   label
     // font-size: smaller
     line-height: 1 * $unit
+
+.arrow,
+.arrow::before
+  position: absolute
+  width: 1em
+  height: 1em
+  background: inherit
+
+.arrow
+  visibility: hidden
+
+.arrow::before
+  visibility: visible
+  content: ''
+  transform: rotate(45deg)
+
+.hint[data-popper-placement^='top']
+  margin-bottom: 0.5em !important
+  .arrow
+    bottom: -0.25em
+
+.hint[data-popper-placement^='bottom']
+  margin-top: 0.5em !important
+  .arrow
+    top: -0.25em
+
+.hint[data-popper-placement^='left'] > .arrow
+  right: -0.25em
+
+.hint[data-popper-placement^='right'] > .arrow
+  left: -0.25em

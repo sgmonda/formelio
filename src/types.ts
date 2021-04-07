@@ -41,3 +41,17 @@ export type TInputProps<T> = TInput<T> & {
   onBlur: () => void;
   onChange: (value: T) => void;
 };
+
+export type TFieldProps<T, F> = TField<T, F> & {
+  onChange: (value: T, isValid: boolean) => void;
+  validator: (value?: T) => Promise<string[]>;
+  value?: T;
+};
+
+export type TFieldState<T> = {
+  errors: string[];
+  isFocused: boolean;
+  isTyping: boolean;
+  isDirty: boolean;
+  value: T | undefined;
+};

@@ -1,6 +1,6 @@
 {
   "name": "formelio",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Forms for human beings",
   "author": "Sergio Garcia Mondaray &lt;sgmonda@gmail.com&gt; (https://sgmonda.com)",
   "license": "GPL-3.0",
@@ -95,6 +95,7 @@
     "@fortawesome/fontawesome-svg-core": "1.2.35",
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "@fortawesome/react-fontawesome": "0.1.14",
+    "@popperjs/core": "^2.9.2",
     "lodash": "^4.17.21",
     "react-datepicker": "3.6.0",
     "react-markdown": "^5.0.3",
