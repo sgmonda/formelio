@@ -20,7 +20,8 @@ const indent = (code: string, level: number) =>
     .join('\n')
     .trimEnd();
 
-const genSource = ({ fields, initialState }: typeof Basic.source) => `
+const genSource = ({ fields, initialState }: typeof Basic.source) =>
+  `
 import React, { useState } from 'react';
 import { Form } from 'formelio';
 
@@ -35,7 +36,7 @@ ${indent(fields, 2)}
   return (
     <Form {...{fields, value, onChange}} />
   );
-}`;
+}`.trim();
 
 function Example(props: typeof Basic) {
   const [value, setValue] = useState({});
@@ -59,7 +60,9 @@ function Example(props: typeof Basic) {
             </div>
             <div style={{ flex: 0 }}>
               <h4>State</h4>
-              <pre>{JSON.stringify({ isValid, value }, null, 2)}</pre>
+              <SyntaxHighlighter language="javascript" style={github}>
+                {JSON.stringify({ isValid, value }, null, 2)}
+              </SyntaxHighlighter>
             </div>
           </div>
         </div>

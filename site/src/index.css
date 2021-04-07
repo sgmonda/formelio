@@ -12,10 +12,10 @@ code {
 }
 
 pre {
-  background-color: transparent !important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
   width: 100%;
   padding: 0;
-  border: solid 1px #ddd;
+  font-size: 0.8rem !important;
 }
 
 .container {

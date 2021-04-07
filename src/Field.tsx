@@ -81,17 +81,18 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     return (
       <div
         className={cl({
-          [styles.hint]: true,
+          [styles.hintWrapper]: true,
           [styles.isFocused]: isFocused,
           [styles.hidden]: !isFocused,
           [styles.isErrored]: isError,
         })}
-        style={{ backgroundColor }}
       >
+        <div className={styles.hint} /*style={{ backgroundColor }}*/>
+          <ReactMarkdownWithHtml disallowedTypes={['paragraph']} allowDangerousHtml unwrapDisallowed>
+            {message || 'bla bla blabla bla blabla bla blabla bla blabla bla bla'}
+          </ReactMarkdownWithHtml>
+        </div>
         <div className={styles.spike} style={{ borderTopColor: backgroundColor }} />
-        <ReactMarkdownWithHtml disallowedTypes={['paragraph']} allowDangerousHtml unwrapDisallowed>
-          {message || ''}
-        </ReactMarkdownWithHtml>
       </div>
     );
   };

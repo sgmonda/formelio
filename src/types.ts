@@ -30,3 +30,14 @@ export type TColors = {
 };
 
 export type TFieldValidator<T, F> = (value: T | undefined, otherValues: Partial<F>) => string[] | Promise<string[]>;
+
+export type TInputProps<T> = TInput<T> & {
+  borderColor?: string;
+  value?: T;
+  hasHint?: boolean;
+  isErrored: boolean;
+  isFocused: boolean;
+  onFocus: () => void;
+  onBlur: () => void;
+  onChange: (value: T) => void;
+};
