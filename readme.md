@@ -46,6 +46,25 @@ This project uses git hooks for:
 $ npm i
 ```
 
+##### React link
+
+To prevent `Invalid hook call` error during development of another app using formelio as file dependency, I mean:
+
+```
+// path/to/myOtherProject/package.json
+
+"dependencies": {
+  "formelio": "path/to/formelio",
+}
+```
+
+We should link react version from formelio project. Example:
+
+```
+$ npm link path/to/myOtherProject/node_modules/react-dom
+$ cd path/to/myOtherProject/ && npm i
+```
+
 ##### Once working
 
 - Terminal 1: Open dev server, to compile and bundle everything on every change:
