@@ -28,12 +28,24 @@
     "site:deploy": "gh-pages -d site/build"
   },
   "peerDependencies": {
-    "react": "^16.0.0"
+    "react": "^16.0.0",
+    "@fortawesome/fontawesome-svg-core": "1.2.35",
+    "@fortawesome/free-solid-svg-icons": "5.15.3",
+    "@fortawesome/react-fontawesome": "0.1.14",
+    "@popperjs/core": "^2.9.2",
+    "lodash": "^4.17.21",
+    "react-datepicker": "3.6.0",
+    "react-markdown": "^5.0.3",
+    "react-select": "4.3.0",
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.0.1",
     "@commitlint/config-conventional": "^12.0.1",
     "@creativebulma/bulma-tooltip": "^1.2.0",
+    "@fortawesome/fontawesome-svg-core": "1.2.35",
+    "@fortawesome/free-solid-svg-icons": "5.15.3",
+    "@fortawesome/react-fontawesome": "0.1.14",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -70,15 +82,19 @@
     "husky": "^5.2.0",
     "jest-extended": "^0.11.5",
     "lint-staged": "^10.5.4",
+    "lodash": "^4.17.21",
     "microbundle-crl": "^0.13.10",
     "node-sass": "^5.0.0",
     "npm-run-all": "^4.1.5",
+    "@popperjs/core": "^2.9.2",
     "prettier": "^2.0.4",
     "react": "^16.13.1",
+    "react-markdown": "^5.0.3",
     "react-datepicker": "^3.6.0",
     "react-dom": "^16.13.1",
     "react-scripts": "^3.4.1",
     "react-select": "^4.3.0",
+    "styled-components": "^5.2.1",
     "typescript": "^3.7.5"
   },
   "files": [
@@ -91,16 +107,5 @@
     "*.{js,jsx,ts,tsx,json}": [
       "eslint --fix -c .eslintrc"
     ]
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "1.2.35",
-    "@fortawesome/free-solid-svg-icons": "5.15.3",
-    "@fortawesome/react-fontawesome": "0.1.14",
-    "@popperjs/core": "^2.9.2",
-    "lodash": "^4.17.21",
-    "react-datepicker": "3.6.0",
-    "react-markdown": "^5.0.3",
-    "react-select": "4.3.0",
-    "styled-components": "^5.2.1"
   }
 }
