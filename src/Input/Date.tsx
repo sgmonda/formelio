@@ -17,7 +17,7 @@ const DateInput = (props: TInputProps<Date>) => {
   `;
   const onChange = (date: Date) => {
     props.onChange(date);
-    props.onBlur();
+    // props.onBlur();
   };
   return (
     <div className={styles.datepicker}>

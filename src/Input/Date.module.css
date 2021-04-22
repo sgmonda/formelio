@@ -118,6 +118,7 @@
 }
 
 :global .react-datepicker__triangle {
+  visibility: hidden; /* <==== Added manually to hide triangle */
   position: absolute;
   left: 50px;
 }

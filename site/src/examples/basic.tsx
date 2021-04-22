@@ -12,6 +12,7 @@ with two lines
 type TValue = {
   name: string;
   surname: string;
+  comment: string;
   birthday: Date;
 };
 
@@ -25,6 +26,7 @@ const Component = (props: Props) => {
     { name: 'name', required: true, size: 0.5 },
     { name: 'surname', size: 0.5 },
     { name: 'birthday', type: 'date' },
+    { name: 'comment', type: 'text-multiline' },
   ];
   const { value, onChange } = props;
   return <Form<TValue> {...{ fields, value, onChange }} />;
@@ -37,6 +39,7 @@ const fields = [
   { name: 'name', required: true, size: 0.5 },
   { name: 'surname', size: 0.5 },
   { name: 'birthday', type: 'date' },
+  { name: 'comment', type: 'text-multiline' },
 ];
 `.trim();
 

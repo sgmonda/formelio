@@ -10,6 +10,8 @@ import React from 'react';
 
 library.add(fas);
 
-const Icon = (props: { id: string }) => <FontAwesomeIcon icon={props.id as any} style={{ color: 'inherit' }} />;
+const Icon = (props: { id: string }) => (
+  <FontAwesomeIcon icon={props.id as any} style={{ color: 'inherit', fontSize: 'small', paddingBottom: '0.1em' }} />
+);
 
 export default Icon;
