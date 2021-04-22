@@ -1,6 +1,6 @@
 {
   "name": "formelio",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Forms for human beings",
   "author": "Sergio Garcia Mondaray &lt;sgmonda@gmail.com&gt; (https://sgmonda.com)",
   "license": "GPL-3.0",
@@ -28,7 +28,11 @@
     "site:deploy": "gh-pages -d site/build"
   },
   "peerDependencies": {
-    "react": "^16.0.0"
+    "react": "^16.0.0",
+    "react-datepicker": "3.6.0",
+    "react-markdown": "^5.0.3",
+    "react-select": "4.3.0",
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.0.1",

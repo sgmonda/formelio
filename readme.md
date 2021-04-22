@@ -68,14 +68,14 @@ $ npm i
 
 #### Deployment
 
-To update gh pages:
-
-```
-$ npm run deploy:page
-```
-
 To publish on npm:
 
 ```
 $ npm publish
+```
+
+To update gh pages:
+
+```
+$ npm run site:deploy
 ```
