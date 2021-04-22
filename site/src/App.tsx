@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { github } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import 'formelio/dist/index.css';
-import { Basic } from './examples';
+import * as examples from './examples';
 import { TForm } from 'formelio';
 
 const App = () => {
   return (
     <div className="container">
-      <Example {...Basic} />
+      {Object.values(examples).map((props, i) => (
+        <Example key={i} {...props} />
+      ))}
     </div>
   );
 };
@@ -20,7 +22,7 @@ const indent = (code: string, level: number) =>
     .join('\n')
     .trimEnd();
 
-const genSource = ({ fields, initialState }: typeof Basic.source) =>
+const genSource = ({ fields, initialState }: typeof examples.Basic.source) =>
   `
 import React, { useState } from 'react';
 import { Form } from 'formelio';
@@ -38,7 +40,7 @@ ${indent(fields, 2)}
   );
 }`.trim();
 
-function Example(props: typeof Basic) {
+function Example(props: any) {
   const [value, setValue] = useState({});
   const [isValid, setIsValid] = useState(false);
   const onChange: TForm<any>['onChange'] = async (value, isValid) => {
@@ -53,9 +55,14 @@ function Example(props: typeof Basic) {
 
       <div className="tile is-parent">
         <div className={`tile is-child notification ${props.tileClass} content`}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
             <div style={{ flex: 1, marginBottom: '1em' }}>
-              <h4>Result</h4>
+              <h4>
+                Form
+                <div style={{ float: 'right', fontSize: 'x-small' }}>
+                  <button onClick={() => setValue({})}>CLEAR</button>
+                </div>
+              </h4>
               <props.Component onChange={onChange} value={value} />
             </div>
             <div style={{ flex: 0 }}>

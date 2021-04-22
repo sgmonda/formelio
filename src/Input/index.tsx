@@ -6,6 +6,7 @@ import Date from './Date';
 import Checkbox from './Checkbox';
 import Input from './Input';
 import TextArea from './TextArea';
+import React from 'react';
 
 const getBorderColor = (props: TInputProps<any>) => {
   const { colors, isErrored, isFocused } = props;
@@ -18,7 +19,7 @@ const getBorderColor = (props: TInputProps<any>) => {
 export default (props: TInputProps<any>) => {
   const { options, type } = props;
   const inputProps = { ...props, ...getBorderColor(props) };
-  if (options) return Select(inputProps);
+  if (options) return <Select {...inputProps} />;
   if (type === 'date') return Date(inputProps);
   if (type === 'files') return File(inputProps);
   if (type === 'check') return Checkbox(inputProps);
