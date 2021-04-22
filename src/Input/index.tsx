@@ -2,7 +2,7 @@ import { TInputProps } from '../types';
 import COLORS from '../Colors';
 import Select from './Select';
 import File from './File';
-import Date from './Date';
+// import Date from './Date';
 import Checkbox from './Checkbox';
 import Input from './Input';
 import TextArea from './TextArea';
@@ -19,7 +19,7 @@ export default (props: TInputProps<any>) => {
   const { options, type } = props;
   const inputProps = { ...props, ...getBorderColor(props) };
   if (options) return Select(inputProps);
-  if (type === 'date') return Date(inputProps);
+  // if (type === 'date') return Date(inputProps);
   if (type === 'files') return File(inputProps);
   if (type === 'check') return Checkbox(inputProps);
   if (type === 'text-multiline') return TextArea(inputProps);

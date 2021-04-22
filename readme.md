@@ -40,6 +40,14 @@ This project uses git hooks for:
 
 #### Environment
 
+##### First time
+
+```
+$ npm i
+```
+
+##### Once working
+
 - Terminal 1: Open dev server, to compile and bundle everything on every change:
 
   ```
