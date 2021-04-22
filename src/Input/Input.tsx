@@ -15,7 +15,8 @@ const CommonInput = (props: TInputProps<string>) => {
       autoComplete={props.autocomplete}
       readOnly={!props.isFocused}
       type={props.type || 'text'}
-      defaultValue={props.value}
+      // defaultValue={props.value}
+      value={props.value || ''}
       onFocus={props.onFocus}
       onBlur={props.onBlur}
       onChange={(ev) => props.onChange(ev.target.value)}
