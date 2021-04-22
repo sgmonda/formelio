@@ -37,9 +37,10 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
 
   public componentDidUpdate = (prevProps: Props<T, F>) => {
     if (prevProps.value !== this.state.value) {
+      const reset = this.state.value && !this.props.value;
       const newState = {
         ...this.getStateAndValidate(this.props),
-        isDirty: this.state.isDirty,
+        isDirty: reset ? false : this.state.isDirty,
         isFocused: this.state.isFocused,
         isTyping: this.state.isTyping,
       };
