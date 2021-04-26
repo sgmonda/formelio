@@ -26,7 +26,7 @@ const Component = (props: Props) => {
     { name: 'name', required: true, size: 0.5 },
     { name: 'surname', size: 0.5 },
     { name: 'birthday', type: 'date' },
-    { name: 'accept', type: 'check', label: 'I accept whatever', required: true },
+    { name: 'accept', type: 'check', label: 'I accept whatever' },
   ];
   const { value, onChange } = props;
   return <Form<TValue> {...{ fields, value, onChange }} />;

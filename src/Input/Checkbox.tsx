@@ -13,8 +13,9 @@ const CheckboxInput = (props: TInputProps<boolean>) => {
       id={props.name}
       autoComplete={props.autocomplete}
       type="checkbox"
-      defaultValue={props.value as any}
+      // defaultValue={props.value as any}
       onChange={onChange}
+      checked={!!props.value}
       value={''}
     />
   );
