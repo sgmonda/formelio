@@ -122,7 +122,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
         style={{ color }}
       >
         <span style={{ flex: 1 }}>
-          {icon && <Icon id={icon} />} {label || name} {JSON.stringify({ isDirty })} {required && <span>*</span>}
+          {icon && <Icon id={icon} />} {label || name} {required && <span>*</span>}
         </span>
         {Array.isArray(value) && !!value.length && <span>({value.length})</span>}
       </label>
