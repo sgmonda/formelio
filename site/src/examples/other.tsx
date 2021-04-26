@@ -23,12 +23,14 @@ const Component = (props: Props) => {
   const fields: TForm<TValue>['fields'] = [
     {
       name: 'city',
+      label: 'City dropdown',
       options: cities
         .filter(({ name }) => {
           const isFound = !found[name];
           found[name] = true;
           return isFound;
         })
+        .slice(0, 100)
         .map(({ name }) => ({ value: name, label: name })),
     },
   ];
@@ -51,6 +53,6 @@ const fields = [
 ];
 `.trim();
 
-const tileClass = 'is-light';
+const tileClass = 'is-dark';
 
 export default { title, description, Component, source: { fields, initialState }, tileClass };

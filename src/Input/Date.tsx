@@ -28,7 +28,6 @@ const DateInput = (props: TInputProps<Date>) => {
         onCalendarClose={props.onBlur}
         onBlur={props.onBlur}
         dateFormat={props.format}
-        readOnly={!props.isFocused}
         wrapperClassName={'date_picker'}
         popperPlacement="bottom-start"
       />

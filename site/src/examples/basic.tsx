@@ -11,7 +11,8 @@ with two lines
 
 type TValue = {
   name: string;
-  surname: string;
+  surname1: string;
+  surname2: string;
   birthday: Date;
   accept: boolean;
 };
@@ -23,8 +24,9 @@ type Props = {
 
 const Component = (props: Props) => {
   const fields: TForm<TValue>['fields'] = [
-    { name: 'name', required: true, size: 0.5 },
-    { name: 'surname', size: 0.5 },
+    { name: 'name', required: true, size: 0.333 },
+    { name: 'surname1', autocomplete: 'additional-name', size: 0.333 },
+    { name: 'surname2', autocomplete: 'family-name', size: 0.333 },
     { name: 'birthday', type: 'date' },
     { name: 'accept', type: 'check', label: 'I accept whatever' },
   ];

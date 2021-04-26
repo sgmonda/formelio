@@ -13,7 +13,6 @@ const TextArea = (props: TInputProps<string>) => {
       })}
       style={{ borderColor: props.borderColor, color: 'inherit' }}
       autoComplete={props.autocomplete}
-      readOnly={!props.isFocused}
       // defaultValue={props.value}
       value={props.value || ''}
       onFocus={props.onFocus}

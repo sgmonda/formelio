@@ -17,7 +17,6 @@ const CommonInput = (props: TInputProps<string>) => {
       })}
       style={{ borderColor: props.borderColor, color }}
       autoComplete={props.autocomplete}
-      readOnly={!props.isFocused}
       type={props.type || 'text'}
       // defaultValue={props.value}
       value={props.value || ''}

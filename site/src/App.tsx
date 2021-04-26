@@ -57,7 +57,7 @@ function Example(props: any) {
         <div className={`tile is-child notification ${props.tileClass} content`}>
           <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
             <div style={{ flex: 1, marginBottom: '1em' }}>
-              <h4>
+              <h4 className="subtitle">
                 Form
                 <div style={{ float: 'right', fontSize: 'x-small' }}>
                   <button onClick={() => setValue({})}>CLEAR</button>

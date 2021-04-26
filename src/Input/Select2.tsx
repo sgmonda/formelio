@@ -47,7 +47,6 @@ const Select = (props: TInputProps<string>) => {
         list={listId}
         style={{ borderColor: props.borderColor, color: 'inherit' }}
         autoComplete="off"
-        readOnly={!props.isFocused}
         type={props.type || 'text'}
         // defaultValue={props.value}
         value={value || ''}
