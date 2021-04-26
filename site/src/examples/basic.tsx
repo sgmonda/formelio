@@ -13,6 +13,7 @@ type TValue = {
   name: string;
   surname: string;
   birthday: Date;
+  accept: boolean;
 };
 
 type Props = {
@@ -25,6 +26,7 @@ const Component = (props: Props) => {
     { name: 'name', required: true, size: 0.5 },
     { name: 'surname', size: 0.5 },
     { name: 'birthday', type: 'date' },
+    { name: 'accept', type: 'check', label: 'I accept whatever', required: true },
   ];
   const { value, onChange } = props;
   return <Form<TValue> {...{ fields, value, onChange }} />;
@@ -37,6 +39,7 @@ const fields = [
   { name: 'name', required: true, size: 0.5 },
   { name: 'surname', size: 0.5 },
   { name: 'birthday', type: 'date' },
+  { name: 'accept', type: 'check', required: true },
 ];
 `.trim();
 

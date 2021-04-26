@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { ChangeEventHandler } from 'react';
 import { TInputProps } from '../types';
 
 const CheckboxInput = (props: TInputProps<boolean>) => {
+  const onChange: ChangeEventHandler<any> = (ev) => {
+    const isChecked = !!ev.target.checked;
+    props.onChange(isChecked);
+  };
+
   return (
     <input
       {...props}
@@ -9,7 +14,7 @@ const CheckboxInput = (props: TInputProps<boolean>) => {
       autoComplete={props.autocomplete}
       type="checkbox"
       defaultValue={props.value as any}
-      onChange={(ev) => props.onChange(!!ev.target.value)}
+      onChange={onChange}
       value={''}
     />
   );
