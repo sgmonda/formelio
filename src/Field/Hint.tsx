@@ -14,9 +14,7 @@ function Hint<T, F>(props: TFieldProps<T, F> & TFieldState<T>) {
 
   useEffect(() => {
     if (refTarget.current && refPopper.current) {
-      createPopper(refTarget.current, refPopper.current, {
-        placement: 'top-start',
-      });
+      createPopper(refTarget.current, refPopper.current, { placement: 'top-start' });
     }
   }, []);
 
