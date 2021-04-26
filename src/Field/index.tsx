@@ -32,19 +32,22 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
   };
 
   public validate = (props: Props<T, F> = this.props) => {
-    props.validator(props.value).then((errors) => this.setState({ errors: errors || [] }));
+    props.validator(props.value as T).then((errors) => this.setState({ errors: errors || [] }));
   };
 
   public componentDidUpdate = (prevProps: Props<T, F>) => {
     if (prevProps.value !== this.state.value) {
-      const reset = this.state.value && !this.props.value;
       const newState = {
         ...this.getStateAndValidate(this.props),
-        isDirty: reset ? false : this.state.isDirty,
+        isDirty: this.state.isDirty,
         isFocused: this.state.isFocused,
         isTyping: this.state.isTyping,
       };
       this.setState(newState);
+    }
+    const shouldReset = Object.keys(prevProps.formValue).length && !Object.keys(this.props.formValue).length;
+    if (shouldReset) {
+      this.setState({ isDirty: false });
     }
   };
 
@@ -119,7 +122,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
         style={{ color }}
       >
         <span style={{ flex: 1 }}>
-          {icon && <Icon id={icon} />} {label || name} {required && <span>*</span>}
+          {icon && <Icon id={icon} />} {label || name} {JSON.stringify({ isDirty })} {required && <span>*</span>}
         </span>
         {Array.isArray(value) && !!value.length && <span>({value.length})</span>}
       </label>
@@ -141,9 +144,9 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
   };
 
   public render = () => {
-    const { disabled, help, type } = this.props;
+    const { disabled, help, required, type, value } = this.props;
     const { errors = [], isDirty, isTyping, isFocused } = this.state;
-    const isError = !!errors.length && !isTyping && isDirty;
+    const isError = isDirty && !isTyping && (errors.length > 0 || (required && !value));
     const hasIcon = isError || help;
     const hasHint = hasIcon && isFocused;
     if (type === 'check') return this.renderCheckbox();
@@ -157,7 +160,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
       >
         {this.renderLabel()}
         {this.renderInput()}
-        {hasHint && this.renderStateIcon()}
+        {hasIcon && this.renderStateIcon()}
         {hasHint && <Hint<T, F> {...this.props} {...this.state} />}
       </div>
     );

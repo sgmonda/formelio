@@ -121,6 +121,7 @@ function FieldWrapper<T, F>(props: {
     <Field<T, F>
       {...props.field}
       colors={props.colors}
+      formValue={props.formValue}
       ref={ref}
       value={props.formValue[props.field.name] as any}
       onChange={onChange}
@@ -135,6 +136,6 @@ async function validateField<T, F>(
   formValue?: Partial<F>
 ): Promise<string[]> {
   if (field.required && !value) return ['Required field'];
-  if (!field.validator) return [];
+  if (!field.validator || !value) return [];
   return field.validator(value, formValue || {});
 }

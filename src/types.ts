@@ -29,7 +29,7 @@ export type TColors = {
   error?: string;
 };
 
-export type TFieldValidator<T, F> = (value: T | undefined, otherValues: Partial<F>) => string[] | Promise<string[]>;
+export type TFieldValidator<T, F> = (value: T, otherValues: Partial<F>) => string[] | Promise<string[]>;
 
 export type TInputProps<T> = TInput<T> & {
   borderColor?: string;
@@ -43,8 +43,9 @@ export type TInputProps<T> = TInput<T> & {
 };
 
 export type TFieldProps<T, F> = TField<T, F> & {
+  formValue: Partial<F>;
   onChange: (value: T, isValid: boolean) => void;
-  validator: (value?: T) => Promise<string[]>;
+  validator: (value: T) => Promise<string[]>;
   value?: T;
 };
 
