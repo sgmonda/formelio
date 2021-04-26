@@ -1,10 +1,10 @@
 import React from 'react';
-import { Select as RSelect } from 'react-select-virtualized';
+import RSelect, { StylesConfig } from 'react-select';
 import { TInputProps } from '../types';
 import COLORS from '../Colors';
 
 const Select = (props: TInputProps<string>) => {
-  const customStyles = {
+  const customStyles: StylesConfig<any, any, any> = {
     control: () => ({
       background: 'none !important',
       borderBottom: `solid 0.13em`,
@@ -19,7 +19,7 @@ const Select = (props: TInputProps<string>) => {
       ...provided,
       color: 'inherit',
     }),
-    option: (_: any, state: any) => ({
+    option: (_: any, state) => ({
       background: state.isSelected
         ? props.colors?.accent || COLORS.ACCENT
         : state.isFocused
