@@ -10,7 +10,7 @@ export type TInput<T> = {
   max?: number;
   min?: number;
   name: string;
-  type?: 'number' | 'text' | 'text-multiline' | 'date' | 'files' | 'check';
+  type?: 'number' | 'text' | 'text-multiline' | 'date' | 'files' | 'check' | 'password';
   options?: FieldOption<T>[];
 };
 

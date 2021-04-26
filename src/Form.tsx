@@ -6,6 +6,7 @@ import { TColors, TField } from './types';
 
 type TypedTField<T> =
   | (TField<string, T> & { type: 'text' })
+  | (TField<string, T> & { type: 'password' })
   | (TField<string, T> & { type: 'text-multiline' })
   | (TField<Date, T> & { type: 'date' })
   | (TField<File[], T> & { type: 'files' })
