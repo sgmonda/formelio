@@ -1,4 +1,4 @@
-export type FieldOption<T> = { value: T; label: string } & { metadata?: any };
+export type FieldOption<T> = { value: T | string; label: string } & { metadata?: any };
 
 export type TInput<T> = {
   autocomplete?: string;
@@ -10,7 +10,7 @@ export type TInput<T> = {
   max?: number;
   min?: number;
   name: string;
-  type?: 'number' | 'text' | 'text-multiline' | 'date' | 'files' | 'check' | 'password';
+  type?: 'number' | 'text' | 'text-multiline' | 'select' | 'tags' | 'date' | 'files' | 'check' | 'password';
   options?: FieldOption<T>[];
 };
 

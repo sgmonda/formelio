@@ -34,7 +34,7 @@ const Component = (props: Props) => {
   return <Form<TValue> {...{ fields, value, onChange }} />;
 };
 
-const initialState = `{}`;
+const initialState = {};
 
 const fields = `
 const fields = [

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { github } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { dark, github } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import 'formelio/dist/index.css';
 import * as examples from './examples';
 import { TForm } from 'formelio';
@@ -28,7 +28,7 @@ import React, { useState } from 'react';
 import { Form } from 'formelio';
 
 const MyForm = () => {
-  const [value, setValue] = useState(${initialState});
+  const [value, setValue] = useState(${JSON.stringify(initialState)});
   const [isValid, setIsValid] = useState(false);
   const onChange = (value, isValid) => {
     setValue(value);
@@ -41,7 +41,7 @@ ${indent(fields, 2)}
 }`.trim();
 
 function Example(props: any) {
-  const [value, setValue] = useState({});
+  const [value, setValue] = useState(props.source.initialState);
   const [isValid, setIsValid] = useState(false);
   const onChange: TForm<any>['onChange'] = async (value, isValid) => {
     setValue(value);
@@ -67,7 +67,7 @@ function Example(props: any) {
             </div>
             <div style={{ flex: 0 }}>
               <h4>State</h4>
-              <SyntaxHighlighter language="javascript" style={github}>
+              <SyntaxHighlighter language="javascript" style={props.tileClass === 'is-dark' ? dark : github}>
                 {JSON.stringify({ isValid, value }, null, 2)}
               </SyntaxHighlighter>
             </div>

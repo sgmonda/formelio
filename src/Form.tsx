@@ -8,6 +8,8 @@ type TypedTField<T> =
   | (TField<string, T> & { type: 'text' })
   | (TField<string, T> & { type: 'password' })
   | (TField<string, T> & { type: 'text-multiline' })
+  | (TField<string, T> & { type: 'select' })
+  | (TField<string[], T> & { type: 'tags' })
   | (TField<Date, T> & { type: 'date' })
   | (TField<File[], T> & { type: 'files' })
   | (TField<number, T> & { type: 'number' })
@@ -17,7 +19,7 @@ type TypedTField<T> =
 export type TForm<T> = {
   delay?: number;
   colors?: TColors;
-  fields: TypedTField<T>[]; // @TODO Could this "any" be avoided?
+  fields: TypedTField<T>[];
   onChange: (value: Partial<T>, isValid: boolean) => void;
   value?: Partial<T>;
 };
@@ -95,6 +97,8 @@ function getField<T>(field: any, value: any, onChange: any, colors?: TColors) {
       return <FieldWrapper<File[], T> {...{ colors, field, formValue: value, onChange }} />;
     case 'check':
       return <FieldWrapper<boolean, T> {...{ colors, field, formValue: value, onChange }} />;
+    case 'tags':
+      return <FieldWrapper<string[], T> {...{ colors, field, formValue: value, onChange }} />;
     default:
       return <FieldWrapper<string, T> {...{ colors, field, formValue: value, onChange }} />;
   }

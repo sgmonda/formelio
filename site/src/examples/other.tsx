@@ -11,6 +11,7 @@ Perfect for huge lists of items, helping users to find the proper list item.
 
 type TValue = {
   city: string;
+  cities: string[];
 };
 
 type Props = {
@@ -20,19 +21,17 @@ type Props = {
 
 const Component = (props: Props) => {
   const found = {};
+  const citiesOptions = cities
+    .filter(({ name }) => {
+      const isFound = !found[name];
+      found[name] = true;
+      return isFound;
+    })
+    .slice(0, 100)
+    .map(({ name }) => ({ value: name, label: name }));
   const fields: TForm<TValue>['fields'] = [
-    {
-      name: 'city',
-      label: 'City dropdown',
-      options: cities
-        .filter(({ name }) => {
-          const isFound = !found[name];
-          found[name] = true;
-          return isFound;
-        })
-        .slice(0, 100)
-        .map(({ name }) => ({ value: name, label: name })),
-    },
+    { name: 'city', options: citiesOptions },
+    { name: 'cities', type: 'tags', options: citiesOptions },
   ];
   const { value, onChange } = props;
   return (
@@ -42,7 +41,10 @@ const Component = (props: Props) => {
   );
 };
 
-const initialState = `{}`;
+const initialState = {
+  city: 'El Sotillo',
+  cities: ['Catarroja', 'El Gastor'],
+};
 
 const fields = `
 const fields = [
