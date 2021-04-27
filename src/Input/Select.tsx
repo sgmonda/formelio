@@ -20,7 +20,7 @@ function getSelect<T>(isMulti: boolean = false) {
       input: (provided: any) => ({
         ...provided,
         color: 'inherit',
-        marginTop: isMulti ? (props.value ? '-0.75em' : '-1.2em') : '0',
+        marginTop: isMulti ? '-1em' : '0.2em',
         width: '5em',
       }),
       multiValue: () => ({
@@ -28,6 +28,20 @@ function getSelect<T>(isMulti: boolean = false) {
         display: 'flex',
         marginBottom: '0.2em',
         marginRight: '0.2em',
+      }),
+      multiValueLabel: (provided: any) => ({
+        ...provided,
+        color: 'inherit',
+      }),
+      multiValueRemove: (provided: any) => ({
+        ...provided,
+        '&:hover': {
+          background: 'none',
+          cursor: 'pointer',
+          opacity: 1,
+        },
+        color: 'inherit !important',
+        opacity: 0.5,
       }),
       option: (_: any, state) => ({
         background: state.isSelected
