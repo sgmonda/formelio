@@ -23,7 +23,11 @@ const FileInput = (props: TInputProps<File[]>) => {
   return (
     <Fragment>
       <input
-        {...props}
+        required={props.required}
+        disabled={props.disabled}
+        max={props.max}
+        min={props.min}
+        name={props.name}
         autoComplete={undefined}
         value=""
         ref={ref}

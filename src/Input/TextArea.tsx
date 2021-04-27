@@ -6,14 +6,15 @@ import styles from '../styles.module.css';
 const TextArea = (props: TInputProps<string>) => {
   return (
     <textarea
-      {...props}
+      required={props.required}
+      disabled={props.disabled}
+      name={props.name}
       className={cl({
         [styles.isErrored]: props.isErrored,
         [styles.hasHint]: props.hasHint,
       })}
       style={{ borderColor: props.borderColor, color: 'inherit' }}
       autoComplete={props.autocomplete}
-      // defaultValue={props.value}
       value={props.value || ''}
       onFocus={props.onFocus}
       onBlur={props.onBlur}

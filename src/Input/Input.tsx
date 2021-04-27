@@ -10,7 +10,11 @@ const CommonInput = (props: TInputProps<string>) => {
   if (props.isErrored) color = colors?.error || COLORS.ERROR;
   return (
     <input
-      {...props}
+      required={props.required}
+      disabled={props.disabled}
+      max={props.max}
+      min={props.min}
+      name={props.name}
       className={cl({
         [styles.isErrored]: props.isErrored,
         [styles.hasHint]: props.hasHint,
@@ -18,7 +22,6 @@ const CommonInput = (props: TInputProps<string>) => {
       style={{ borderColor: props.borderColor, color }}
       autoComplete={props.autocomplete}
       type={props.type || 'text'}
-      // defaultValue={props.value}
       value={props.value || ''}
       onFocus={props.onFocus}
       onBlur={props.onBlur}

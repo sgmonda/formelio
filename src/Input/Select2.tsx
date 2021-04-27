@@ -39,7 +39,11 @@ const Select = (props: TInputProps<string>) => {
         ))}
       </datalist>
       <input
-        {...props}
+        required={props.required}
+        disabled={props.disabled}
+        max={props.max}
+        min={props.min}
+        name={props.name}
         className={cl({
           [styles.isErrored]: props.isErrored,
           [styles.hasHint]: props.hasHint,
