@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEventHandler } from 'react';
 import cl from 'classnames';
 import { TInputProps } from '../types';
 import styles from '../styles.module.css';
@@ -8,6 +8,13 @@ const CommonInput = (props: TInputProps<string>) => {
   const { colors } = props;
   let color = 'inherit';
   if (props.isErrored) color = colors?.error || COLORS.ERROR;
+
+  const onChange: ChangeEventHandler<any> = (ev) => {
+    let value = ev.target.value;
+    if (props.type === 'number') value = parseFloat(value);
+    props.onChange(value);
+  };
+
   return (
     <input
       required={props.required}
@@ -25,7 +32,7 @@ const CommonInput = (props: TInputProps<string>) => {
       value={props.value || ''}
       onFocus={props.onFocus}
       onBlur={props.onBlur}
-      onChange={(ev) => props.onChange(ev.target.value)}
+      onChange={onChange}
     />
   );
 };

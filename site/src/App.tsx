@@ -28,21 +28,21 @@ import React, { useState } from 'react';
 import { Form } from 'formelio';
 
 const MyForm = () => {
-  const [value, setValue] = useState(${JSON.stringify(initialState)});
   const [isValid, setIsValid] = useState(false);
+  const [value, setValue] = useState(${indent(JSON.stringify(initialState, null, 2), 2).trim()});
   const onChange = (value, isValid) => {
     setValue(value);
     setIsValid(isValid);
   };
-${indent(fields, 2)}
+  const fields = ${indent(JSON.stringify(fields, null, 2), 2).trim()};
   return (
     <Form {...{fields, value, onChange}} />
   );
 }`.trim();
 
 function Example(props: any) {
-  const [value, setValue] = useState(props.source.initialState);
   const [isValid, setIsValid] = useState(false);
+  const [value, setValue] = useState(props.source.initialState);
   const onChange: TForm<any>['onChange'] = async (value, isValid) => {
     setValue(value);
     setIsValid(isValid);

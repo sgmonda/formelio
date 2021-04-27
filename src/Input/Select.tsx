@@ -78,14 +78,15 @@ function getSelect<T>(isMulti: boolean = false) {
         props.onChange(item && item.value);
       }
     };
-    const value = props.options?.filter((option) =>
+    const options = props.options?.map(({ value, label }) => ({ value, label: label || value }));
+    const value = options?.filter((option) =>
       Array.isArray(props.value) ? props.value.includes(option.value) : option.value === props.value
     );
     return (
       <RSelect
         name={props.name}
         menuPlacement="bottom"
-        options={props.options}
+        options={options}
         styles={customStyles}
         isMulti={isMulti}
         isDisabled={props.disabled}

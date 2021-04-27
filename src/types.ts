@@ -1,4 +1,4 @@
-export type FieldOption<T> = { value: T | string; label: string } & { metadata?: any };
+export type FieldOption<T> = { value: T | string; label?: string } & { metadata?: any };
 
 export type TInput<T> = {
   autocomplete?: string;
@@ -14,6 +14,8 @@ export type TInput<T> = {
   options?: FieldOption<T>[];
 };
 
+type TCondition<F> = (formValue: Partial<F>) => boolean | Promise<boolean>;
+
 export type TField<T, F> = TInput<T> & {
   help?: string;
   label?: string;
@@ -21,6 +23,7 @@ export type TField<T, F> = TInput<T> & {
   icon?: string; // Solid supported, search icon names in https://fontawesome.com/icons
   name: keyof F;
   validator?: TFieldValidator<T, F>;
+  when?: TCondition<F>[];
 };
 
 export type TColors = {
