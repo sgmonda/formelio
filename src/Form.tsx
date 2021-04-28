@@ -60,7 +60,11 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
           {fieldGroups.map((group, i) => (
             <div
               key={i}
-              style={{ padding: `${group.depth}em`, border: `solid 1px rgba(0, 0, 0, ${group.depth * 0.1})` }}
+              className={styles.group}
+              style={{
+                marginLeft: `${group.depth}em`,
+                borderLeft: group.depth > 0 ? `solid 1px rgba(0, 0, 0, ${group.depth * 0.1})` : 'none',
+              }}
             >
               {group.fields.map((field) => (
                 <Fragment key={`${group.depth}${field.name}${i}`}>
@@ -115,7 +119,6 @@ function getField<T>(field: any, value: any, onChange: any, colors?: TColors) {
 const renderLabel = (field: TField<any, any>) => {
   return (
     <Fragment>
-      {field.depth === 0 && <hr />}
       <label>{field.label}</label>
     </Fragment>
   );

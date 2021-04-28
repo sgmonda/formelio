@@ -2,7 +2,7 @@ import { clone } from 'lodash';
 import React, { Component, Fragment } from 'react';
 import { Form } from './Form';
 import { flatten, unflatten } from './modules';
-import { TForm } from './types';
+import { TField, TForm } from './types';
 
 type State<T> = {
   fields: TForm<T>['fields'];
@@ -52,7 +52,9 @@ async function cleanFields<T>(
   depth: number = 0
 ): Promise<TForm<T>['fields']> {
   let nextFields: TForm<T>['fields'] = [];
-  for (const f of fields) {
+
+  // eslint-disable-next-line complexity
+  const insertField = async (f: TField<any, any>) => {
     let isPresent = false;
     if (f.when) {
       const promises = f.when.map((condition) => condition(formValue || {}));
@@ -61,47 +63,48 @@ async function cleanFields<T>(
     } else {
       isPresent = true;
     }
-    if (!isPresent) continue;
+    if (!isPresent) return;
 
-    if (f.fields) {
-      let subfields = await cleanFields(f.fields || [], formValue?.[f.name as any] || {}, depth + 1);
-      if (f.length) {
-        const length = f.length(formValue || {});
+    if (!f.fields) {
+      nextFields.push(f as any);
+      return;
+    }
+
+    let subfields = await cleanFields(f.fields || [], formValue?.[f.name as any] || {}, (f.depth || 0) + 1);
+    nextFields.push({
+      depth: f.depth,
+      label: `${f.label || f.name}`,
+    });
+    if (f.length) {
+      const length = f.length(formValue || {});
+      for (let i = 0; i < length; i++) {
         nextFields.push({
-          depth,
-          label: `${f.label || f.name}`,
-        });
-        for (let i = 0; i < length; i++) {
-          nextFields.push({
-            depth: depth + 1,
-            label: `${f.label || f.name} (${i + 1})`,
-          });
-          for (const sf of subfields) {
-            nextFields.push({
-              ...sf,
-              depth: depth + 2,
-              label: sf.label || sf.name,
-              name: `${f.name}.${i}.${sf.name}` as any,
-            });
-          }
-        }
-      } else {
-        nextFields.push({
-          depth,
-          label: `${f.label || f.name}`,
+          depth: (f.depth || 0) + 1,
+          label: `${f.label || f.name} (${i + 1})`,
         });
         for (const sf of subfields) {
-          nextFields.push({
+          await insertField({
             ...sf,
-            depth: depth + 1,
+            depth: (sf.depth || 0) + 1,
             label: sf.label || sf.name,
-            name: `${f.name}.${sf.name}` as any,
+            name: sf.name && (`${f.name}.${i}.${sf.name}` as any),
           });
         }
       }
     } else {
-      nextFields.push({ ...f, depth });
+      for (const sf of subfields) {
+        await insertField({
+          ...sf,
+          depth: sf.depth || 0,
+          label: sf.label || sf.name,
+          name: sf.name && (`${f.name}.${sf.name}` as any),
+        });
+      }
     }
+  };
+
+  for (const f of fields) {
+    await insertField({ ...f, depth });
   }
   return nextFields;
 }

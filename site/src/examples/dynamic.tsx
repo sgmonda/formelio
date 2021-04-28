@@ -46,41 +46,44 @@ const Component = (props: Props) => {
 const initialState = { typeA: 'tres', childrenCount: 2 };
 
 const fields: TForm<TValue>['fields'] = [
-  { name: 'typeA', options: [{ value: 'uno' }, { value: 'dos' }, { value: 'tres' }], size: 0.5 },
-  // { name: 'name1', when: [(formValue: Partial<TValue>) => formValue.typeA === 'uno'], size: 0.5 },
-  // { name: 'name2', when: [(formValue: Partial<TValue>) => formValue.typeA === 'dos'], size: 0.5 },
-  // {
-  //   name: 'twoAndThree',
-  //   when: [
-  //     (formValue: Partial<TValue>) => formValue.typeA === 'dos',
-  //     async (formValue: Partial<TValue>) => formValue.commonField === 3,
-  //   ],
-  // },
   { name: 'childrenCount', type: 'number' },
   {
     fields: [
       { name: 'firstName', size: 0.5 },
       { name: 'surname', size: 0.5 },
-      // {
-      //   fields: [
-      //     { name: 'firstName', size: 0.5 },
-      //     { name: 'surname', size: 0.5 },
-      //   ],
-      //   length: () => 5,
-      //   name: 'children',
-      // },
+      {
+        fields: [
+          { name: 'rfirstName', size: 0.5 },
+          { name: 'rsurname', size: 0.5 },
+        ],
+        length: () => 5,
+        name: 'children',
+      },
     ],
     name: 'responsible',
   },
   { name: 'commonField', type: 'number' },
   {
     fields: [
-      { name: 'firstName', size: 0.5 },
+      { name: 'name', size: 0.5 },
       { name: 'surname', size: 0.5 },
+      {
+        name: 'hair',
+        fields: [
+          { name: 'colour', size: 0.5 },
+          { name: 'length', type: 'number', size: 0.5 },
+          {
+            name: 'style',
+            fields: [
+              { name: 'sharpness', size: 0.5 },
+              { name: 'width', size: 0.5 },
+            ],
+          },
+        ],
+      },
     ],
     length: (formValue: Partial<TValue>) => formValue.childrenCount || 0,
     name: 'people',
-    when: [(formValue: Partial<TValue>) => formValue.typeA === 'tres'],
   },
 ];
 
