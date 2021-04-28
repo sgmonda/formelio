@@ -3,14 +3,18 @@
 .formelio
   form
     flex: 1
-    flex-wrap: wrap
     display: flex
-    flex-direction: row
-    justify-content: space-between
-    margin: -$unit * 0.5
+    flex-direction: column
+    & > div
+      flex: 1
+      flex-wrap: wrap
+      display: flex
+      flex-direction: row
+      justify-content: space-between
+      margin: -$unit * 0.5
 
-    @media screen and ( max-width: $mobile-width )
-      flex-direction: column
+      @media screen and ( max-width: $mobile-width )
+        flex-direction: column
 
     // .field:not(:last-child)
     //   margin-right: $unit * 0.5

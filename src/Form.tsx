@@ -1,28 +1,8 @@
 import _ from 'lodash';
-import React, { Component, createRef, useEffect } from 'react';
+import React, { Component, createRef, Fragment, useEffect } from 'react';
 import styles from '../style/index.module.sass';
 import { Field } from './Field';
-import { TColors, TField } from './types';
-
-type TypedTField<T> =
-  | (TField<string, T> & { type: 'text' })
-  | (TField<string, T> & { type: 'password' })
-  | (TField<string, T> & { type: 'text-multiline' })
-  | (TField<string, T> & { type: 'select' })
-  | (TField<string[], T> & { type: 'tags' })
-  | (TField<Date, T> & { type: 'date' })
-  | (TField<File[], T> & { type: 'files' })
-  | (TField<number, T> & { type: 'number' })
-  | (TField<boolean, T> & { type: 'check' })
-  | Omit<TField<string, T>, 'type'>;
-
-export type TForm<T> = {
-  delay?: number;
-  colors?: TColors;
-  fields: TypedTField<T>[];
-  onChange: (value: Partial<T>, isValid: boolean) => void;
-  value?: Partial<T>;
-};
+import { TColors, TField, TForm } from './types';
 
 type State<T> = {
   validity: { [key: string]: boolean };
@@ -38,7 +18,7 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
     };
     Promise.all(
       props.fields.map(async (field) => {
-        const errors = await validateField<any, any>(field, props.value?.[field.name], props.value);
+        const errors = field.name ? await validateField<any, any>(field, props.value?.[field.name], props.value) : [];
         return errors.length > 0;
       })
     ).then((errors) => {
@@ -56,6 +36,7 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
   }, this.props.delay || 500);
 
   private onChange<X>(field: TField<X, T>, value: X, isValid: boolean): void {
+    if (!field.name) return;
     this.setState({
       validity: { ...this.state.validity, [field.name]: isValid },
       value: { ...this.state.value, [field.name]: value },
@@ -72,12 +53,23 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
   public render = () => {
     const { fields } = this.props;
     const { value } = this.state;
+    const fieldGroups = groupFields(fields);
     return (
       <div className={styles.formelio}>
         <form>
-          {fields.map((field) => (
-            <div key={field.name} className={styles.fieldWrapper} style={{ flexBasis: (field.size || 1) * 100 + '%' }}>
-              {getField<T>(field, value, this.onChange.bind(this), this.props.colors)}
+          {fieldGroups.map((group, i) => (
+            <div
+              key={i}
+              style={{ padding: `${group.depth}em`, border: `solid 1px rgba(0, 0, 0, ${group.depth * 0.1})` }}
+            >
+              {group.fields.map((field) => (
+                <Fragment key={`${group.depth}${field.name}${i}`}>
+                  <div className={styles.fieldWrapper} style={{ flexBasis: (field.size || 1) * 100 + '%' }}>
+                    {!field.name && renderLabel(field)}
+                    {field.name && getField<T>(field, value, this.onChange.bind(this), this.props.colors)}
+                  </div>
+                </Fragment>
+              ))}
             </div>
           ))}
         </form>
@@ -85,6 +77,22 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
     );
   };
 }
+
+const groupFields = (fields: TField<any, any>[]) => {
+  type TGroup = { depth: number; fields: TField<any, any>[] };
+  const groups: Array<TGroup> = [];
+  let currentGroup: TGroup = { depth: 0, fields: [] };
+  fields.forEach((field) => {
+    if ((field.depth || 0) === currentGroup.depth) {
+      currentGroup.fields.push(field);
+    } else {
+      groups.push(currentGroup);
+      currentGroup = { depth: field.depth || 0, fields: [field] };
+    }
+  });
+  groups.push(currentGroup);
+  return groups;
+};
 
 // @TODO Don't use "any" here
 function getField<T>(field: any, value: any, onChange: any, colors?: TColors) {
@@ -103,6 +111,15 @@ function getField<T>(field: any, value: any, onChange: any, colors?: TColors) {
       return <FieldWrapper<string, T> {...{ colors, field, formValue: value, onChange }} />;
   }
 }
+
+const renderLabel = (field: TField<any, any>) => {
+  return (
+    <Fragment>
+      {field.depth === 0 && <hr />}
+      <label>{field.label}</label>
+    </Fragment>
+  );
+};
 
 /**
  * Intermediate component to let field handlers receive form data without passing
@@ -128,7 +145,7 @@ function FieldWrapper<T, F>(props: {
       colors={props.colors}
       formValue={props.formValue}
       ref={ref}
-      value={props.formValue[props.field.name] as any}
+      value={props.formValue[props.field.name as any] as any}
       onChange={onChange}
       validator={validator}
     />

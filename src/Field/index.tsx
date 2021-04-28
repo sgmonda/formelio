@@ -136,7 +136,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
         {this.renderInput()}{' '}
         <label htmlFor={name}>
           <ReactMarkdownWithHtml disallowedTypes={['paragraph']} allowDangerousHtml unwrapDisallowed>
-            {label || name}
+            {label || name || ''}
           </ReactMarkdownWithHtml>
         </label>
       </div>
