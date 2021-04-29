@@ -18,6 +18,7 @@ export class DynamicForm<T> extends Component<TForm<T>, State<T>> {
       isValid: false,
       value: flatten(props.value || {}) as any,
     };
+    console.log('FLATTEN', this.state);
     cleanFields(props.fields, this.state.value).then((fields) => this.setState({ fields }));
   }
 
@@ -38,7 +39,6 @@ export class DynamicForm<T> extends Component<TForm<T>, State<T>> {
   public render = () => {
     return (
       <Fragment>
-        <p>DYNAMIC FORM</p>
         <BasicForm {...this.props} {...this.state} onChange={this.onChange} />
       </Fragment>
     );
