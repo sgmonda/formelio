@@ -3,32 +3,39 @@ import React, { Component, createRef, Fragment, useEffect } from 'react';
 import styles from '../style/index.module.sass';
 import { Field } from './Field';
 import { TColors, TField, TForm } from './types';
+import ReactMarkdownWithHtml from 'react-markdown/with-html';
+import Colors from './Colors';
+import cl from 'classnames';
 
 type State<T> = {
   validity: { [key: string]: boolean };
   value: Partial<T>;
 };
 
-export class Form<T> extends Component<TForm<T>, State<T>> {
+export class BasicForm<T> extends Component<TForm<T>, State<T>> {
   constructor(props: TForm<T>) {
     super(props);
     this.state = {
       validity: { something: false }, // Not valid by default, until first validation
       value: this.props.value || {},
     };
+    this.init();
+  }
+
+  private init = (fields: TForm<T>['fields'] = this.props.fields, value: TForm<T>['value'] = this.props.value) => {
     Promise.all(
-      props.fields.map(async (field) => {
-        const errors = field.name ? await validateField<any, any>(field, props.value?.[field.name], props.value) : [];
+      fields.map(async (field) => {
+        const errors = field.name ? await validateField<any, any>(field, value?.[field.name], value) : [];
         return errors.length > 0;
       })
     ).then((errors) => {
       const validity = {};
-      props.fields.forEach((field, i) => {
+      fields.forEach((field, i) => {
         validity[field.name as string] = !errors[i];
       });
-      this.setState({ validity });
+      this.setState({ validity, value: value || {} });
     });
-  }
+  };
 
   private propagateOnChange = _.debounce(() => {
     const isValid = !Object.values(this.state.validity).some((b) => !b);
@@ -45,13 +52,13 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
   }
 
   public componentDidUpdate = (prevProps: TForm<T>) => {
-    if (prevProps.value !== this.props.value) {
-      this.setState({ value: this.props.value || {} });
+    if (prevProps.value !== this.props.value || prevProps.fields !== this.props.fields) {
+      this.init();
     }
   };
 
   public render = () => {
-    const { fields } = this.props;
+    const { colors, fields } = this.props;
     const { value } = this.state;
     const fieldGroups = groupFields(fields);
     return (
@@ -62,14 +69,17 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
               key={i}
               className={styles.group}
               style={{
+                // borderLeft: group.depth > 0 ? `solid 1px rgba(0, 0, 0, ${group.depth * 0.1})` : 'none',
                 marginLeft: `${group.depth}em`,
-                borderLeft: group.depth > 0 ? `solid 1px rgba(0, 0, 0, ${group.depth * 0.1})` : 'none',
               }}
             >
               {group.fields.map((field) => (
-                <Fragment key={`${group.depth}${field.name}${i}`}>
-                  <div className={styles.fieldWrapper} style={{ flexBasis: (field.size || 1) * 100 + '%' }}>
-                    {!field.name && renderLabel(field)}
+                <Fragment key={`${group.depth}${field.name || field.label}${i}`}>
+                  <div
+                    className={cl({ [styles.fieldWrapper]: true, [styles.label]: !field.name })}
+                    style={{ flexBasis: (field.size || 1) * 100 + '%' }}
+                  >
+                    {!field.name && renderLabel(field, colors)}
                     {field.name && getField<T>(field, value, this.onChange.bind(this), this.props.colors)}
                   </div>
                 </Fragment>
@@ -116,10 +126,15 @@ function getField<T>(field: any, value: any, onChange: any, colors?: TColors) {
   }
 }
 
-const renderLabel = (field: TField<any, any>) => {
+const renderLabel = (field: TField<any, any>, colors: TForm<any>['colors']) => {
   return (
     <Fragment>
-      <label>{field.label}</label>
+      <label style={{ color: colors?.accent || Colors.ACCENT }}>{field.label}</label>
+      {field.help && (
+        <ReactMarkdownWithHtml allowDangerousHtml unwrapDisallowed>
+          {field.help}
+        </ReactMarkdownWithHtml>
+      )}
     </Fragment>
   );
 };

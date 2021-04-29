@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { DynamicForm, TForm } from 'formelio';
+import { Form, TForm } from 'formelio';
 
 const title = 'Autocompletable dropdown';
 
@@ -38,7 +38,7 @@ const Component = (props: Props) => {
   const { value, onChange } = props;
   return (
     <Fragment>
-      <DynamicForm<TValue> {...{ fields, value, onChange }} />
+      <Form<TValue> {...{ fields, value, onChange }} />
     </Fragment>
   );
 };
@@ -52,10 +52,7 @@ const fields: TForm<TValue>['fields'] = [
       { name: 'firstName', size: 0.5 },
       { name: 'surname', size: 0.5 },
       {
-        fields: [
-          { name: 'rfirstName', size: 0.5 },
-          { name: 'rsurname', size: 0.5 },
-        ],
+        fields: [{ name: 'rfirstName', size: 0.5, required: true }, { name: 'rsurname', size: 0.5 }, { name: 'other' }],
         length: () => 5,
         name: 'children',
       },
@@ -63,6 +60,7 @@ const fields: TForm<TValue>['fields'] = [
     name: 'responsible',
   },
   { name: 'commonField', type: 'number' },
+  { label: 'sobre este estado', help: 'Esto es **texto** con markdown para [explicar algo](/)' },
   {
     fields: [
       { name: 'name', size: 0.5 },
@@ -72,10 +70,12 @@ const fields: TForm<TValue>['fields'] = [
         fields: [
           { name: 'colour', size: 0.5 },
           { name: 'length', type: 'number', size: 0.5 },
+          { label: 'sobre este estado', help: 'Esto es **texto** con markdown para [explicar algo](/)' },
           {
             name: 'style',
             fields: [
               { name: 'sharpness', size: 0.5 },
+              { help: 'Esto es **texto** con markdown para [explicar algo](/)' },
               { name: 'width', size: 0.5 },
             ],
           },

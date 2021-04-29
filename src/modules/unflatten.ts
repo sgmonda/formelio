@@ -4,7 +4,7 @@ function setValue(object: { [key: string]: any }, key: string, value: any): void
     object[parts[0]] = value;
     return;
   }
-  if (/^\d+$/.test(parts[0]) && !object[parts[0]]) object[parts[0]] = {};
+  object[parts[0]] = object[parts[0]] || (/^\d+$/.test(parts[1]) ? [] : {});
   return setValue(object[parts[0]], parts.slice(1).join('.'), value);
 }
 export function unflatten<T>(object: { [key: string]: any }): T {
@@ -14,7 +14,7 @@ export function unflatten<T>(object: { [key: string]: any }): T {
       accum[key] = value;
     } else {
       const parts = key.split('.');
-      accum[parts[0]] = accum[parts[0]] || (/\d+/.test(parts[1]) ? [] : {});
+      accum[parts[0]] = accum[parts[0]] || (/^\d+$/.test(parts[1]) ? [] : {});
       setValue(accum[parts[0]], parts.slice(1).join('.'), value);
     }
     return accum;

@@ -1,6 +1,6 @@
 import { clone } from 'lodash';
 import React, { Component, Fragment } from 'react';
-import { Form } from './Form';
+import { BasicForm } from './BasicForm';
 import { flatten, unflatten } from './modules';
 import { TField, TForm } from './types';
 
@@ -39,7 +39,7 @@ export class DynamicForm<T> extends Component<TForm<T>, State<T>> {
     return (
       <Fragment>
         <p>DYNAMIC FORM</p>
-        <Form {...this.props} {...this.state} onChange={this.onChange} />
+        <BasicForm {...this.props} {...this.state} onChange={this.onChange} />
       </Fragment>
     );
   };
@@ -71,27 +71,28 @@ async function cleanFields<T>(
     }
 
     let subfields = await cleanFields(f.fields || [], formValue?.[f.name as any] || {}, (f.depth || 0) + 1);
-    nextFields.push({
-      depth: f.depth,
-      label: `${f.label || f.name}`,
-    });
+
     if (f.length) {
       const length = f.length(formValue || {});
       for (let i = 0; i < length; i++) {
         nextFields.push({
-          depth: (f.depth || 0) + 1,
+          depth: f.depth || 0,
           label: `${f.label || f.name} (${i + 1})`,
         });
         for (const sf of subfields) {
           await insertField({
             ...sf,
-            depth: (sf.depth || 0) + 1,
+            depth: (sf.depth || 0) - 1,
             label: sf.label || sf.name,
             name: sf.name && (`${f.name}.${i}.${sf.name}` as any),
           });
         }
       }
     } else {
+      nextFields.push({
+        depth: f.depth,
+        label: `${f.label || f.name}`,
+      });
       for (const sf of subfields) {
         await insertField({
           ...sf,
