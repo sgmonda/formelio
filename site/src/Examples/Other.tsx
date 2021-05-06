@@ -29,7 +29,7 @@ const Component = (props: Props) => {
 };
 
 const initialState = {
-  cities: ['Catarroja', 'El Gastor'],
+  cities: ['Catarroja', 'El Sotillo'],
   city: 'El Sotillo',
 };
 
@@ -40,7 +40,7 @@ const citiesOptions = cities
     found[name] = true;
     return isFound;
   })
-  .slice(0, 100)
+  .slice(0, 10)
   .map(({ name }) => ({ label: name, value: name }));
 const fields: TForm<TValue>['fields'] = [
   { name: 'city', options: citiesOptions },

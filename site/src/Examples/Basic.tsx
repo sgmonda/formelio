@@ -1,9 +1,12 @@
 import React from 'react';
 import { Form, TForm } from 'formelio';
 
-const title = '';
+const title = 'Fields size';
 
 const description = `
+You can *suggest* field sizes, using \`size\` property. If the screen is large
+enough to respect your suggestion, Formelio will do it. Otherwise it will ensure
+form is cool, even if you  suggest sizes just partially.
 `;
 
 type TValue = {

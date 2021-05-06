@@ -1,9 +1,18 @@
 import React from 'react';
 import { Form, TForm } from 'formelio';
 
-const title = '';
+const title = 'Basic form';
 
 const description = `
+This is the simplest use case: a login form. **Colors are inherited** from the parent,
+so forms can be integrated easily in any page.
+Even if you're using a dark theme, you don't need to worry about it.
+
+<br/>
+
+Note that you can use
+[Markdown](https://guides.github.com/features/mastering-markdown/) in labels (to link pages, for instance).
+Cool, isn't it?
 `;
 
 type TValue = {
