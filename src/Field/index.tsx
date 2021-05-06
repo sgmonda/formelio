@@ -161,8 +161,8 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
           [styles.isDisabled]: disabled,
         })}
       >
-        {this.renderLabel()}
         {this.renderInput()}
+        {this.renderLabel()}
         {hasIcon && this.renderStateIcon()}
         {hasHint && <Hint<T, F> {...this.props} {...this.state} />}
       </div>
