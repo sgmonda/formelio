@@ -25,7 +25,7 @@ const Component = (props: Props) => {
 const initialState = {};
 
 const fields: TForm<TValue>['fields'] = [
-  { name: 'email', required: true, label: 'Esto es una *label* con [link](https://google.com)' },
+  { name: 'email', required: true },
   { name: 'password', required: true, type: 'password' },
   { name: 'accept', required: true, type: 'check', label: 'I accept [whatever](https://google.com)' },
 ];

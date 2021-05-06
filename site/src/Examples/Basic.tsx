@@ -1,19 +1,18 @@
 import React from 'react';
 import { Form, TForm } from 'formelio';
 
-const title = 'Basic usage';
+const title = '';
 
 const description = `
-Hello bla bla, this is an example
-
-with two lines
 `;
 
 type TValue = {
   name: string;
+  email: string;
   surname1: string;
   surname2: string;
   birthday: Date;
+  phone: string;
   accept: boolean;
 };
 
@@ -36,18 +35,24 @@ const fields: TForm<TValue>['fields'] = [
     size: 0.333,
   },
   {
-    autocomplete: 'additional-name',
     name: 'surname1',
     size: 0.333,
   },
   {
-    autocomplete: 'family-name',
     name: 'surname2',
     size: 0.333,
   },
   {
+    name: 'email',
+  },
+  {
     name: 'birthday',
     type: 'date',
+    size: 0.5,
+  },
+  {
+    name: 'phone',
+    size: 0.5,
   },
   {
     label: 'I accept whatever',
@@ -56,7 +61,7 @@ const fields: TForm<TValue>['fields'] = [
   },
 ];
 
-const tileClass = 'is-light';
+const tileClass = 'is-dark';
 
 export default {
   Component,

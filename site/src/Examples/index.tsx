@@ -39,6 +39,7 @@ const Example = (props: any) => {
           <div className={`notification ${props.tileClass} is-light`} style={{ flex: 1 }}>
             <div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
               <div style={{ flex: 1 }}>
+                <p>This is text</p>
                 <props.Component onChange={onChange} value={value} />
               </div>
               <div style={{ overflow: 'auto', marginTop: '2em' }}>

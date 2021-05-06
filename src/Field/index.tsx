@@ -123,11 +123,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
         style={{ color }}
       >
         <span style={{ flex: 1 }}>
-          {icon && <Icon id={icon} />}
-          {' '}
-          <Markdown text={label || name || ''} />
-          {' '}
-          {required && <span>*</span>}
+          {icon && <Icon id={icon} />} <Markdown text={label || name || ''} /> {required && <span>*</span>}
         </span>
         {Array.isArray(value) && !!value.length && <span>({value.length})</span>}
       </label>
@@ -136,7 +132,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
 
   private renderCheckbox = (isErrored: boolean) => {
     const { colors, label, name } = this.props;
-    let color = 'initial';
+    let color = 'inherit';
     if (isErrored) color = colors?.error || COLORS.ERROR;
     return (
       <div className={`${styles.checkbox}`} style={{ ...getBorderColor({ isErrored }), color }}>
