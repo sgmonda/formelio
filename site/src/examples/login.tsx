@@ -1,10 +1,9 @@
 import React from 'react';
 import { Form, TForm } from 'formelio';
 
-const title = 'Login';
+const title = '';
 
 const description = `
-Simple login form with two fields
 `;
 
 type TValue = {
@@ -26,12 +25,12 @@ const Component = (props: Props) => {
 const initialState = {};
 
 const fields: TForm<TValue>['fields'] = [
-  { name: 'email', required: true },
+  { name: 'email', required: true, label: 'Esto es una *label* con [link](https://google.com)' },
   { name: 'password', required: true, type: 'password' },
-  { label: 'I accept [whatever](https://google.com)', name: 'accept', required: true, type: 'check' },
+  { name: 'accept', required: true, type: 'check', label: 'I accept [whatever](https://google.com)' },
 ];
 
-const tileClass = 'is-light';
+const tileClass = 'is-info';
 
 export default {
   Component,

@@ -12,10 +12,11 @@ code {
 }
 
 pre {
-  background-color: rgba(0, 0, 0, 0.05) !important;
   width: 100%;
   padding: 0;
-  font-size: 0.8rem !important;
+  font-size: x-small !important;
+  border-radius: 3px;
+  background-color: transparent !important;
 }
 
 .container {
@@ -31,4 +32,8 @@ pre {
   border-radius: 5px;
   overflow: hidden;
   padding: 0;
+}
+
+.notification {
+  padding: 1.5em;
 }

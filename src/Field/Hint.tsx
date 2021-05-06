@@ -1,9 +1,9 @@
 import React, { createRef, Fragment, useEffect } from 'react';
-import ReactMarkdownWithHtml from 'react-markdown/with-html';
 import { createPopper } from '@popperjs/core';
 import styles from '../../style/index.module.sass';
 import { TFieldProps, TFieldState } from '../types';
 import COLORS from '../Colors';
+import Markdown from '../Markdown';
 
 function Hint<T, F>(props: TFieldProps<T, F> & TFieldState<T>) {
   const { colors, errors, help, isDirty, isFocused, isTyping } = props;
@@ -27,9 +27,7 @@ function Hint<T, F>(props: TFieldProps<T, F> & TFieldState<T>) {
     <Fragment>
       <div className={styles.hintTarget} ref={refTarget} />
       <div className={styles.hint} ref={refPopper} style={{ backgroundColor }}>
-        <ReactMarkdownWithHtml disallowedTypes={['paragraph']} allowDangerousHtml unwrapDisallowed>
-          {isFocused ? message || '' : ''}
-        </ReactMarkdownWithHtml>
+        <Markdown text={isFocused ? message || '' : ''} />
         <div className={styles.arrow} data-popper-arrow></div>
         {/* <div className={styles.spike} style={{ borderTopColor: backgroundColor }} /> */}
       </div>

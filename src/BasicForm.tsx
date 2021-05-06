@@ -3,9 +3,9 @@ import React, { Component, createRef, Fragment, useEffect } from 'react';
 import styles from '../style/index.module.sass';
 import { Field } from './Field';
 import { TColors, TField, TForm } from './types';
-import ReactMarkdownWithHtml from 'react-markdown/with-html';
 import Colors from './Colors';
 import cl from 'classnames';
+import Markdown from './Markdown';
 
 type State<T> = {
   validity: { [key: string]: boolean };
@@ -130,11 +130,7 @@ const renderLabel = (field: TField<any, any>, colors: TForm<any>['colors']) => {
   return (
     <Fragment>
       <label style={{ color: colors?.accent || Colors.ACCENT }}>{field.label}</label>
-      {field.help && (
-        <ReactMarkdownWithHtml allowDangerousHtml unwrapDisallowed>
-          {field.help}
-        </ReactMarkdownWithHtml>
-      )}
+      {field.help && <Markdown text={field.help} />}
     </Fragment>
   );
 };

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactMarkdownWithHtml from 'react-markdown/with-html';
 import styles from '../../style/index.module.sass';
 import { TFieldProps, TFieldState } from '../types';
 import cl from 'classnames';
@@ -8,6 +7,7 @@ import Icon from '../Icon';
 import COLORS from '../Colors';
 import Hint from './Hint';
 import { getBorderColor } from '../modules';
+import Markdown from '../Markdown';
 
 const ERROR_HIDE_DELAY = 1000;
 
@@ -123,7 +123,11 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
         style={{ color }}
       >
         <span style={{ flex: 1 }}>
-          {icon && <Icon id={icon} />} {label || name} {required && <span>*</span>}
+          {icon && <Icon id={icon} />}
+          {' '}
+          <Markdown text={label || name || ''} />
+          {' '}
+          {required && <span>*</span>}
         </span>
         {Array.isArray(value) && !!value.length && <span>({value.length})</span>}
       </label>
@@ -138,9 +142,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
       <div className={`${styles.checkbox}`} style={{ ...getBorderColor({ isErrored }), color }}>
         {this.renderInput()}{' '}
         <label htmlFor={name}>
-          <ReactMarkdownWithHtml disallowedTypes={['paragraph']} allowDangerousHtml unwrapDisallowed>
-            {label || name || ''}
-          </ReactMarkdownWithHtml>
+          <Markdown text={label || name || ''} />
         </label>
       </div>
     );
