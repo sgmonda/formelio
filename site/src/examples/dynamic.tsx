@@ -1,11 +1,9 @@
 import React, { Fragment } from 'react';
 import { Form, TForm } from 'formelio';
 
-const title = 'Autocompletable dropdown';
+const title = '';
 
 const description = `
-This example shows how to use dropdowns with autocomplete support.
-Perfect for huge lists of items, helping users to find the proper list item.
 `;
 
 type TValue = {
