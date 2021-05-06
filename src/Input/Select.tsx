@@ -24,7 +24,7 @@ function getSelect<T>(isMulti: boolean = false) {
         width: '5em',
       }),
       multiValue: () => ({
-        background: props.colors?.accent || COLORS.ACCENT,
+        border: `solid 1px ${props.colors?.accent || COLORS.ACCENT}`,
         display: 'flex',
         marginBottom: '0.2em',
         marginRight: '0.2em',

@@ -30,7 +30,7 @@ const fields: TForm<TValue>['fields'] = [
   { name: 'accept', required: true, type: 'check', label: 'I accept [whatever](https://google.com)' },
 ];
 
-const tileClass = 'is-info';
+const tileClass = 'is-light';
 
 export default {
   Component,

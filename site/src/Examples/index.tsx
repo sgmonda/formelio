@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { github } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { dark, github } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import 'formelio/dist/index.css';
 import { TForm } from 'formelio';
 import stringify from 'json-stringify-pretty-compact';
@@ -39,11 +39,10 @@ const Example = (props: any) => {
           <div className={`notification ${props.tileClass} is-light`} style={{ flex: 1 }}>
             <div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
               <div style={{ flex: 1 }}>
-                <p>This is text</p>
                 <props.Component onChange={onChange} value={value} />
               </div>
               <div style={{ overflow: 'auto', marginTop: '2em' }}>
-                <SyntaxHighlighter language="javascript" style={{ ...github }}>
+                <SyntaxHighlighter language="javascript" style={props.tileClass === 'is-dark' ? dark : github}>
                   {'// State\n\n' + stringify({ isValid, value }, { indent: 2, maxLength: 50 })}
                 </SyntaxHighlighter>
               </div>

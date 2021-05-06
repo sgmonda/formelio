@@ -130,7 +130,11 @@ const renderLabel = (field: TField<any, any>, colors: TForm<any>['colors']) => {
   return (
     <Fragment>
       <label style={{ color: colors?.accent || Colors.ACCENT }}>{field.label}</label>
-      {field.help && <Markdown text={field.help} />}
+      {field.help && (
+        <p style={{ fontSize: 'small' }}>
+          <Markdown text={field.help} />
+        </p>
+      )}
     </Fragment>
   );
 };

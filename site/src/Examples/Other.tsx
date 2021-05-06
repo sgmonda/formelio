@@ -47,7 +47,7 @@ const fields: TForm<TValue>['fields'] = [
   { name: 'cities', options: citiesOptions, type: 'tags' },
 ];
 
-const tileClass = 'is-dark';
+const tileClass = 'is-info';
 
 export default {
   Component,
