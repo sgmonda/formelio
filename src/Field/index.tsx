@@ -7,6 +7,7 @@ import Input from '../Input';
 import Icon from '../Icon';
 import COLORS from '../Colors';
 import Hint from './Hint';
+import { getBorderColor } from '../modules';
 
 const ERROR_HIDE_DELAY = 1000;
 
@@ -108,9 +109,9 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     const { colors, disabled, icon, label, name, required } = this.props;
     const { errors, isDirty, isFocused, isTyping, value } = this.state;
     const isEmpty = !value;
-    const isError = !!errors.length && !isTyping && isDirty;
+    const isErrored = !!errors.length && !isTyping && isDirty;
     let color = 'inherit';
-    if (isError) color = colors?.error || COLORS.ERROR;
+    if (isErrored) color = colors?.error || COLORS.ERROR;
     else if (isFocused) color = colors?.accent || COLORS.ACCENT;
     return (
       <label
@@ -129,10 +130,12 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     );
   };
 
-  private renderCheckbox = () => {
-    const { label, name } = this.props;
+  private renderCheckbox = (isErrored: boolean) => {
+    const { colors, label, name } = this.props;
+    let color = 'initial';
+    if (isErrored) color = colors?.error || COLORS.ERROR;
     return (
-      <div className={`${styles.checkbox}`} style={{ color: 'inherit' }}>
+      <div className={`${styles.checkbox}`} style={{ ...getBorderColor({ isErrored }), color }}>
         {this.renderInput()}{' '}
         <label htmlFor={name}>
           <ReactMarkdownWithHtml disallowedTypes={['paragraph']} allowDangerousHtml unwrapDisallowed>
@@ -149,7 +152,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     const isError = isDirty && !isTyping && (errors.length > 0 || (required && !value));
     const hasIcon = isError || help;
     const hasHint = hasIcon && isFocused;
-    if (type === 'check') return this.renderCheckbox();
+    if (type === 'check') return this.renderCheckbox(!!isError);
     return (
       <div
         className={cl({
