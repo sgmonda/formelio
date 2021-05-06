@@ -10,9 +10,7 @@ import Basic from './Basic';
 import Other from './Other';
 import Dynamic from './Dynamic';
 
-const EXAMPLES = [
-  Login, Basic, Other, Dynamic,
-];
+const EXAMPLES = [Login, Basic, Other, Dynamic];
 
 const Examples = () => {
   return (
