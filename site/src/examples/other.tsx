@@ -20,41 +20,39 @@ type Props = {
 };
 
 const Component = (props: Props) => {
-  const found = {};
-  const citiesOptions = cities
-    .filter(({ name }) => {
-      const isFound = !found[name];
-      found[name] = true;
-      return isFound;
-    })
-    .slice(0, 100)
-    .map(({ name }) => ({ value: name, label: name }));
-  const fields: TForm<TValue>['fields'] = [
-    { name: 'city', options: citiesOptions },
-    { name: 'cities', type: 'tags', options: citiesOptions },
-  ];
-  const { value, onChange } = props;
+  const { onChange, value } = props;
   return (
     <Fragment>
-      <Form<TValue> {...{ fields, value, onChange }} />
+      <Form<TValue> {...{ fields, onChange, value }} />
     </Fragment>
   );
 };
 
 const initialState = {
-  city: 'El Sotillo',
   cities: ['Catarroja', 'El Gastor'],
+  city: 'El Sotillo',
 };
 
-const fields = `
-const fields = [
-  { name: 'name', required: true, size: 0.5 },
-  { name: 'surname', size: 0.5 },
-  { name: 'birthday', type: 'date' },
-  { name: 'comment', type: 'text-multiline' },
+const found = {};
+const citiesOptions = cities
+  .filter(({ name }) => {
+    const isFound = !found[name];
+    found[name] = true;
+    return isFound;
+  })
+  .slice(0, 100)
+  .map(({ name }) => ({ label: name, value: name }));
+const fields: TForm<TValue>['fields'] = [
+  { name: 'city', options: citiesOptions },
+  { name: 'cities', options: citiesOptions, type: 'tags' },
 ];
-`.trim();
 
 const tileClass = 'is-dark';
 
-export default { title, description, Component, source: { fields, initialState }, tileClass };
+export default {
+  Component,
+  description,
+  source: { fields, initialState },
+  tileClass,
+  title,
+};

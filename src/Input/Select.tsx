@@ -78,7 +78,7 @@ function getSelect<T>(isMulti: boolean = false) {
         props.onChange(item && item.value);
       }
     };
-    const options = props.options?.map(({ value, label }) => ({ value, label: label || value }));
+    const options = props.options?.map(({ value, label }) => ({ label: label || value, value }));
     const value = options?.filter((option) =>
       Array.isArray(props.value) ? props.value.includes(option.value) : option.value === props.value
     );

@@ -35,51 +35,91 @@ type Props = {
 };
 
 const Component = (props: Props) => {
-  const { value, onChange } = props;
+  const { onChange, value } = props;
   return (
     <Fragment>
-      <Form<TValue> {...{ fields, value, onChange }} />
+      <Form<TValue> {...{ fields, onChange, value }} />
     </Fragment>
   );
 };
 
-const initialState = { typeA: 'tres', childrenCount: 2 };
+const initialState = {
+  childrenCount: 2,
+  typeA: 'tres',
+};
 
 const fields: TForm<TValue>['fields'] = [
-  { name: 'childrenCount', type: 'number' },
+  {
+    name: 'childrenCount',
+    type: 'number',
+  },
   {
     fields: [
-      { name: 'firstName', size: 0.5 },
-      { name: 'surname', size: 0.5 },
       {
-        fields: [{ name: 'rfirstName', size: 0.5, required: true }, { name: 'rsurname', size: 0.5 }, { name: 'other' }],
+        name: 'firstName',
+        size: 0.5,
+      },
+      {
+        name: 'surname',
+        size: 0.5,
+      },
+      {
+        fields: [
+          {
+            name: 'rfirstName',
+            required: true,
+            size: 0.5,
+          },
+          {
+            name: 'rsurname',
+            size: 0.5,
+          },
+          {
+            name: 'other',
+          },
+        ],
         length: () => 5,
         name: 'children',
       },
     ],
     name: 'responsible',
   },
-  { name: 'commonField', type: 'number' },
-  { label: 'sobre este estado', help: 'Esto es **texto** con markdown para [explicar algo](/)' },
+  {
+    name: 'commonField',
+    type: 'number',
+  },
+  {
+    help: 'Esto es **texto** con markdown para [explicar algo](/)',
+    label: 'sobre este estado',
+  },
   {
     fields: [
-      { name: 'name', size: 0.5 },
-      { name: 'surname', size: 0.5 },
       {
-        name: 'hair',
+        name: 'name',
+        size: 0.5,
+      },
+      {
+        name: 'surname',
+        size: 0.5,
+      },
+      {
         fields: [
           { name: 'colour', size: 0.5 },
-          { name: 'length', type: 'number', size: 0.5 },
-          { label: 'sobre este estado', help: 'Esto es **texto** con markdown para [explicar algo](/)' },
+          { name: 'length', size: 0.5, type: 'number' },
           {
-            name: 'style',
+            help: 'Esto es **texto** con markdown para [explicar algo](/)',
+            label: 'sobre este estado',
+          },
+          {
             fields: [
               { name: 'sharpness', size: 0.5 },
               { help: 'Esto es **texto** con markdown para [explicar algo](/)' },
               { name: 'width', size: 0.5 },
             ],
+            name: 'style',
           },
         ],
+        name: 'hair',
       },
     ],
     length: (formValue: Partial<TValue>) => formValue.childrenCount || 0,
@@ -89,4 +129,10 @@ const fields: TForm<TValue>['fields'] = [
 
 const tileClass = 'is-light';
 
-export default { title, description, Component, source: { fields, initialState }, tileClass };
+export default {
+  Component,
+  description,
+  source: { fields, initialState },
+  tileClass,
+  title,
+};

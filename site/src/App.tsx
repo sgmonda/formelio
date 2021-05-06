@@ -75,7 +75,12 @@ function Example(props: any) {
         </div>
         <div
           className="tile is-child notification is-light content"
-          style={{ borderRadius: 0, overflow: 'hidden', padding: '1em', flexDirection: 'column' }}
+          style={{
+            borderRadius: 0,
+            flexDirection: 'column',
+            overflow: 'hidden',
+            padding: '1em',
+          }}
         >
           <h4>Source code</h4>
           <SyntaxHighlighter language="javascript" style={github}>

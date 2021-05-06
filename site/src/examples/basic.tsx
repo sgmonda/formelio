@@ -18,33 +18,50 @@ type TValue = {
 };
 
 type Props = {
-  value: TForm<TValue>['value'];
   onChange: TForm<TValue>['onChange'];
+  value: TForm<TValue>['value'];
 };
 
 const Component = (props: Props) => {
-  const fields: TForm<TValue>['fields'] = [
-    { name: 'name', required: true, size: 0.333 },
-    { name: 'surname1', autocomplete: 'additional-name', size: 0.333 },
-    { name: 'surname2', autocomplete: 'family-name', size: 0.333 },
-    { name: 'birthday', type: 'date' },
-    { name: 'accept', type: 'check', label: 'I accept whatever' },
-  ];
-  const { value, onChange } = props;
-  return <Form<TValue> {...{ fields, value, onChange }} />;
+  const { onChange, value } = props;
+  return <Form<TValue> {...{ fields, onChange, value }} />;
 };
 
 const initialState = {};
 
-const fields = `
-const fields = [
-  { name: 'name', required: true, size: 0.5 },
-  { name: 'surname', size: 0.5 },
-  { name: 'birthday', type: 'date' },
-  { name: 'accept', type: 'check', required: true },
+const fields: TForm<TValue>['fields'] = [
+  {
+    name: 'name',
+    required: true,
+    size: 0.333,
+  },
+  {
+    autocomplete: 'additional-name',
+    name: 'surname1',
+    size: 0.333,
+  },
+  {
+    autocomplete: 'family-name',
+    name: 'surname2',
+    size: 0.333,
+  },
+  {
+    name: 'birthday',
+    type: 'date',
+  },
+  {
+    label: 'I accept whatever',
+    name: 'accept',
+    type: 'check',
+  },
 ];
-`.trim();
 
 const tileClass = 'is-light';
 
-export default { title, description, Component, source: { fields, initialState }, tileClass };
+export default {
+  Component,
+  description,
+  source: { fields, initialState },
+  tileClass,
+  title,
+};
