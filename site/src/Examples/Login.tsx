@@ -5,7 +5,8 @@ const title = 'Basic form';
 
 const description = `
 This is the simplest use case: a login form. **Colors are inherited** from the context,
-so forms can be integrated easily in any page, even if you're using a dark theme.
+so forms can be integrated easily in any page. No matter if you're using a **light or dark theme**.
+Formelio will look awesome anywhere.
 
 <br/>
 
