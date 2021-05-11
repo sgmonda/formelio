@@ -8,6 +8,7 @@ import cl from 'classnames';
 import Markdown from './Markdown';
 
 type State<T> = {
+  fields: TForm<T>['fields'];
   validity: { [key: string]: boolean };
   value: Partial<T>;
 };
@@ -16,6 +17,7 @@ export class BasicForm<T> extends Component<TForm<T>, State<T>> {
   constructor(props: TForm<T>) {
     super(props);
     this.state = {
+      fields: [],
       validity: { something: false }, // Not valid by default, until first validation
       value: this.props.value || {},
     };
@@ -33,7 +35,7 @@ export class BasicForm<T> extends Component<TForm<T>, State<T>> {
       fields.forEach((field, i) => {
         validity[field.name as string] = !errors[i];
       });
-      this.setState({ validity, value: value || {} });
+      this.setState({ fields, validity, value: value || {} });
     });
   };
 
@@ -53,13 +55,14 @@ export class BasicForm<T> extends Component<TForm<T>, State<T>> {
 
   public componentDidUpdate = (prevProps: TForm<T>) => {
     if (prevProps.value !== this.props.value || prevProps.fields !== this.props.fields) {
+      this.setState({ fields: [] }); // Needed to force Webkit autofill transition hack restart
       this.init();
     }
   };
 
   public render = () => {
-    const { colors, fields } = this.props;
-    const { value } = this.state;
+    const { colors } = this.props;
+    const { fields, value } = this.state;
     const fieldGroups = groupFields(fields);
     return (
       <div className={styles.formelio}>

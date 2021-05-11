@@ -4,9 +4,8 @@ import { Form, TForm } from 'formelio';
 const title = 'Basic form';
 
 const description = `
-This is the simplest use case: a login form. **Colors are inherited** from the parent,
-so forms can be integrated easily in any page.
-Even if you're using a dark theme, you don't need to worry about it.
+This is the simplest use case: a login form. **Colors are inherited** from the context,
+so forms can be integrated easily in any page, even if you're using a dark theme.
 
 <br/>
 

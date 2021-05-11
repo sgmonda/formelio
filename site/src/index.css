@@ -21,6 +21,7 @@ pre {
 
 .container {
   padding: 1em;
+  max-width: 960px !important;
 }
 
 .tile {

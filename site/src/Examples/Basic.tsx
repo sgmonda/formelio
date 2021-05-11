@@ -35,15 +35,15 @@ const fields: TForm<TValue>['fields'] = [
   {
     name: 'name',
     required: true,
-    size: 0.333,
+    size: 0.3,
   },
   {
     name: 'surname1',
-    size: 0.333,
+    size: 0.3,
   },
   {
     name: 'surname2',
-    size: 0.333,
+    size: 0.3,
   },
   {
     name: 'email',
