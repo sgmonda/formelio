@@ -57,7 +57,7 @@
     "no-underscore-dangle": "off",
     "import/no-dynamic-require": "off",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
-    "import/no-unresolved": "error",
+    "import/no-unresolved": "off", // Typescript already takes care of this, and works with raw-loader. This doesn't
     "import/prefer-default-export": "off",
     "object-property-newline": "off",
     "object-curly-newline": ["error", { "consistent": true }],

@@ -29,7 +29,8 @@
   },
   "devDependencies": {
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3",
-    "@types/react-syntax-highlighter": "^13.5.0"
+    "@types/react-syntax-highlighter": "^13.5.0",
+    "raw-loader": "^4.0.2"
   },
   "eslintConfig": {
     "extends": "react-app"

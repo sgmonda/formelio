@@ -8,8 +8,6 @@ This is the simplest use case: a login form. **Colors are inherited** from the c
 so forms can be integrated easily in any page. No matter if you're using a **light or dark theme**.
 Formelio will look awesome anywhere.
 
-<br/>
-
 Note that you can use
 [Markdown](https://guides.github.com/features/mastering-markdown/) in labels (to link pages, for instance).
 Cool, isn't it?

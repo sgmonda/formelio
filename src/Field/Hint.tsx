@@ -27,7 +27,7 @@ function Hint<T, F>(props: TFieldProps<T, F> & TFieldState<T>) {
     <Fragment>
       <div className={styles.hintTarget} ref={refTarget} />
       <div className={styles.hint} ref={refPopper} style={{ backgroundColor }}>
-        <Markdown text={isFocused ? message || '' : ''} />
+        <Markdown text={isFocused ? message || '' : ''} inline />
         <div className={styles.arrow} data-popper-arrow></div>
         {/* <div className={styles.spike} style={{ borderTopColor: backgroundColor }} /> */}
       </div>

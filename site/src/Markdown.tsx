@@ -7,9 +7,9 @@ const LinkRenderer = (props: any) => (
   </a>
 );
 
-const Markdown = (props: { text: string }) => (
+const Markdown = (props: { text: string; inline?: boolean }) => (
   <ReactMarkdownWithHtml
-    disallowedTypes={['paragraph']}
+    disallowedTypes={props.inline ? ['paragraph'] : []}
     allowDangerousHtml
     unwrapDisallowed
     renderers={{ link: LinkRenderer }}

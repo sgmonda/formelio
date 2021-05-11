@@ -38,3 +38,7 @@ pre {
 .notification {
   padding: 1.5em;
 }
+
+li > p {
+  margin: 0 !important;
+}
