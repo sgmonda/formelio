@@ -16,7 +16,7 @@ const EXAMPLES = [Login, Basic, Other, Dynamic];
 
 const Examples = () => {
   return (
-    <div className="container">
+    <div>
       {EXAMPLES.map((props, i) => (
         <Example key={i} {...props} />
       ))}
@@ -37,9 +37,9 @@ const Example = (props: any) => {
   return (
     <div className="content" style={{ marginBottom: '5em' }}>
       {props.title && (
-        <h3>
+        <h4>
           <Markdown text={props.title} />
-        </h3>
+        </h4>
       )}
       {props.description && (
         <p>

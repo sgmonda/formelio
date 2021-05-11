@@ -14,7 +14,7 @@ const App = () => {
         <Markdown text={Features} />
       </div>
       <div className="content">
-        <h2>Examples 2</h2>
+        <h2>Examples</h2>
         <p>The best way to learn is by example, so here are some cool use cases to see how to use Formelio.</p>
         <Examples />
       </div>
