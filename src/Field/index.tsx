@@ -52,6 +52,10 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     }
   };
 
+  public componentWillUnmount = () => {
+    clearTimeout(this.typingTimeout as any);
+  };
+
   private onChange = async (value: T) => {
     // Do not show errors while typing
     clearTimeout(this.typingTimeout as any);
@@ -60,7 +64,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     }, ERROR_HIDE_DELAY);
 
     const { validator } = this.props;
-    const errors = (await validator(value)) || ['x'];
+    const errors = (await validator(value)) || [];
     this.setState({ errors, isDirty: true, isTyping: true, value });
     this.props.onChange(value, !errors.length);
   };

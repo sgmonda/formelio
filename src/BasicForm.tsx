@@ -35,6 +35,9 @@ export class BasicForm<T> extends Component<TForm<T>, State<T>> {
       fields.forEach((field, i) => {
         validity[field.name as string] = !errors[i];
       });
+      // Hack to force Webkit autofill transition restart
+      // Disabled because this makes inputs rebuild, so they lose focus and other state
+      // this.setState({ fields: [] });
       this.setState({ fields, validity, value: value || {} });
     });
   };
@@ -55,7 +58,6 @@ export class BasicForm<T> extends Component<TForm<T>, State<T>> {
 
   public componentDidUpdate = (prevProps: TForm<T>) => {
     if (prevProps.value !== this.props.value || prevProps.fields !== this.props.fields) {
-      this.setState({ fields: [] }); // Needed to force Webkit autofill transition hack restart
       this.init();
     }
   };
