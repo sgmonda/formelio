@@ -19,6 +19,7 @@ Once installed, you'll be able to import and use it from your Javascript/Typescr
 ```javascript
 import React, { useState } from 'react';
 import { Form } from 'formelio';
+import 'formelio/dist/index.css';
 
 export const MyForm = () => {
   const [value, onChange] = useState({});
@@ -33,9 +34,13 @@ Go to https://sgmonda.github.io/formelio/ to see this and other usage examples w
 
 A form requires the following main properties:
 
-| Attempt | #1  | #2  | #3  | #4  | #5  | #6  | #7  | #8  | #9  | #10 | #11 |
-| ------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Seconds | 301 | 283 | 290 | 286 | 289 | 285 | 287 | 287 | 272 | 276 | 269 |
+| Property   | Required | Description                                                       | Default                                   |
+| ---------- | -------- | ----------------------------------------------------------------- | ----------------------------------------- |
+| `fields`   | `[X]`    | Form inputs to include in the form                                | -                                         |
+| `onChange` | `[X]`    | Change event handler, receiving form value and validity status    | -                                         |
+| `value`    | `[ ]`    | Initial or current value for all (or some) inputs                 | `{}`                                      |
+| `delay`    | `[ ]`    | Time to wait before triggering `onChange()` after an input change | 500ms                                     |
+| `colors`   | `[ ]`    | Simple customization                                              | `{ accent: '#5196D5', error: '#D65947' }` |
 
 - `fields`: A list (`Array`) of field definitions. A field definition is a plain object where field properties are defined. See the next section. Example:
 
