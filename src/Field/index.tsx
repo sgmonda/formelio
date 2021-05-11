@@ -37,7 +37,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
   };
 
   public componentDidUpdate = (prevProps: Props<T, F>) => {
-    if (prevProps.value !== this.state.value) {
+    if (prevProps.value !== this.state.value && !(Number.isNaN(prevProps.value) && Number.isNaN(this.state.value))) {
       const newState = {
         ...this.getStateAndValidate(this.props),
         isDirty: this.state.isDirty,
