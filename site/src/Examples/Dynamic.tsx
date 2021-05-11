@@ -1,30 +1,16 @@
 import React, { Fragment } from 'react';
 import { Form, TForm } from 'formelio';
 
-const title = '';
+const title = 'Dynamic form';
 
 const description = `
+Sometimes you want to show a field more than once, but you don't know how many times because
+it depends on user input. This kind of dynamic forms are perfect for \`Formelio\`.
 `;
 
 type TValue = {
-  typeA: string;
-  name1: string;
-  name2: string;
-  commonField: number;
-  twoAndThree: string;
   childrenCount: number;
-  people: Array<{
-    firstName: string;
-    surname: string;
-  }>;
-  responsible: {
-    firstName: string;
-    surname: string;
-    children: Array<{
-      firstName: string;
-      surname: string;
-    }>;
-  };
+  children: Array<{ name: string; birthdate: Date }>;
 };
 
 type Props = {
@@ -43,7 +29,16 @@ const Component = (props: Props) => {
 
 const initialState = {
   childrenCount: 2,
-  typeA: 'tres',
+  children: [
+    {
+      name: 'Sam',
+      birthdate: '2001-02-12',
+    },
+    {
+      name: 'Karen',
+      birthdate: '1995-01-03',
+    },
+  ],
 };
 
 const fields: TForm<TValue>['fields'] = [
@@ -52,76 +47,12 @@ const fields: TForm<TValue>['fields'] = [
     type: 'number',
   },
   {
-    fields: [
-      {
-        name: 'firstName',
-        size: 0.5,
-      },
-      {
-        name: 'surname',
-        size: 0.5,
-      },
-      {
-        fields: [
-          {
-            name: 'rfirstName',
-            required: true,
-            size: 0.5,
-          },
-          {
-            name: 'rsurname',
-            size: 0.5,
-          },
-          {
-            name: 'other',
-          },
-        ],
-        length: () => 5,
-        name: 'children',
-      },
-    ],
-    name: 'responsible',
-  },
-  {
-    name: 'commonField',
-    type: 'number',
-  },
-  {
-    help: 'Esto es **texto** con markdown para [explicar algo](/)',
-    label: 'sobre este estado',
-  },
-  {
-    fields: [
-      {
-        name: 'name',
-        size: 0.5,
-      },
-      {
-        name: 'surname',
-        size: 0.5,
-      },
-      {
-        fields: [
-          { name: 'colour', size: 0.5 },
-          { name: 'length', size: 0.5, type: 'number' },
-          {
-            help: 'Esto es **texto** con markdown para [explicar algo](/)',
-            label: 'sobre este estado',
-          },
-          {
-            fields: [
-              { name: 'sharpness', size: 0.5 },
-              { help: 'Esto es **texto** con markdown para [explicar algo](/)' },
-              { name: 'width', size: 0.5 },
-            ],
-            name: 'style',
-          },
-        ],
-        name: 'hair',
-      },
-    ],
+    name: 'children',
     length: (formValue: Partial<TValue>) => formValue.childrenCount || 0,
-    name: 'people',
+    fields: [
+      { name: 'name', size: 0.5 },
+      { name: 'birthdate', type: 'date', size: 0.5 },
+    ],
   },
 ];
 

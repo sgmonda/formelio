@@ -6,24 +6,67 @@ See https://sgmonda.github.io/formelio/ for documentation and usage examples.
 
 # Installation
 
+To use `Formelio` from a [React](https://reactjs.org) component, just install it with your favorite package manager (like [NPM](https://www.npmjs.com)):
+
 ```bash
 npm install --save formelio
 ```
 
 # Usage
 
-```tsx
-import React, { Component } from 'react';
+Once installed, you'll be able to import and use it from your Javascript/Typescript code. Here a simple example of a simple login form, without validation or password hiding (please, don't do this in production 😜):
 
-import MyComponent from 'formelio';
-import 'formelio/dist/index.css';
+```javascript
+import React, { useState } from 'react';
+import { Form } from 'formelio';
 
-class Example extends Component {
-  render() {
-    return <MyComponent />;
-  }
-}
+export const MyForm = () => {
+  const [value, onChange] = useState({});
+  const fields = [{ name: 'email' }, { name: 'password' }];
+  return <Form {...{ fields, value, onChange }} />;
+};
 ```
+
+Go to https://sgmonda.github.io/formelio/ to see this and other usage examples working.
+
+## Form properties
+
+A form requires the following main properties:
+
+| Attempt | #1  | #2  | #3  | #4  | #5  | #6  | #7  | #8  | #9  | #10 | #11 |
+| ------- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Seconds | 301 | 283 | 290 | 286 | 289 | 285 | 287 | 287 | 272 | 276 | 269 |
+
+- `fields`: A list (`Array`) of field definitions. A field definition is a plain object where field properties are defined. See the next section. Example:
+
+  ```
+  <Form
+    ...
+    fields={[
+      { name: 'firstName', type: 'text', required: true },
+      { name: 'age', type: 'number' },
+    ]}
+    ...
+  />
+  ```
+
+- `onChange`: A change event handler, that will be called when the form is modified. It also receives a validation state, according with `required` properties and custom validators (see next section). Example:
+
+  ```
+  <Form
+    ...
+    onChange={ (value, isValid) => { /* Do whatever you want */ } }
+    ...
+  />
+  ```
+
+A form supports also the following optional properties:
+
+- `colors`
+- `delay`
+- `value`
+
+Now lets see how to define each property correctly:
 
 # License
 

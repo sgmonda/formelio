@@ -4,13 +4,8 @@ import { Form, TForm } from 'formelio';
 const title = 'Basic form';
 
 const description = `
-This is the simplest use case: a login form. **Colors are inherited** from the context,
-so forms can be integrated easily in any page. No matter if you're using a **light or dark theme**.
-Formelio will look awesome anywhere.
-
-Note that you can use
-[Markdown](https://guides.github.com/features/mastering-markdown/) in labels (to link pages, for instance).
-Cool, isn't it?
+This is a very simple use case: a login form. Take a look at how state changes when
+fields are modified. You'll notice that browser's *autofill* works out of the box.
 `;
 
 type TValue = {
