@@ -14,7 +14,7 @@ npm install --save formelio
 
 # Usage
 
-Once installed, you'll be able to import and use it from your Javascript/Typescript code. Here a simple example of a simple login form, without validation or password hiding (please, don't do this in production 😜):
+Once installed, you'll be able to import and use it from your Javascript/Typescript code. Here's a simple example of a simple login form, without validation or password hiding (please, don't do this in production 😜):
 
 ```javascript
 import React, { useState } from 'react';
