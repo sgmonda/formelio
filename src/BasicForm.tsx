@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component, createRef, Fragment, useEffect } from 'react';
-import styles from '../style/index.module.sass';
+import styles from './style/index.module.sass';
 import { Field } from './Field';
 import { TColors, TField, TForm } from './types';
 import Colors from './Colors';
@@ -39,6 +39,7 @@ export class BasicForm<T> extends Component<TForm<T>, State<T>> {
       // Disabled because this makes inputs rebuild, so they lose focus and other state
       // this.setState({ fields: [] });
       this.setState({ fields, validity, value: value || {} });
+      this.propagateOnChange();
     });
   };
 

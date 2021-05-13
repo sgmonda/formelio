@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from '../../style/index.module.sass';
+import styles from '../style/index.module.sass';
 import { TFieldProps, TFieldState } from '../types';
 import cl from 'classnames';
 import Input from '../Input';
@@ -11,7 +11,7 @@ import Markdown from '../Markdown';
 
 const ERROR_HIDE_DELAY = 1000;
 
-type Props<T, F> = TFieldProps<T, F>;
+export type Props<T, F> = TFieldProps<T, F>;
 type State<T> = TFieldState<T>;
 
 export class Field<T, F> extends Component<Props<T, F>, State<T>> {
@@ -33,7 +33,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
   };
 
   public validate = (props: Props<T, F> = this.props) => {
-    props.validator(props.value as T).then((errors) => this.setState({ errors: errors || [] }));
+    props.validator?.(props.value as T).then((errors) => this.setState({ errors: errors || [] }));
   };
 
   public componentDidUpdate = (prevProps: Props<T, F>) => {
@@ -46,7 +46,8 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
       };
       this.setState(newState);
     }
-    const shouldReset = Object.keys(prevProps.formValue).length && !Object.keys(this.props.formValue).length;
+    const shouldReset =
+      Object.keys(prevProps.formValue || {}).length && !Object.keys(this.props.formValue || {}).length;
     if (shouldReset) {
       this.setState({ isDirty: false });
     }
@@ -64,7 +65,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     }, ERROR_HIDE_DELAY);
 
     const { validator } = this.props;
-    const errors = (await validator(value)) || [];
+    const errors = (await validator?.(value)) || [];
     this.setState({ errors, isDirty: true, isTyping: true, value });
     this.props.onChange(value, !errors.length);
   };
@@ -171,3 +172,5 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     );
   };
 }
+
+export default Field;

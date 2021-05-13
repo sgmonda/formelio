@@ -49,9 +49,9 @@ export type TInputProps<T> = TInput<T> & {
 };
 
 export type TFieldProps<T, F> = TField<T, F> & {
-  formValue: Partial<F>;
+  formValue?: Partial<F>;
   onChange: (value: T, isValid: boolean) => void;
-  validator: (value: T) => Promise<string[]>;
+  validator?: (value: T) => Promise<string[]>;
   value?: T;
 };
 

@@ -25,16 +25,25 @@
     "predeploy": "cd site && npm install && npm run build",
     "site": "npm run site:build && npm run site:deploy",
     "site:build": "cd site && npm install && npm run build",
-    "site:deploy": "gh-pages -d site/build"
+    "site:deploy": "gh-pages -d site/build",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "peerDependencies": {
     "react": "^16.0.0",
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.2",
+    "@babel/preset-react": "^7.13.13",
     "@commitlint/cli": "^12.0.1",
     "@commitlint/config-conventional": "^12.0.1",
     "@creativebulma/bulma-tooltip": "^1.2.0",
+    "@storybook/addon-actions": "^6.2.9",
+    "@storybook/addon-essentials": "^6.2.9",
+    "@storybook/addon-links": "^6.2.9",
+    "@storybook/preset-create-react-app": "^3.1.7",
+    "@storybook/react": "^6.2.9",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -73,7 +82,6 @@
     "jest-extended": "^0.11.5",
     "lint-staged": "^10.5.4",
     "microbundle-crl": "^0.13.10",
-    "node-sass": "^5.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.4",
     "react": "^16.13.1",
@@ -81,6 +89,7 @@
     "react-dom": "^16.13.1",
     "react-scripts": "^3.4.1",
     "react-select": "^4.3.0",
+    "storybook-css-modules-preset": "^1.1.1",
     "typescript": "^3.7.5"
   },
   "files": [
@@ -101,6 +110,7 @@
     "@popperjs/core": "^2.9.2",
     "faker": "^5.5.3",
     "lodash": "^4.17.21",
+    "node-sass": "^4.14.1",
     "react-datepicker": "3.6.0",
     "react-markdown": "^5.0.3",
     "react-select": "4.3.0",

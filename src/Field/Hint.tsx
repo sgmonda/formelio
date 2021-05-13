@@ -1,6 +1,6 @@
 import React, { createRef, Fragment, useEffect } from 'react';
 import { createPopper } from '@popperjs/core';
-import styles from '../../style/index.module.sass';
+import styles from '../style/index.module.sass';
 import { TFieldProps, TFieldState } from '../types';
 import COLORS from '../Colors';
 import Markdown from '../Markdown';

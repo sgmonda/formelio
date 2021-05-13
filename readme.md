@@ -84,7 +84,13 @@ GPL-3.0 © [Sergio Garcia Mondaray](https://sgmonda.com)
 This project uses git hooks for:
 
 - Commit message format: see https://www.conventionalcommits.org/
-- Lint, format and test before commiting
+- Linting, formating and testing before commiting
+
+#### Storybook
+
+```
+$ npm run storybook
+```
 
 #### Environment
 

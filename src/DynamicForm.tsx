@@ -10,7 +10,7 @@ type State<T> = {
   value: Partial<T> & { [key: string]: any };
 };
 
-export class DynamicForm<T> extends Component<TForm<T>, State<T>> {
+export class Form<T> extends Component<TForm<T>, State<T>> {
   constructor(props: TForm<T>) {
     super(props);
     this.state = {
