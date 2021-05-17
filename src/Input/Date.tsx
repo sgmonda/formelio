@@ -15,8 +15,9 @@ const DateInput = (props: TInputProps<Date>) => {
       border-color: ${props.borderColor};
     }
   `;
-  const onChange = (date: Date) => {
-    props.onChange(date);
+  const onChange = (date: Date | [Date, Date]) => {
+    if (typeof date === 'string') props.onChange(new Date(Date.parse(date)));
+    props.onChange(date as Date);
     // props.onBlur();
   };
   return (
@@ -28,7 +29,7 @@ const DateInput = (props: TInputProps<Date>) => {
         onFocus={props.onFocus}
         onCalendarClose={props.onBlur}
         onBlur={props.onBlur}
-        dateFormat={props.format}
+        dateFormat={props.format || 'yyyy-MM-dd'}
         wrapperClassName={'date_picker'}
         popperPlacement="bottom-start"
       />

@@ -4,6 +4,7 @@ export const clone = <T>(obj: any): T => {
   if (typeof obj === 'object') {
     Object.entries(obj).forEach(([key, val]) => {
       if (typeof val === 'function') copy[key] = val;
+      if (val instanceof Date) copy[key] = new Date(val);
     });
   }
   return copy;

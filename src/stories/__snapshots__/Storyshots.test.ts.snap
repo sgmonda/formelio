@@ -1,5 +1,94 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Storyshots Single Field > Date Non Empty And Non Required 1`] = `
+Array [
+  <div
+    className="formelio"
+  >
+    <form
+      id="myformid"
+    >
+      <div
+        className="group"
+        style={
+          Object {
+            "marginLeft": "0em",
+          }
+        }
+      >
+        <div
+          className="fieldWrapper"
+          style={
+            Object {
+              "flexBasis": "100%",
+            }
+          }
+        >
+          <div
+            className="field"
+          >
+            <div
+              className="datepicker"
+            >
+              <div
+                className="react-datepicker-wrapper date_picker"
+              >
+                <div
+                  className="react-datepicker__input-container"
+                >
+                  <input
+                    className=""
+                    disabled={false}
+                    id="myformid#myfield"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onClick={[Function]}
+                    onFocus={[Function]}
+                    onKeyDown={[Function]}
+                    readOnly={false}
+                    type="text"
+                    value="2019-01-05"
+                  />
+                </div>
+              </div>
+            </div>
+            <label
+              className=""
+              htmlFor="myformid#myfield"
+              style={
+                Object {
+                  "color": "inherit",
+                }
+              }
+            >
+              <span
+                style={
+                  Object {
+                    "flex": 1,
+                  }
+                }
+              >
+                 
+                myfield
+                 
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>,
+  <pre>
+    {
+  "isValid": false,
+  "value": {
+    "myfield": "2019-01-05T00:00:00.000Z"
+  }
+}
+  </pre>,
+]
+`;
+
 exports[`Storyshots Single Field > Text Empty And Non Required 1`] = `
 Array [
   <div

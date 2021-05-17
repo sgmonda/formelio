@@ -19,7 +19,7 @@ const CaseTemplate: Story<TForm<TValue>> = (args: TForm<TValue>) => {
     setValue(value);
     setIsValid(isValid);
   };
-  const fields = clone(args.fields);
+  const fields = clone<typeof args.fields>(args.fields);
   return (
     <>
       <Form<TValue> {...args} {...{ onChange, value }} fields={fields} />

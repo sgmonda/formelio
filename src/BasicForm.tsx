@@ -207,5 +207,6 @@ async function validateField<T, F>(
 ): Promise<string[]> {
   if (field.required && !value) return ['Required field'];
   if (!field.validator || !value) return [];
+  if (field.type === 'date' && typeof value === 'string') value = new Date(Date.parse(value)) as any as T;
   return field.validator(value, formValue || {});
 }
