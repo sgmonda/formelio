@@ -1,4 +1,3 @@
-import { clone } from 'lodash';
 import React, { Fragment } from 'react';
 import { BasicForm } from './BasicForm';
 import { Component } from './Component';
@@ -118,7 +117,7 @@ function cleanValue<T>(value: Partial<T>, fields: TForm<any>['fields']): Partial
     if (f.name) accum[f.name] = true;
     return accum;
   }, {} as { [key: string]: boolean });
-  const nextValue = clone(value);
+  const nextValue = JSON.parse(JSON.stringify(value));
   Object.keys(nextValue).forEach((key) => {
     if (!keys[key]) delete nextValue[key];
   });

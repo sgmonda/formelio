@@ -1,4 +1,4 @@
-import _, { clone } from 'lodash';
+import _ from 'lodash';
 import React, { createRef, Fragment, useEffect } from 'react';
 import styles from './style/index.module.sass';
 import { Field } from './Field';
@@ -18,10 +18,10 @@ const genId = (field: TField<any, any>) => field.name || 'noname';
 // const genId = () => Math.random().toString(36).slice(2);
 
 function parseFields<T>(_fields: TForm<T>['fields'], base: string): TForm<T>['fields'] {
-  const fields = clone(_fields);
+  const fields: typeof _fields = JSON.parse(JSON.stringify(_fields));
   fields.forEach((field, i) => {
     field.id = field.id || `${base}#${genId(field)}`;
-    const nextBase = field.length ? `${field.id}#${i}` : field.id;
+    const nextBase = field.length ? `${field.id}#${i}` : field.id || '';
     if (field.fields) parseFields(field.fields, nextBase);
   });
   return fields;
@@ -81,7 +81,7 @@ export class BasicForm<T> extends Component<TForm<T>, State<T>> {
     const hasValueChanged = JSON.stringify(prevProps.value) !== JSON.stringify(this.props.value);
     const hasFieldsChanged = JSON.stringify(prevProps.fields) !== JSON.stringify(this.props.fields);
     if (hasValueChanged || hasFieldsChanged) {
-      const fields = parseFields(this.props.fields, this.id);
+      const fields = hasFieldsChanged ? parseFields(this.props.fields, this.id) : this.state.fields;
       this.init(fields);
     }
   };

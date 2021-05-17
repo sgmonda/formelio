@@ -18,9 +18,10 @@ const CaseTemplate: Story<TForm<TValue>> = (args: TForm<TValue>) => {
     setValue(value);
     setIsValid(isValid);
   };
+  const fields = JSON.parse(JSON.stringify(args.fields));
   return (
     <>
-      <Form<TValue> {...args} {...{ onChange, value }} />
+      <Form<TValue> {...args} {...{ onChange, value }} fields={fields} />
       <pre>{JSON.stringify({ isValid, value }, null, 2)}</pre>
     </>
   );
