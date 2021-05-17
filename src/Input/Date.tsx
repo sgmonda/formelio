@@ -22,6 +22,7 @@ const DateInput = (props: TInputProps<Date>) => {
   return (
     <div className={styles.datepicker}>
       <DatePicker
+        id={props.id}
         selected={props.value ? new Date(props.value) : undefined}
         onChange={onChange}
         onFocus={props.onFocus}

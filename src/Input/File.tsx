@@ -23,6 +23,7 @@ const FileInput = (props: TInputProps<File[]>) => {
   return (
     <Fragment>
       <input
+        id={props.id}
         required={props.required}
         disabled={props.disabled}
         max={props.max}

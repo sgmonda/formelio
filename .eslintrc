@@ -54,6 +54,11 @@
     "no-return-assign": ["error", "except-parens"],
     "no-param-reassign": "off",
     "no-plusplus": "off",
+
+    // Fix "Definition for rule '@typescript-eslint/no-redeclare' was not found" error
+    // "no-redeclare": "off",
+    // "@typescript-eslint/no-redeclare": ["error"],
+
     "no-underscore-dangle": "off",
     "import/no-dynamic-require": "off",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
@@ -70,6 +75,7 @@
     "semi": "error",
     "sort-keys": "warn",
     "sort-vars": "warn",
+    "react/no-is-mounted": "warn",
     "sort-imports": [
       "warn",
       {

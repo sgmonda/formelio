@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styles from '../style/index.module.sass';
 import { TFieldProps, TFieldState } from '../types';
 import cl from 'classnames';
@@ -8,6 +8,7 @@ import COLORS from '../Colors';
 import Hint from './Hint';
 import { getBorderColor } from '../modules';
 import Markdown from '../Markdown';
+import { Component } from '../Component';
 
 const ERROR_HIDE_DELAY = 1000;
 
@@ -16,7 +17,6 @@ type State<T> = TFieldState<T>;
 
 export class Field<T, F> extends Component<Props<T, F>, State<T>> {
   static initialState = { errors: [], isDirty: false, isFocused: false, isTyping: false, value: undefined };
-  private typingTimeout: NodeJS.Timeout | undefined = undefined;
 
   constructor(props: Props<T, F>) {
     super(props);
@@ -33,7 +33,10 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
   };
 
   public validate = (props: Props<T, F> = this.props) => {
-    props.validator?.(props.value as T).then((errors) => this.setState({ errors: errors || [] }));
+    props.validator?.(props.value as T).then((errors) => {
+      if (!this._isMounted) return;
+      this.setState({ errors: errors || [] });
+    });
   };
 
   public componentDidUpdate = (prevProps: Props<T, F>) => {
@@ -53,19 +56,16 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     }
   };
 
-  public componentWillUnmount = () => {
-    clearTimeout(this.typingTimeout as any);
-  };
-
   private onChange = async (value: T) => {
     // Do not show errors while typing
-    clearTimeout(this.typingTimeout as any);
-    this.typingTimeout = setTimeout(() => {
+    setTimeout(() => {
+      if (!this.isMounted) return;
       this.setState({ isTyping: false });
     }, ERROR_HIDE_DELAY);
 
     const { validator } = this.props;
     const errors = (await validator?.(value)) || [];
+    if (!this._isMounted) return;
     this.setState({ errors, isDirty: true, isTyping: true, value });
     this.props.onChange(value, !errors.length);
   };
@@ -111,7 +111,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
 
   // eslint-disable-next-line complexity
   private renderLabel = () => {
-    const { colors, disabled, icon, label, name, required } = this.props;
+    const { colors, disabled, icon, id, label, name, required } = this.props;
     const { errors, isDirty, isFocused, isTyping, value } = this.state;
     const isEmpty = !value;
     const isErrored = !!errors.length && !isTyping && isDirty;
@@ -126,6 +126,7 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
           [styles.isDisabled]: disabled,
         })}
         style={{ color }}
+        htmlFor={id}
       >
         <span style={{ flex: 1 }}>
           {icon && <Icon id={icon} />} <Markdown inline text={label || name || ''} /> {required && <span>*</span>}

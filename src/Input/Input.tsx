@@ -17,6 +17,7 @@ const CommonInput = (props: TInputProps<string>) => {
 
   return (
     <input
+      id={props.id}
       required={props.required}
       disabled={props.disabled}
       max={props.max}

@@ -9,12 +9,12 @@ const CheckboxInput = (props: TInputProps<boolean>) => {
 
   return (
     <input
+      id={props.id}
       required={props.required}
       disabled={props.disabled}
       max={props.max}
       min={props.min}
       name={props.name}
-      id={props.name}
       autoComplete={props.autocomplete}
       type="checkbox"
       // defaultValue={props.value as any}

@@ -1,6 +1,7 @@
 import { clone } from 'lodash';
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { BasicForm } from './BasicForm';
+import { Component } from './Component';
 import { flatten, unflatten } from './modules';
 import { TField, TForm } from './types';
 
@@ -14,16 +15,16 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
   constructor(props: TForm<T>) {
     super(props);
     this.state = {
-      fields: [],
+      fields: props.fields,
       isValid: false,
       value: flatten(props.value || {}) as any,
     };
-    console.log('FLATTEN', this.state);
-    cleanFields(props.fields, this.state.value).then((fields) => this.setState({ fields }));
+    cleanFields(props.fields, this.state.value).then((fields) => this.isMounted && this.setState({ fields }));
   }
 
   private onChange: TForm<T>['onChange'] = async (value, isValid) => {
     const fields = await cleanFields(this.props.fields, value);
+    if (!this.isMounted) return;
     value = cleanValue(value, fields);
     this.setState({ fields, isValid, value });
     this.props.onChange(unflatten(value), isValid);
@@ -32,7 +33,9 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
   public componentDidUpdate = (prevProps: TForm<T>) => {
     if (prevProps.value !== this.props.value || prevProps.fields !== this.props.fields) {
       const value = flatten(this.props.value || {}) as any;
-      cleanFields(this.props.fields, this.props.value).then((fields) => this.setState({ fields, value }));
+      cleanFields(this.props.fields, this.props.value).then(
+        (fields) => this.isMounted && this.setState({ fields, value })
+      );
     }
   };
 

@@ -6,6 +6,7 @@ import styles from '../styles.module.css';
 const TextArea = (props: TInputProps<string>) => {
   return (
     <textarea
+      id={props.id}
       required={props.required}
       disabled={props.disabled}
       name={props.name}

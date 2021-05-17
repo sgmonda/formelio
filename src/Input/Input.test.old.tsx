@@ -1,4 +1,4 @@
-import Input from './';
+import Input from '.';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { sleep } from '../modules';

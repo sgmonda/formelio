@@ -1,6 +1,7 @@
 export type FieldOption<T> = { value: T | string; label?: string } & { metadata?: any };
 
 export type TInput<T> = {
+  id?: string;
   autocomplete?: string;
   required?: boolean;
   colors?: TColors;
@@ -76,6 +77,7 @@ type TypedTField<T> =
   | Omit<TField<string, T>, 'type'>;
 
 export type TForm<T> = {
+  id?: string;
   delay?: number;
   colors?: TColors;
   fields: TypedTField<T>[];

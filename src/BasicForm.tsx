@@ -1,11 +1,12 @@
-import _ from 'lodash';
-import React, { Component, createRef, Fragment, useEffect } from 'react';
+import _, { clone } from 'lodash';
+import React, { createRef, Fragment, useEffect } from 'react';
 import styles from './style/index.module.sass';
 import { Field } from './Field';
 import { TColors, TField, TForm } from './types';
 import Colors from './Colors';
 import cl from 'classnames';
 import Markdown from './Markdown';
+import { Component } from './Component';
 
 type State<T> = {
   fields: TForm<T>['fields'];
@@ -13,31 +14,50 @@ type State<T> = {
   value: Partial<T>;
 };
 
+const genId = (field: TField<any, any>) => field.name || 'noname';
+// const genId = () => Math.random().toString(36).slice(2);
+
+function parseFields<T>(_fields: TForm<T>['fields'], base: string): TForm<T>['fields'] {
+  const fields = clone(_fields);
+  fields.forEach((field, i) => {
+    field.id = `${base}#${field.id || genId(field)}`;
+    const nextBase = field.length ? `${field.id}#${i}` : field.id;
+    if (field.fields) parseFields(field.fields, nextBase);
+  });
+  return fields;
+}
+
 export class BasicForm<T> extends Component<TForm<T>, State<T>> {
+  private id: string = this.props.id || genId({ name: 'myformid' });
+
   constructor(props: TForm<T>) {
     super(props);
+    const fields = parseFields(props.fields, this.id);
     this.state = {
-      fields: [],
+      fields,
       validity: { something: false }, // Not valid by default, until first validation
-      value: this.props.value || {},
+      value: props.value || {},
     };
-    this.init();
+    this.init(fields);
   }
 
-  private init = (fields: TForm<T>['fields'] = this.props.fields, value: TForm<T>['value'] = this.props.value) => {
+  private init = (fields: TForm<T>['fields'], value: TForm<T>['value'] = this.props.value) => {
     Promise.all(
       fields.map(async (field) => {
         const errors = field.name ? await validateField<any, any>(field, value?.[field.name], value) : [];
         return errors.length > 0;
       })
     ).then((errors) => {
+      if (!this.isMounted) return;
       const validity = {};
       fields.forEach((field, i) => {
         validity[field.name as string] = !errors[i];
       });
+
       // Hack to force Webkit autofill transition restart
       // Disabled because this makes inputs rebuild, so they lose focus and other state
       // this.setState({ fields: [] });
+
       this.setState({ fields, validity, value: value || {} });
       this.propagateOnChange();
     });
@@ -59,7 +79,8 @@ export class BasicForm<T> extends Component<TForm<T>, State<T>> {
 
   public componentDidUpdate = (prevProps: TForm<T>) => {
     if (prevProps.value !== this.props.value || prevProps.fields !== this.props.fields) {
-      this.init();
+      const fields = parseFields(this.props.fields, this.id);
+      this.init(fields);
     }
   };
 
@@ -69,7 +90,7 @@ export class BasicForm<T> extends Component<TForm<T>, State<T>> {
     const fieldGroups = groupFields(fields);
     return (
       <div className={styles.formelio}>
-        <form>
+        <form id={this.id}>
           {fieldGroups.map((group, i) => (
             <div
               key={i}
