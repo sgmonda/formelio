@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import Form, { TForm } from '..';
+import { clone, validateDNI } from '../modules';
 
 export default {
   component: Form,
@@ -18,7 +19,7 @@ const CaseTemplate: Story<TForm<TValue>> = (args: TForm<TValue>) => {
     setValue(value);
     setIsValid(isValid);
   };
-  const fields = JSON.parse(JSON.stringify(args.fields));
+  const fields = clone(args.fields);
   return (
     <>
       <Form<TValue> {...args} {...{ onChange, value }} fields={fields} />
@@ -81,6 +82,19 @@ EmptyAndRequiredWithHelp.args = {
       help: 'This is a help message, **this *supports* markdown**',
       name: 'myfield',
       required: true,
+    },
+  ],
+};
+
+export const EmptyAndRequiredWithCustomValidator = CaseTemplate.bind({});
+EmptyAndRequiredWithCustomValidator.args = {
+  fields: [
+    {
+      help: 'Spanish identity number',
+      label: 'DNI',
+      name: 'myfield',
+      required: true,
+      validator: validateDNI,
     },
   ],
 };

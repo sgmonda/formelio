@@ -7,6 +7,7 @@ import Colors from './Colors';
 import cl from 'classnames';
 import Markdown from './Markdown';
 import { Component } from './Component';
+import { clone } from './modules';
 
 type State<T> = {
   fields: TForm<T>['fields'];
@@ -18,7 +19,7 @@ const genId = (field: TField<any, any>) => field.name || 'noname';
 // const genId = () => Math.random().toString(36).slice(2);
 
 function parseFields<T>(_fields: TForm<T>['fields'], base: string): TForm<T>['fields'] {
-  const fields: typeof _fields = JSON.parse(JSON.stringify(_fields));
+  const fields: typeof _fields = clone(_fields);
   fields.forEach((field, i) => {
     field.id = field.id || `${base}#${genId(field)}`;
     const nextBase = field.length ? `${field.id}#${i}` : field.id || '';

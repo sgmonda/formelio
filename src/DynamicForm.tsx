@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { BasicForm } from './BasicForm';
 import { Component } from './Component';
-import { flatten, unflatten } from './modules';
+import { clone, flatten, unflatten } from './modules';
 import { TField, TForm } from './types';
 
 type State<T> = {
@@ -117,7 +117,7 @@ function cleanValue<T>(value: Partial<T>, fields: TForm<any>['fields']): Partial
     if (f.name) accum[f.name] = true;
     return accum;
   }, {} as { [key: string]: boolean });
-  const nextValue = JSON.parse(JSON.stringify(value));
+  const nextValue = clone<typeof value>(value);
   Object.keys(nextValue).forEach((key) => {
     if (!keys[key]) delete nextValue[key];
   });
