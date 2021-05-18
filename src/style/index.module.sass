@@ -36,17 +36,11 @@
     & > p
       font-weight: normal
 
-.field
-  flex-direction: column
-  position: relative
-
-  &.isDisabled
-    cursor: not-allowed
-
+.field, .checkbox
   .icon
     position: absolute
     right: 0
-    top: $unit * 1.5
+    top: $unit * 0.25
     height: $unit
     width: $unit
     text-align: right
@@ -55,6 +49,15 @@
 
     &.isFocused, &.isErrored
       opacity: 1
+.field
+  flex-direction: column
+  position: relative
+
+  .icon
+    top: $unit * 1.5
+
+  &.isDisabled
+    cursor: not-allowed
 
   input:-webkit-autofill + label
     font-size: x-small !important
@@ -173,6 +176,7 @@
   padding-bottom: 0.2 * $unit
   line-heigth: 1 * $unit
   border-bottom: solid 0.15 * $unit
+  position: relative
 
   input
     margin: 0 !important
