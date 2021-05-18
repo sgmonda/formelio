@@ -45,6 +45,10 @@ const citiesOptions = cities
 const fields: TForm<TValue>['fields'] = [
   { name: 'city', options: citiesOptions },
   { name: 'cities', options: citiesOptions, type: 'tags' },
+  {
+    help: 'This is a help message, shown only when there are exactly two cities selected',
+    when: [(formValue: Partial<TValue>) => formValue?.cities?.length === 2],
+  },
 ];
 
 const tileClass = 'is-info';

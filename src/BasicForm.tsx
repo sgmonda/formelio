@@ -106,7 +106,7 @@ export class BasicForm<T> extends Component<TForm<T>, State<T>> {
               {group.fields.map((field) => (
                 <Fragment key={`${group.depth}${field.name || field.label}${i}`}>
                   <div
-                    className={cl({ [styles.fieldWrapper]: true, [styles.label]: !field.name })}
+                    className={cl({ [styles.fieldWrapper]: true })}
                     style={{ flexBasis: (field.size || 1) * 100 + '%' }}
                   >
                     {!field.name && renderLabel(field, colors)}
