@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler } from 'react';
 import cl from 'classnames';
 import { TInputProps } from '../types';
-import styles from '../styles.module.css';
+import styles from '../style/index.module.sass';
 import COLORS from '../Colors';
 
 const CommonInput = (props: TInputProps<string>) => {

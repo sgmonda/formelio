@@ -45,8 +45,8 @@
 
   .icon
     position: absolute
-    right: $unit * 0.5
-    top: $unit * 1.4
+    right: 0
+    top: $unit * 1.5
     height: $unit
     width: $unit
     text-align: right
@@ -81,7 +81,7 @@
 
     &.isEmpty:not(.isFocused)
       font-size: initial
-      transform: translateY($unit * 1.3)
+      transform: translateY($unit * 1.5)
       pointer-events: none
 
   .hintTarget
@@ -99,7 +99,7 @@
   .hint
     position: relative
     font-size: small !important
-    // z-index: 9999
+    z-index: 999
     // font-size: small
     color: white
     padding: $unit * 0.5
@@ -134,7 +134,7 @@
     box-shadow: none !important // Needed for Firefox, to avoid ugly borders
 
     &.hasHint
-      padding-right: 2em
+      padding-right: 1.5em
 
   textarea
     height: 5 * $unit

@@ -1,7 +1,7 @@
 import React from 'react';
 import cl from 'classnames';
 import { TInputProps } from '../types';
-import styles from '../styles.module.css';
+import styles from '../style/index.module.sass';
 
 const TextArea = (props: TInputProps<string>) => {
   return (

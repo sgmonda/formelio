@@ -1,6 +1,6 @@
 import React, { ChangeEvent, Fragment, memo, useState } from 'react';
 import { TInputProps } from '../types';
-import styles from '../styles.module.css';
+import styles from '../style/index.module.sass';
 import cl from 'classnames';
 import { debounce } from 'lodash';
 

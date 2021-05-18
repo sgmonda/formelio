@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler, createRef, FocusEventHandler, Fragment } from 'react';
 import cl from 'classnames';
 import { TInputProps } from '../types';
-import styles from '../styles.module.css';
+import styles from '../style/index.module.sass';
 
 const FileInput = (props: TInputProps<File[]>) => {
   const ref = createRef<HTMLInputElement>();

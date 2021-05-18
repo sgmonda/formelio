@@ -249,6 +249,8 @@ Array [
                   Object {
                     "color": "inherit",
                     "fontSize": "small",
+                    "height": "1.1em",
+                    "marginRight": "0.25em",
                     "paddingBottom": "0.1em",
                   }
                 }
@@ -345,6 +347,8 @@ Array [
                     Object {
                       "color": "inherit",
                       "fontSize": "small",
+                      "height": "1.1em",
+                      "marginRight": "0.25em",
                       "paddingBottom": "0.1em",
                     }
                   }
@@ -445,6 +449,8 @@ Array [
                     Object {
                       "color": "inherit",
                       "fontSize": "small",
+                      "height": "1.1em",
+                      "marginRight": "0.25em",
                       "paddingBottom": "0.1em",
                     }
                   }
@@ -481,6 +487,8 @@ Array [
                   Object {
                     "color": "inherit",
                     "fontSize": "small",
+                    "height": "1.1em",
+                    "marginRight": "0.25em",
                     "paddingBottom": "0.1em",
                   }
                 }
@@ -675,6 +683,8 @@ Array [
                   Object {
                     "color": "inherit",
                     "fontSize": "small",
+                    "height": "1.1em",
+                    "marginRight": "0.25em",
                     "paddingBottom": "0.1em",
                   }
                 }
@@ -788,6 +798,8 @@ Array [
                   Object {
                     "color": "inherit",
                     "fontSize": "small",
+                    "height": "1.1em",
+                    "marginRight": "0.25em",
                     "paddingBottom": "0.1em",
                   }
                 }

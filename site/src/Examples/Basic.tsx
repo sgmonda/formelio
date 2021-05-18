@@ -44,11 +44,14 @@ const fields: TForm<TValue>['fields'] = [
   {
     name: 'surname2',
     size: 0.3,
+    help: 'Leave blank if you do not have a second surname',
   },
   {
+    icon: 'envelope',
     name: 'email',
   },
   {
+    icon: 'calendar',
     name: 'birthday',
     type: 'date',
     size: 0.5,
