@@ -21,7 +21,7 @@ function Hint<T, F>(props: TFieldProps<T, F> & TFieldState<T>) {
   let backgroundColor = undefined;
   if (isError) backgroundColor = colors?.error || COLORS.ERROR;
   else if (isFocused) backgroundColor = colors?.accent || COLORS.ACCENT;
-  const message = isError ? errors.join('\n\n') : help;
+  const message = isError ? errors.join('<br/>') : help;
 
   return (
     <Fragment>
