@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler } from 'react';
+import React, { ChangeEventHandler, useEffect, useRef, useState } from 'react';
 import cl from 'classnames';
 import { TInputProps } from '../types';
 import styles from '../style/index.module.sass';
@@ -9,15 +9,24 @@ const CommonInput = (props: TInputProps<string>) => {
   let color = 'inherit';
   if (props.isErrored) color = colors?.error || COLORS.ERROR;
 
+  const [caretPosition, setCaretPosition] = useState<number>(props.value?.length || 0);
+  const ref = useRef<HTMLInputElement | null>(null);
+
   const onChange: ChangeEventHandler<any> = (ev) => {
+    setCaretPosition(ref?.current?.selectionStart || props.value?.length || 0);
     let value = ev.target.value;
     if (props.type === 'number') value = parseFloat(value);
     props.onChange(value);
   };
 
+  useEffect(() => {
+    ref?.current?.setSelectionRange(caretPosition, caretPosition);
+  }, [props.value]);
+
   return (
     <input
       id={props.id}
+      ref={ref}
       required={props.required}
       disabled={props.disabled}
       max={props.max}
