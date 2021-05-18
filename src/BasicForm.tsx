@@ -160,7 +160,7 @@ function getField<T>(field: any, value: any, onChange: any, colors?: TColors) {
 const renderLabel = (field: TField<any, any>, colors: TForm<any>['colors']) => {
   return (
     <Fragment>
-      <label style={{ color: colors?.accent || Colors.ACCENT }}>{field.label}:</label>
+      {field.label && <label style={{ color: colors?.accent || Colors.ACCENT }}>{field.label}:</label>}
       {field.help && (
         <p style={{ fontSize: 'small' }}>
           <Markdown text={field.help} inline />
