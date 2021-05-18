@@ -137,13 +137,13 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
   };
 
   private renderCheckbox = (isErrored: boolean) => {
-    const { colors, label, name } = this.props;
+    const { colors, id, label, name } = this.props;
     let color = 'inherit';
     if (isErrored) color = colors?.error || COLORS.ERROR;
     return (
       <div className={`${styles.checkbox}`} style={{ ...getBorderColor({ isErrored }), color, position: 'relative' }}>
         {this.renderInput()}{' '}
-        <label htmlFor={name}>
+        <label htmlFor={id}>
           <Markdown inline text={label || name || ''} />
         </label>
         {isErrored && this.renderStateIcon()}

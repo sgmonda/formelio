@@ -20,7 +20,11 @@ const CommonInput = (props: TInputProps<string>) => {
   };
 
   useEffect(() => {
-    ref?.current?.setSelectionRange(caretPosition, caretPosition);
+    try {
+      ref?.current?.setSelectionRange(caretPosition, caretPosition);
+    } catch (err) {
+      console.warn(`Selection range cannot be set`);
+    }
   }, [props.value]);
 
   return (
