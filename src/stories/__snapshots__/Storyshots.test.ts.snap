@@ -12,7 +12,9 @@ Array [
         className="group"
         style={
           Object {
+            "borderLeft": "none",
             "marginLeft": "0em",
+            "paddingLeft": "0em",
           }
         }
       >
@@ -101,7 +103,9 @@ Array [
         className="group"
         style={
           Object {
+            "borderLeft": "none",
             "marginLeft": "0em",
+            "paddingLeft": "0em",
           }
         }
       >
@@ -178,7 +182,9 @@ Array [
         className="group"
         style={
           Object {
+            "borderLeft": "none",
             "marginLeft": "0em",
+            "paddingLeft": "0em",
           }
         }
       >
@@ -289,7 +295,9 @@ Array [
         className="group"
         style={
           Object {
+            "borderLeft": "none",
             "marginLeft": "0em",
+            "paddingLeft": "0em",
           }
         }
       >
@@ -391,7 +399,9 @@ Array [
         className="group"
         style={
           Object {
+            "borderLeft": "none",
             "marginLeft": "0em",
+            "paddingLeft": "0em",
           }
         }
       >
@@ -527,7 +537,9 @@ Array [
         className="group"
         style={
           Object {
+            "borderLeft": "none",
             "marginLeft": "0em",
+            "paddingLeft": "0em",
           }
         }
       >
@@ -608,7 +620,9 @@ Array [
         className="group"
         style={
           Object {
+            "borderLeft": "none",
             "marginLeft": "0em",
+            "paddingLeft": "0em",
           }
         }
       >
@@ -723,7 +737,9 @@ Array [
         className="group"
         style={
           Object {
+            "borderLeft": "none",
             "marginLeft": "0em",
+            "paddingLeft": "0em",
           }
         }
       >
@@ -838,7 +854,9 @@ Array [
         className="group"
         style={
           Object {
+            "borderLeft": "none",
             "marginLeft": "0em",
+            "paddingLeft": "0em",
           }
         }
       >

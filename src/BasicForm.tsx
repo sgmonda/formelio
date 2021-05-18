@@ -99,8 +99,9 @@ export class BasicForm<T> extends Component<TForm<T>, State<T>> {
               key={i}
               className={styles.group}
               style={{
-                // borderLeft: group.depth > 0 ? `solid 1px rgba(0, 0, 0, ${group.depth * 0.1})` : 'none',
-                marginLeft: `${group.depth}em`,
+                borderLeft: group.depth > 0 ? `solid 0.1em ${colors?.accent || Colors.ACCENT}20` : 'none',
+                marginLeft: `${group.depth > 0 ? 0.5 + (group.depth - 1) : 0}em`,
+                paddingLeft: `${group.depth > 0 ? 0.5 : 0}em`,
               }}
             >
               {group.fields.map((field) => (
@@ -159,7 +160,7 @@ function getField<T>(field: any, value: any, onChange: any, colors?: TColors) {
 const renderLabel = (field: TField<any, any>, colors: TForm<any>['colors']) => {
   return (
     <Fragment>
-      <label style={{ color: colors?.accent || Colors.ACCENT }}>{field.label}</label>
+      <label style={{ color: colors?.accent || Colors.ACCENT }}>{field.label}:</label>
       {field.help && (
         <p style={{ fontSize: 'small' }}>
           <Markdown text={field.help} inline />
