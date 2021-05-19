@@ -1,4 +1,5 @@
 export const clone = <T>(obj: any): T => {
+  if (!obj) return obj;
   if (Array.isArray(obj)) return obj.map(clone) as any;
   if (obj instanceof Date) return new Date(obj) as any;
   if (typeof obj === 'function') return obj;
