@@ -14,7 +14,7 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
   constructor(props: TForm<T>) {
     super(props);
     this.state = {
-      fields: getInconditionalFields<T>(props.fields), // We don't know which fields should be shown (some of them may include "when" property)
+      fields: getInconditionalFields<T>(props.fields),
       isValid: false,
       value: flatten(props.value || {}) as any,
     };
@@ -72,6 +72,13 @@ async function cleanFields<T>(
       isPresent = true;
     }
     if (!isPresent) return;
+
+    if (f.validator) {
+      const validator = f.validator;
+      f.validator = (value: any, formValue: any) => {
+        return validator(value, unflatten(formValue));
+      };
+    }
 
     if (!f.fields) {
       nextFields.push(f as any);

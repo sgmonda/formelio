@@ -1,11 +1,13 @@
 export const clone = <T>(obj: any): T => {
   if (Array.isArray(obj)) return obj.map(clone) as any;
-  const copy = JSON.parse(JSON.stringify(obj));
+  if (obj instanceof Date) return new Date(obj) as any;
+  if (typeof obj === 'function') return obj;
   if (typeof obj === 'object') {
+    const copy = {};
     Object.entries(obj).forEach(([key, val]) => {
-      if (typeof val === 'function') copy[key] = val;
-      if (val instanceof Date) copy[key] = new Date(val);
+      copy[key] = clone(val);
     });
+    return copy as any;
   }
-  return copy;
+  return JSON.parse(JSON.stringify(obj));
 };

@@ -923,3 +923,221 @@ Array [
   </pre>,
 ]
 `;
+
+exports[`Storyshots Validation Passwords Equality 1`] = `
+Array [
+  <div
+    className="formelio"
+  >
+    <form
+      id="myformid"
+    >
+      <div
+        className="group"
+        style={
+          Object {
+            "borderLeft": "none",
+            "marginLeft": "0em",
+            "paddingLeft": "0em",
+          }
+        }
+      >
+        <div
+          className="fieldWrapper"
+          style={
+            Object {
+              "flexBasis": "50%",
+            }
+          }
+        >
+          <div
+            className="field"
+          >
+            <input
+              className=""
+              id="myformid#password"
+              name="password"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onFocus={[Function]}
+              required={true}
+              style={
+                Object {
+                  "borderColor": "inherit",
+                  "color": "inherit",
+                }
+              }
+              type="password"
+              value=""
+            />
+            <label
+              className="isEmpty"
+              htmlFor="myformid#password"
+              style={
+                Object {
+                  "color": "inherit",
+                }
+              }
+            >
+              <span
+                style={
+                  Object {
+                    "flex": 1,
+                  }
+                }
+              >
+                 
+                password
+                 
+                <span>
+                  *
+                </span>
+              </span>
+            </label>
+          </div>
+        </div>
+        <div
+          className="fieldWrapper"
+          style={
+            Object {
+              "flexBasis": "50%",
+            }
+          }
+        >
+          <div
+            className="field"
+          >
+            <input
+              className=""
+              id="myformid#password2"
+              name="password2"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onFocus={[Function]}
+              required={true}
+              style={
+                Object {
+                  "borderColor": "inherit",
+                  "color": "inherit",
+                }
+              }
+              type="password"
+              value=""
+            />
+            <label
+              className="isEmpty"
+              htmlFor="myformid#password2"
+              style={
+                Object {
+                  "color": "inherit",
+                }
+              }
+            >
+              <span
+                style={
+                  Object {
+                    "flex": 1,
+                  }
+                }
+              >
+                 
+                password2
+                 
+                <span>
+                  *
+                </span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>,
+  <pre>
+    {
+  "isValid": false,
+  "value": {}
+}
+  </pre>,
+]
+`;
+
+exports[`Storyshots Validation Passwords Equality Deep 1`] = `
+Array [
+  <div
+    className="formelio"
+  >
+    <form
+      id="myformid"
+    >
+      <div
+        className="group"
+        style={
+          Object {
+            "borderLeft": "none",
+            "marginLeft": "0em",
+            "paddingLeft": "0em",
+          }
+        }
+      >
+        <div
+          className="fieldWrapper"
+          style={
+            Object {
+              "flexBasis": "100%",
+            }
+          }
+        >
+          <div
+            className="field"
+          >
+            <input
+              className=""
+              id="myformid#user"
+              name="user"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onFocus={[Function]}
+              style={
+                Object {
+                  "borderColor": "inherit",
+                  "color": "inherit",
+                }
+              }
+              type="text"
+              value=""
+            />
+            <label
+              className="isEmpty"
+              htmlFor="myformid#user"
+              style={
+                Object {
+                  "color": "inherit",
+                }
+              }
+            >
+              <span
+                style={
+                  Object {
+                    "flex": 1,
+                  }
+                }
+              >
+                 
+                user
+                 
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>,
+  <pre>
+    {
+  "isValid": false,
+  "value": {}
+}
+  </pre>,
+]
+`;
