@@ -55,8 +55,8 @@ function getInconditionalFields<T>(fields: TForm<T>['fields']): TForm<T>['fields
 
 // eslint-disable-next-line complexity
 async function cleanFields<T>(
-  fields: TForm<T>['fields'],
-  formValue?: Partial<T>,
+  fields: any, // This cannot be just TForm<T>['fields'] because cleanFields() is called recursivelly
+  formValue: Partial<T> = {},
   depth: number = 0
 ): Promise<TForm<T>['fields']> {
   let nextFields: TForm<T>['fields'] = [];
@@ -65,7 +65,7 @@ async function cleanFields<T>(
   const insertField = async (f: TField<any, any>) => {
     let isPresent = false;
     if (f.when) {
-      const promises = f.when.map((condition) => condition(formValue || {}));
+      const promises = f.when.map((condition) => condition(unflatten(formValue) || {}));
       const partials = await Promise.all(promises);
       isPresent = partials.every((re) => !!re);
     } else {
@@ -85,7 +85,7 @@ async function cleanFields<T>(
       return;
     }
 
-    let subfields = await cleanFields(f.fields || [], formValue?.[f.name as any] || {}, (f.depth || 0) + 1);
+    let subfields = await cleanFields(f.fields || [], formValue, (f.depth || 0) + 1);
 
     if (f.length) {
       const length = f.length(formValue || {});
