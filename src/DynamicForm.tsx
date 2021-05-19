@@ -18,7 +18,9 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
       isValid: false,
       value: flatten(props.value || {}) as any,
     };
-    cleanFields(props.fields, this.state.value).then((fields) => this.isMounted && this.setState({ fields }));
+    cleanFields(props.fields, this.state.value).then((fields: any) => {
+      return this.isMounted && this.setState({ fields });
+    });
   }
 
   private onChange: TForm<T>['onChange'] = async (value, isValid) => {
