@@ -14,7 +14,7 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
   constructor(props: TForm<T>) {
     super(props);
     this.state = {
-      fields: props.fields,
+      fields: getInconditionalFields<T>(props.fields), // We don't know which fields should be shown (some of them may include "when" property)
       isValid: false,
       value: flatten(props.value || {}) as any,
     };
@@ -45,6 +45,12 @@ export class Form<T> extends Component<TForm<T>, State<T>> {
       </Fragment>
     );
   };
+}
+
+function getInconditionalFields<T>(fields: TForm<T>['fields']): TForm<T>['fields'] {
+  return fields
+    .filter((f) => !f.when)
+    .map((f) => (f.fields ? { ...f, fields: getInconditionalFields<any>(f.fields) } : f));
 }
 
 // eslint-disable-next-line complexity
