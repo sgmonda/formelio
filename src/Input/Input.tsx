@@ -41,7 +41,7 @@ const CommonInput = (props: TInputProps<string>) => {
         [styles.hasHint]: props.hasHint,
       })}
       style={{ borderColor: props.borderColor, color }}
-      autoComplete={props.autocomplete}
+      autoComplete={props.autocomplete || props.name?.split('.').pop()}
       type={props.type || 'text'}
       value={props.value || ''}
       onFocus={props.onFocus}

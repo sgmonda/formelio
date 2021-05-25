@@ -121,6 +121,7 @@ Array [
             className="field"
           >
             <input
+              autoComplete="myfield"
               className=""
               id="myformid#myfield"
               name="myfield"
@@ -200,6 +201,7 @@ Array [
             className="field"
           >
             <input
+              autoComplete="myfield"
               className="hasHint"
               id="myformid#myfield"
               name="myfield"
@@ -313,6 +315,7 @@ Array [
             className="field"
           >
             <input
+              autoComplete="myfield"
               className=""
               id="myformid#myfield"
               name="myfield"
@@ -417,6 +420,7 @@ Array [
             className="field"
           >
             <input
+              autoComplete="myfield"
               className="hasHint"
               id="myformid#myfield"
               name="myfield"
@@ -555,6 +559,7 @@ Array [
             className="field"
           >
             <input
+              autoComplete="myfield"
               className=""
               id="myformid#myfield"
               name="myfield"
@@ -638,6 +643,7 @@ Array [
             className="field"
           >
             <input
+              autoComplete="myfield"
               className="hasHint"
               id="myformid#myfield"
               name="myfield"
@@ -755,6 +761,7 @@ Array [
             className="field"
           >
             <input
+              autoComplete="myfield"
               className="hasHint"
               id="myformid#myfield"
               name="myfield"
@@ -872,6 +879,7 @@ Array [
             className="field"
           >
             <input
+              autoComplete="myfield"
               className=""
               id="myformid#myfield"
               name="myfield"
@@ -954,6 +962,7 @@ Array [
             className="field"
           >
             <input
+              autoComplete="password"
               className=""
               id="myformid#password"
               name="password"
@@ -1008,6 +1017,7 @@ Array [
             className="field"
           >
             <input
+              autoComplete="password2"
               className=""
               id="myformid#password2"
               name="password2"
@@ -1092,6 +1102,7 @@ Array [
             className="field"
           >
             <input
+              autoComplete="user"
               className=""
               id="myformid#user"
               name="user"

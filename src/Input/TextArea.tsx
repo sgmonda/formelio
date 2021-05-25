@@ -32,7 +32,7 @@ const TextArea = (props: TInputProps<string>) => {
         [styles.hasHint]: props.hasHint,
       })}
       style={{ borderColor: props.borderColor, color: 'inherit' }}
-      autoComplete={props.autocomplete}
+      autoComplete={props.autocomplete || props.name?.split('.').pop()}
       value={props.value || ''}
       onFocus={props.onFocus}
       onBlur={props.onBlur}
