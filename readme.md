@@ -1,4 +1,4 @@
-![logo](https://user-images.githubusercontent.com/675812/123747326-13ed5a80-d8b3-11eb-9fab-78a085d65aa4.jpg)
+![logo](https://user-images.githubusercontent.com/675812/123748412-75fa8f80-d8b4-11eb-98e5-30b491fe822b.png)
 
 Forms for human beings
 
