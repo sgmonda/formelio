@@ -1,3 +1,5 @@
+![logo](https://user-images.githubusercontent.com/675812/123747326-13ed5a80-d8b3-11eb-9fab-78a085d65aa4.jpg)
+
 Forms for human beings
 
 [![NPM](https://img.shields.io/npm/v/formelio.svg)](https://www.npmjs.com/package/formelio) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
