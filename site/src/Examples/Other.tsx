@@ -12,6 +12,13 @@ Perfect for huge lists of items, helping users to find the proper list item.
 type TValue = {
   city: string;
   cities: string[];
+  domicilio: {
+    direccion: string;
+    provincia: string;
+    localidad: string;
+    codigoPostal: string;
+    other: { a: string; b: string };
+  };
 };
 
 type Props = {
@@ -48,6 +55,16 @@ const fields: TForm<TValue>['fields'] = [
   {
     help: 'This is a help message, shown only when there are exactly two cities selected',
     when: [(formValue: Partial<TValue>) => formValue?.cities?.length === 2],
+  },
+  {
+    name: 'domicilio',
+    fields: [
+      { name: 'direccion', required: true },
+      { name: 'provincia', required: true, size: 0.3 },
+      { name: 'localidad', required: true, size: 0.3 },
+      { name: 'codigoPostal', required: true, size: 0.3 },
+      { name: 'other', fields: [{ name: 'a' }, { name: 'b' }] },
+    ],
   },
 ];
 
