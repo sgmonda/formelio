@@ -17,8 +17,11 @@ const App = () => {
         <Markdown text={Definitions} />
       </section> */}
       <section className="content">
-        <h2>Examples</h2>
-        <p>The best way to learn is by example, so here are some cool use cases to see how to use Formelio.</p>
+        <h2>Formelio by example</h2>
+        <p>
+          The best way to learn is by example, so here are some cool use cases to see how to use{' '}
+          <a href="https://github.com/sgmonda/formelio/">Formelio</a>.
+        </p>
         <Examples />
       </section>
     </div>

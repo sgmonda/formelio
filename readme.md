@@ -4,8 +4,6 @@ Forms for human beings
 
 [![NPM](https://img.shields.io/npm/v/formelio.svg)](https://www.npmjs.com/package/formelio) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-See https://sgmonda.github.io/formelio/ for documentation and usage examples.
-
 # Installation
 
 To use `Formelio` from a [React](https://reactjs.org) component, just install it with your favorite package manager (like [NPM](https://www.npmjs.com)):
@@ -30,7 +28,7 @@ export const MyForm = () => {
 };
 ```
 
-Go to https://sgmonda.github.io/formelio/ to see this and other usage examples working.
+Go to [https://sgmonda.com/formelio/](https://sgmonda.com/formelio/) to see this and other usage examples working.
 
 ## Form properties
 
@@ -77,7 +75,7 @@ For complex fields (those with fields inside), there are additional properties:
 | `length` | no       | Function to compute the amount of items in the list | `() => 0` |
 | `fields` | no       | Subfields list                                      | `[]`      |
 
-Take a look at [examples page](https://sgmonda.com/formelio) to see all this in action.
+Take a look at [examples page](https://sgmonda.github.io/formelio/) to see all this in action.
 
 ### onChange()
 
@@ -171,4 +169,4 @@ $ npm run site:deploy
 
 # License
 
-GPL-3.0 © [Sergio Garcia Mondaray](https://sgmonda.com)
+Feel free to use this project as you need, always under the terms of [MIT license](./license.md).
