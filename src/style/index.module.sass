@@ -158,12 +158,6 @@
     transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s
     transition-delay: background-color 5000s, color 5000s
 
-.datepicker,
-.datepicker > div
-  width: 100%
-  input
-    width: 100%
-
 .checkbox
   margin-top: 1.25 * $unit
   // border-bottom: $unit * 0.13 solid $color-input
@@ -211,3 +205,19 @@
 
 .hint[data-popper-placement^='right'] > .arrow
   left: -0.25em
+
+.datepicker,
+.datepicker > div
+  width: 100%
+  input
+    width: 100%
+
+.datepicker
+  .header
+    display: flex
+    justify-content: center
+    padding: 0 0.5em !important
+    select
+      margin: 0.1em
+      padding: 0.25em 0.5em
+      border-radius: 2px

@@ -112,6 +112,7 @@
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "@fortawesome/react-fontawesome": "0.1.14",
     "@popperjs/core": "^2.9.2",
+    "date-fns": "^2.22.1",
     "faker": "^5.5.3",
     "lodash": "^4.17.21",
     "react-datepicker": "3.6.0",
