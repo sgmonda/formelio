@@ -1,21 +1,21 @@
-import React from 'react';
-import ReactMarkdownWithHtml from 'react-markdown/with-html';
-
-const LinkRenderer = (props: any) => (
-  <a href={props.href} target="_blank" rel="noopener noreferrer">
-    {props.children}
-  </a>
-);
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 
 const Markdown = (props: { text: string; inline?: boolean }) => (
-  <ReactMarkdownWithHtml
-    disallowedTypes={props.inline ? ['paragraph'] : []}
-    allowDangerousHtml
+  <ReactMarkdown
+    rehypePlugins={[rehypeRaw]}
     unwrapDisallowed
-    renderers={{ link: LinkRenderer }}
+    disallowedElements={props.inline ? ['p'] : []}
+    components={{
+      a: ({ href, children }) => (
+        <a href={href} target="_blank" rel="noopener noreferrer">
+          {children}
+        </a>
+      ),
+    }}
   >
     {props.text}
-  </ReactMarkdownWithHtml>
+  </ReactMarkdown>
 );
 
 export default Markdown;

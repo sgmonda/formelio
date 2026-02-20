@@ -4,7 +4,7 @@
     "module": "esnext",
     "lib": ["dom", "esnext"],
     "moduleResolution": "node",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "sourceMap": true,
     "declaration": true,
     "esModuleInterop": true,
@@ -16,7 +16,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es5",
+    "target": "es2020",
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -27,5 +27,5 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src", "types.d.ts"],
-  "exclude": ["node_modules", "build"]
+  "exclude": ["node_modules", "build", "dist"]
 }

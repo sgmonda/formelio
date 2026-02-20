@@ -1,4 +1,4 @@
-@import './theme.sass'
+@use './theme.sass' as *
 
 .formelio
   form
@@ -69,7 +69,7 @@
     white-space: nowrap
     text-overflow: ellipsis
     overflow: hidden
-    whitespace: nowrap
+    white-space: nowrap
     opacity: 0.75
     display: flex
 
@@ -162,7 +162,7 @@
   margin-top: 1.25 * $unit
   // border-bottom: $unit * 0.13 solid $color-input
   padding-bottom: 0.2 * $unit
-  line-heigth: 1 * $unit
+  line-height: 1 * $unit
   border-bottom: solid 0.15 * $unit
   position: relative
 

@@ -16,7 +16,7 @@
     "build": "tsup",
     "lint": "eslint --fix -c .eslintrc . --ext .tsx,.ts --ignore-path .eslintignore",
     "dev": "tsup --watch",
-    "dev:site": "npm run site:build && cd site && npm start",
+    "dev:site": "npm run build && cd site && npm install && npm run dev",
     "dev:test": "vitest",
     "prepare": "husky",
     "test": "npm run lint && npm run test:unit",
@@ -25,7 +25,7 @@
     "predeploy": "cd site && npm install && npm run build",
     "site": "npm run site:build && npm run site:deploy",
     "site:build": "cd site && npm install && npm run build",
-    "site:deploy": "gh-pages -d site/build",
+    "site:deploy": "gh-pages -d site/dist",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
