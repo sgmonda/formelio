@@ -34,7 +34,7 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - if: steps.version.outputs.changed == 'true'
-        run: npm ci
+        run: npm i
 
       - if: steps.version.outputs.changed == 'true'
         run: npm test
