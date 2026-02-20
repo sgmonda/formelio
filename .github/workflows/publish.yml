@@ -40,6 +40,9 @@ jobs:
         run: npm test
 
       - if: steps.version.outputs.changed == 'true'
+        run: npm run build
+
+      - if: steps.version.outputs.changed == 'true'
         run: |
           echo "Publishing ${{ steps.version.outputs.current }} (was ${{ steps.version.outputs.published }})"
           npm publish --provenance --access public

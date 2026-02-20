@@ -1,6 +1,6 @@
 {
   "name": "formelio",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Forms for humans",
   "author": "Sergio Garcia Mondaray <sgmonda@gmail.com> (https://sgmonda.com)",
   "license": "MIT",
@@ -40,6 +40,7 @@
     "dev:site": "npm run build && cd site && npm install && npm run dev",
     "dev:test": "vitest",
     "prepare": "husky",
+    "prepublishOnly": "npm run build",
     "test": "npm run lint && npm run test:unit",
     "test:unit": "vitest run",
     "test:unit:reset": "vitest run --update",
