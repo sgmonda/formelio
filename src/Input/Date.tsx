@@ -8,16 +8,17 @@ import { range } from 'lodash';
 import { getMonth, getYear, setMonth, setYear } from 'date-fns';
 import { getMonthList } from '../modules/getMonthList';
 
+const DatePickerWrapperStyles = createGlobalStyle<{ $borderColor?: string }>`
+  .date_picker {
+    width: 100%
+  }
+  .date_picker input {
+    color: inherit;
+    border-color: ${(p) => p.$borderColor};
+  }
+`;
+
 const DateInput = (props: TInputProps<Date>) => {
-  const DatePickerWrapperStyles = createGlobalStyle`
-    .date_picker {
-      width: 100%
-    }
-    .date_picker input {
-      color: inherit;
-      border-color: ${props.borderColor};
-    }
-  `;
   const onChange = (date: Date | null) => {
     if (!date) return;
     props.onChange(date);
@@ -73,7 +74,7 @@ const DateInput = (props: TInputProps<Date>) => {
         popperPlacement="bottom-start"
         renderCustomHeader={renderCustomHeader}
       />
-      <DatePickerWrapperStyles />
+      <DatePickerWrapperStyles $borderColor={props.borderColor} />
     </div>
   );
 };
