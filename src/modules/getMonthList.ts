@@ -1,4 +1,4 @@
-import { range } from 'lodash';
+import { range } from './range';
 
 export const getMonthList = (locales?: string | string[], format: 'long' | 'short' = 'long'): string[] => {
   const year = new Date().getFullYear(); // 2020

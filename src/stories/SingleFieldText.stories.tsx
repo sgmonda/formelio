@@ -55,7 +55,7 @@ export const EmptyAndNonRequiredWithIcon = CaseTemplate.bind({});
 EmptyAndNonRequiredWithIcon.args = {
   fields: [
     {
-      icon: 'user',
+      icon: <span aria-hidden="true">👤</span>,
       name: 'myfield',
     },
   ],
@@ -66,7 +66,7 @@ EmptyAndNonRequiredWithIconAndHelp.args = {
   fields: [
     {
       help: 'This is a help message, **this *supports* markdown**',
-      icon: 'user',
+      icon: <span aria-hidden="true">👤</span>,
       name: 'myfield',
     },
   ],

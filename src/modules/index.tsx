@@ -4,3 +4,5 @@ export * from './clone';
 export * from './getBorderColor';
 export * from './unflatten';
 export * from './validateDNI';
+export * from './debounce';
+export * from './range';

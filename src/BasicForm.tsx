@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './style/index.module.sass';
 import { Field, FieldHandle } from './Field';
@@ -6,7 +5,7 @@ import { TColors, TField, TForm } from './types';
 import Colors from './Colors';
 import cl from 'classnames';
 import Markdown from './Markdown';
-import { clone } from './modules';
+import { clone, debounce } from './modules';
 import { useIsMounted } from './hooks/useIsMounted';
 
 const genId = (field: TField<any, any>) => field.name || 'noname';
@@ -36,7 +35,7 @@ export function BasicForm<T>(props: TForm<T>) {
 
   const propagateOnChange = useMemo(
     () =>
-      _.debounce(() => {
+      debounce(() => {
         const isValid = !Object.values(validityRef.current).some((b) => !b);
         props.onChange(valueRef.current, isValid);
       }, props.delay || 500),

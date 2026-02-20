@@ -4,7 +4,7 @@ import './Date.module.css';
 import styles from '../style/index.module.sass';
 import { createGlobalStyle } from 'styled-components';
 import { TInputProps } from '../types';
-import { range } from 'lodash';
+import { range } from '../modules/range';
 import { getMonth, getYear, setMonth, setYear } from 'date-fns';
 import { getMonthList } from '../modules/getMonthList';
 

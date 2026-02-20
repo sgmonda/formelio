@@ -6,33 +6,51 @@ Forms for human beings
 
 # Installation
 
-To use `Formelio` from a [React](https://reactjs.org) component, just install it with your favorite package manager (like [NPM](https://www.npmjs.com)):
-
 ```bash
-npm install --save formelio
+npm install formelio react react-dom styled-components
 ```
+
+`react`, `react-dom` and `styled-components` are peer dependencies and must be installed in your project.
 
 # Usage
 
-Once installed, you'll be able to import and use it from your Javascript/Typescript code. Here's a simple example of a simple login form, without validation or password hiding (please, don't do this in production 😜):
-
-```javascript
+```tsx
 import React, { useState } from 'react';
 import { Form } from 'formelio';
-import 'formelio/dist/index.css';
+import 'formelio/styles.css';
 
 export const MyForm = () => {
   const [value, onChange] = useState({});
-  const fields = [{ name: 'email' }, { name: 'password' }];
+  const fields = [{ name: 'email' }, { name: 'password', type: 'password' }];
   return <Form {...{ fields, value, onChange }} />;
 };
 ```
 
-Go to [https://sgmonda.com/formelio/](https://sgmonda.com/formelio/) to see this and other usage examples working.
+> **Important:** You must import the CSS file (`formelio/styles.css`) for the form to render correctly. Alternatively, you can use `formelio/dist/index.css`.
+
+Go to [https://sgmonda.com/formelio/](https://sgmonda.com/formelio/) to see more usage examples.
+
+## TypeScript
+
+Formelio exports generic types to provide full type safety:
+
+```tsx
+import { Form, TForm, TField } from 'formelio';
+
+type MyValues = { email: string; age: number };
+
+const fields: TForm<MyValues>['fields'] = [
+  { name: 'email', type: 'text', required: true },
+  { name: 'age', type: 'number' },
+];
+
+const MyForm = () => {
+  const [value, setValue] = useState<Partial<MyValues>>({});
+  return <Form<MyValues> fields={fields} value={value} onChange={(v) => setValue(v)} />;
+};
+```
 
 ## Form properties
-
-A form requires the following main properties:
 
 | Property   | Required | Description                                                       | Default                                   |
 | ---------- | -------- | ----------------------------------------------------------------- | ----------------------------------------- |
@@ -44,19 +62,6 @@ A form requires the following main properties:
 
 ### Fields
 
-It is a list (`Array`) of field definitions. A field definition is a plain object where field properties are defined. Example:
-
-```
-<Form
-  ...
-  fields={[
-    { name: 'firstName', type: 'text', required: true },
-    { name: 'age', type: 'number' },
-  ]}
-  ...
-/>
-```
-
 | Property    | Required | Description                                                                                                   | Default  |
 | ----------- | -------- | ------------------------------------------------------------------------------------------------------------- | -------- |
 | `name`      | yes      | Field name                                                                                                    | -        |
@@ -64,30 +69,93 @@ It is a list (`Array`) of field definitions. A field definition is a plain objec
 | `required`  | no       | If the a value is mandatory                                                                                   | false    |
 | `type`      | no       | Input type: `"text"`, `"text-multiline"`, `"number"`, `"date"`, `"select"`, `"tags"`, `"check"`, `"password"` | `"text"` |
 | `size`      | no       | Percentage of row width to be used as field width, in range [0, 1]                                            | 1        |
-| `icon`      | no       | Icon to be shown (from [fontawesome](https://fontawesome.com/icons))                                          | -        |
+| `icon`      | no       | Icon to display — accepts any `ReactNode` (see [Icons](#icons))                                               | -        |
 | `validator` | no       | Function that validates provided value                                                                        | -        |
 | `when`      | no       | List of conditions to show/hide the field                                                                     | -        |
+| `help`      | no       | Help text shown on focus (supports basic markdown)                                                            | -        |
 
-For complex fields (those with fields inside), there are additional properties:
+For complex fields (those with fields inside):
 
 | Property | Required | Description                                         | Default   |
 | -------- | -------- | --------------------------------------------------- | --------- |
 | `length` | no       | Function to compute the amount of items in the list | `() => 0` |
 | `fields` | no       | Subfields list                                      | `[]`      |
 
-Take a look at [examples page](https://sgmonda.github.io/formelio/) to see all this in action.
+### Icons
 
-### onChange()
+The `icon` field accepts any React node, so you can use any icon library:
 
-It is a change event handler, that will be called when the form is modified. It also receives a validation state, according with `required` properties and custom validators (see next section). Example:
+```tsx
+// With an emoji
+{ name: 'email', icon: '📧' }
 
+// With a custom SVG
+{ name: 'email', icon: <MyEmailIcon /> }
+
+// With any icon library (e.g. lucide-react, react-icons, etc.)
+import { Mail } from 'lucide-react';
+{ name: 'email', icon: <Mail size={16} /> }
 ```
+
+### Conditional fields (`when`)
+
+Fields can be shown/hidden based on form values:
+
+```tsx
+const fields = [
+  { name: 'hasAddress', type: 'check', label: 'Add address?' },
+  { name: 'address', when: [(v) => !!v.hasAddress] },
+];
+```
+
+### Nested and dynamic fields
+
+```tsx
+const fields = [
+  {
+    label: 'Addresses',
+    length: (v) => v.addressCount || 0,
+    fields: [{ name: 'street' }, { name: 'city' }],
+  },
+];
+```
+
+### Custom validators
+
+```tsx
+const fields = [
+  {
+    name: 'age',
+    type: 'number',
+    validator: (value) => {
+      if (value < 18) return ['Must be at least 18'];
+      return [];
+    },
+  },
+];
+```
+
+### Theme / Colors
+
+Customize colors via the `colors` prop (`TColors`):
+
+```tsx
 <Form
-  ...
-  onChange={ (value, isValid) => { /* Do whatever you want */ } }
-  ...
+  colors={{ accent: '#5196D5', error: '#D65947', base: '#333' }}
+  fields={fields}
+  value={value}
+  onChange={onChange}
 />
 ```
+
+## Compatibility
+
+| Dependency        | Supported versions   |
+| ----------------- | -------------------- |
+| React             | ^18.0.0 \|\| ^19.0.0 |
+| react-dom         | ^18.0.0 \|\| ^19.0.0 |
+| styled-components | ^5.2.1 \|\| ^6.0.0   |
+| Node.js           | >= 18                |
 
 # Contributing
 
@@ -96,75 +164,56 @@ It is a change event handler, that will be called when the form is modified. It 
 This project uses git hooks for:
 
 - Commit message format: see https://www.conventionalcommits.org/
-- Linting, formating and testing before commiting
+- Linting, formatting and testing before committing
 
 ### Storybook
 
-To play with individual components and see usage cases, you can run [Storybook](https://storybook.js.org) as follows:
+To play with individual components and see usage cases:
 
 ```
-$ npm run storybook
+npm run storybook
 ```
 
 ### Development
 
-Clone this repository and run the following:
+Clone this repository and run:
 
 ```
-$ npm i
+npm i
 ```
 
 Then open 3 terminals:
 
-- Terminal 1: Open dev server, to compile and bundle everything on every change:
+- Terminal 1: Dev server (watch + compile):
 
   ```
-  $ npm run dev
+  npm run dev
   ```
 
-- Terminal 2: Open test watcher, to run tests on every change:
+- Terminal 2: Test watcher:
 
   ```
-  $ npm run dev:test
+  npm run dev:test
   ```
 
-- Terminal 3: Serve (watching) the example
+- Terminal 3: Serve the example site:
 
   ```
-  $ npm run dev:site
+  npm run dev:site
   ```
-
-#### Note about react link
-
-To prevent `Invalid hook call` error during development of another app using formelio as file dependency, I mean:
-
-```
-// path/to/myOtherProject/package.json
-
-"dependencies": {
-  "formelio": "path/to/formelio",
-}
-```
-
-We should link react version from formelio project. Example:
-
-```
-$ npm link path/to/myOtherProject/node_modules/react-dom
-$ cd path/to/myOtherProject/ && npm i
-```
 
 ### Deployment
 
 To publish on npm:
 
 ```
-$ npm publish
+npm publish
 ```
 
 To update gh pages:
 
 ```
-$ npm run site:deploy
+npm run site:deploy
 ```
 
 # License

@@ -1,3 +1,5 @@
+import React from 'react';
+
 export type FieldOption<T> = { value: T | string; label?: string } & { metadata?: any };
 
 export type TInput<T> = {
@@ -22,7 +24,7 @@ export type TField<T, F> = TInput<T> & {
   help?: string;
   label?: string;
   size?: number;
-  icon?: string; // Solid supported, search icon names in https://fontawesome.com/icons
+  icon?: React.ReactNode;
   name?: keyof F;
   validator?: TFieldValidator<T, F>;
   when?: TCondition<F>[];

@@ -14,10 +14,8 @@
     "json-stringify-pretty-compact": "^3.0.0",
     "classnames": "file:../node_modules/classnames",
     "react": "file:../node_modules/react",
-    "react-markdown": "file:../node_modules/react-markdown",
     "react-dom": "file:../node_modules/react-dom",
     "react-syntax-highlighter": "^15.4.3",
-    "rehype-raw": "file:../node_modules/rehype-raw",
     "styled-components": "file:../node_modules/styled-components"
   },
   "devDependencies": {

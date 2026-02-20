@@ -1,21 +1,10 @@
-import ReactMarkdown from 'react-markdown';
-import rehypeRaw from 'rehype-raw';
+const Markdown = (props: { text: string; inline?: boolean }) => {
+  const html = props.text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
 
-const LinkRenderer = (props: any) => (
-  <a href={props.href} target="_blank" rel="noopener noreferrer">
-    {props.children}
-  </a>
-);
-
-const Markdown = (props: { text: string; inline?: boolean }) => (
-  <ReactMarkdown
-    disallowedElements={props.inline ? ['p'] : []}
-    unwrapDisallowed
-    rehypePlugins={[rehypeRaw]}
-    components={{ a: LinkRenderer }}
-  >
-    {props.text}
-  </ReactMarkdown>
-);
+  return <span dangerouslySetInnerHTML={{ __html: html }} />;
+};
 
 export default Markdown;

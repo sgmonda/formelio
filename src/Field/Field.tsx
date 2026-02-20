@@ -3,7 +3,7 @@ import styles from '../style/index.module.sass';
 import { TFieldProps, TFieldState } from '../types';
 import cl from 'classnames';
 import Input from '../Input';
-import Icon from '../Icon';
+import { HelpIcon, WarningIcon } from '../Icon';
 import COLORS from '../Colors';
 import Hint from './Hint';
 import { getBorderColor } from '../modules';
@@ -52,8 +52,7 @@ function FieldInner<T, F>(props: Props<T, F>, ref: React.Ref<FieldHandle>) {
   const prevFormValueRef = useRef(props.formValue);
   useEffect(() => {
     const shouldReset =
-      Object.keys(prevFormValueRef.current || {}).length &&
-      !Object.keys(props.formValue || {}).length;
+      Object.keys(prevFormValueRef.current || {}).length && !Object.keys(props.formValue || {}).length;
     prevFormValueRef.current = props.formValue;
     if (shouldReset) {
       setIsDirty(false);
@@ -95,7 +94,7 @@ function FieldInner<T, F>(props: Props<T, F>, ref: React.Ref<FieldHandle>) {
         })}
         style={{ color }}
       >
-        <Icon id={isError ? 'exclamation-triangle' : 'question-circle'} />
+        {isError ? <WarningIcon /> : <HelpIcon />}
       </div>
     );
   };
@@ -134,13 +133,10 @@ function FieldInner<T, F>(props: Props<T, F>, ref: React.Ref<FieldHandle>) {
         htmlFor={id}
       >
         <span style={{ flex: 1 }}>
-          {icon && <Icon id={icon} />}
-          {' '}<Markdown inline text={label || name || ''} />
-          {' '}{required && <span>*</span>}
+          {icon && <span style={{ fontSize: 'small', marginRight: '0.25em' }}>{icon}</span>}{' '}
+          <Markdown inline text={label || name || ''} /> {required && <span>*</span>}
         </span>
-        {Array.isArray(value) && !!value.length && (
-          <span>({value.length})</span>
-        )}
+        {Array.isArray(value) && !!value.length && <span>({value.length})</span>}
       </label>
     );
   };
@@ -151,10 +147,7 @@ function FieldInner<T, F>(props: Props<T, F>, ref: React.Ref<FieldHandle>) {
     if (isError) color = colors?.error || COLORS.ERROR;
     const borderStyle = getBorderColor({ isErrored: isError });
     return (
-      <div
-        className={`${styles.checkbox}`}
-        style={{ ...borderStyle, color, position: 'relative' }}
-      >
+      <div className={`${styles.checkbox}`} style={{ ...borderStyle, color, position: 'relative' }}>
         {renderInput()}{' '}
         <label htmlFor={id}>
           <Markdown inline text={label || name || ''} />

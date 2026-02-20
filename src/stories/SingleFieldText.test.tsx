@@ -16,7 +16,7 @@ TestCases.forEach((TestCase, i) =>
     for (const { name, label, required } of fields) {
       let labelText = label || name || '';
       if (required) labelText += ' *';
-      const elem = (await screen.findByLabelText(labelText)) as HTMLInputElement;
+      const elem = (await screen.findByLabelText(new RegExp(labelText))) as HTMLInputElement;
       expect(elem.value).toBe(props.value?.[name || ''] || '');
     }
   })
