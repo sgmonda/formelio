@@ -18,6 +18,8 @@ const CheckboxInput = (props: TInputProps<boolean>) => {
       autoComplete={props.autocomplete}
       type="checkbox"
       onChange={onChange}
+      onFocus={props.onFocus}
+      onBlur={props.onBlur}
       checked={!!props.value}
       value={''}
     />

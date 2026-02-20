@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { Form, TForm } from 'formelio';
+import { CalendarIcon, UserIcon, UsersIcon } from '../icons';
 
 const title = 'Dynamic form';
 
@@ -43,6 +44,7 @@ const initialState = {
 
 const fields: TForm<TValue>['fields'] = [
   {
+    icon: UsersIcon,
     name: 'childrenCount',
     type: 'number',
   },
@@ -50,8 +52,8 @@ const fields: TForm<TValue>['fields'] = [
     name: 'children',
     length: (formValue: Partial<TValue>) => formValue.childrenCount || 0,
     fields: [
-      { name: 'name', size: 0.5 },
-      { name: 'birthdate', type: 'date', size: 0.5 },
+      { icon: UserIcon, name: 'name', size: 0.5 },
+      { icon: CalendarIcon, name: 'birthdate', type: 'date', size: 0.5 },
     ],
   },
 ];

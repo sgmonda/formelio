@@ -1,6 +1,6 @@
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import styles from '../style/index.module.sass';
-import { TFieldProps, TFieldState } from '../types';
+import { TFieldProps } from '../types';
 import cl from 'classnames';
 import Input from '../Input';
 import { HelpIcon, WarningIcon } from '../Icon';
@@ -13,7 +13,6 @@ import { useIsMounted } from '../hooks/useIsMounted';
 const ERROR_HIDE_DELAY = 1000;
 
 export type Props<T, F> = TFieldProps<T, F>;
-type State<T> = TFieldState<T>;
 
 export type FieldHandle = {
   validate: () => void;
@@ -152,7 +151,7 @@ function FieldInner<T, F>(props: Props<T, F>, ref: React.Ref<FieldHandle>) {
         <label htmlFor={id}>
           <Markdown inline text={label || name || ''} />
         </label>
-        {isError && renderStateIcon()}
+        {(isError || help) && renderStateIcon()}
       </div>
     );
   };
@@ -161,7 +160,22 @@ function FieldInner<T, F>(props: Props<T, F>, ref: React.Ref<FieldHandle>) {
   const hasIcon = isError || help;
   const hasHint = hasIcon && isFocused;
 
-  if (type === 'check') return renderCheckbox();
+  if (type === 'check')
+    return (
+      <>
+        {renderCheckbox()}
+        {hasHint && (
+          <Hint<T, F>
+            {...props}
+            errors={errors}
+            isDirty={isDirty}
+            isFocused={isFocused}
+            isTyping={isTyping}
+            value={value}
+          />
+        )}
+      </>
+    );
 
   return (
     <div
@@ -188,6 +202,7 @@ function FieldInner<T, F>(props: Props<T, F>, ref: React.Ref<FieldHandle>) {
   );
 }
 
+// eslint-disable-next-line no-unused-vars
 export const Field = forwardRef(FieldInner) as <T, F>(
   props: Props<T, F> & { ref?: React.Ref<FieldHandle> }
 ) => ReturnType<typeof FieldInner>;

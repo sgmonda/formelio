@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, TForm } from 'formelio';
+import { LockIcon, MailIcon } from '../icons';
 
 const title = 'Basic form';
 
@@ -27,8 +28,8 @@ const Component = (props: Props) => {
 const initialState = {};
 
 const fields: TForm<TValue>['fields'] = [
-  { name: 'email', required: true },
-  { name: 'password', required: true, type: 'password' },
+  { icon: MailIcon, name: 'email', required: true },
+  { icon: LockIcon, name: 'password', required: true, type: 'password' },
   { name: 'accept', required: true, type: 'check', label: 'I accept [whatever](https://google.com)' },
 ];
 

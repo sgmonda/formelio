@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, TForm } from 'formelio';
+import { CalendarIcon, MailIcon, PhoneIcon, UserIcon } from '../icons';
 
 const title = 'Fields size';
 
@@ -33,30 +34,34 @@ const initialState = {};
 
 const fields: TForm<TValue>['fields'] = [
   {
+    icon: UserIcon,
     name: 'name',
     required: true,
     size: 0.3,
   },
   {
+    icon: UserIcon,
     name: 'surname1',
     size: 0.3,
   },
   {
+    icon: UserIcon,
     name: 'surname2',
     size: 0.3,
     help: 'Leave blank if you do not have a second surname',
   },
   {
-    icon: 'envelope',
+    icon: MailIcon,
     name: 'email',
   },
   {
-    icon: 'calendar',
+    icon: CalendarIcon,
     name: 'birthday',
     type: 'date',
     size: 0.5,
   },
   {
+    icon: PhoneIcon,
     name: 'phone',
     size: 0.5,
   },

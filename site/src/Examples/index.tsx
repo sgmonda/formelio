@@ -78,8 +78,19 @@ const Example = (props: any) => {
   );
 };
 
-const genSource = ({ fields, initialState }: typeof Basic.source) =>
-  `
+const cleanFields = (fields: any[]): any[] =>
+  fields.map((f) => {
+    const clean = { ...f };
+    if (clean.icon) clean.icon = '__ICON__';
+    if (clean.fields) clean.fields = cleanFields(clean.fields);
+    return clean;
+  });
+
+const genSource = ({ fields, initialState }: typeof Basic.source) => {
+  const fieldsStr = indent(stringify(cleanFields(fields), { indent: 2, maxLength: 80 }), 2)
+    .trim()
+    .replace(/"__ICON__"/g, '<Icon />');
+  return `
 import React, { useState } from 'react';
 import { Form } from 'formelio';
 
@@ -90,11 +101,12 @@ const MyForm = () => {
     setValue(value);
     setIsValid(isValid);
   };
-  const fields = ${indent(stringify(fields, { indent: 2, maxLength: 80 }), 2).trim()};
+  const fields = ${fieldsStr};
   return (
     <Form {...{fields, value, onChange}} />
   );
 }`.trim();
+};
 
 const indent = (code: string, level: number) =>
   code

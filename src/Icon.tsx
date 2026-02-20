@@ -23,7 +23,7 @@ export const WarningIcon = () => (
 );
 
 export const HelpIcon = () => (
-  <svg style={style} viewBox="0 0 512 512" fill="currentColor" aria-hidden="true">
+  <svg style={{ ...style }} viewBox="0 0 512 512" fill="currentColor" aria-hidden="true">
     <path d={helpPath} />
   </svg>
 );
