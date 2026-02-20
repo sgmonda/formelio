@@ -1,6 +1,6 @@
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import './Date.module.css';
+import './Date.css';
 import styles from '../style/index.module.sass';
 import { createGlobalStyle } from 'styled-components';
 import { TInputProps } from '../types';
