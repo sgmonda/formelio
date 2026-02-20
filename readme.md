@@ -1,105 +1,162 @@
 ![logo](https://user-images.githubusercontent.com/675812/123748412-75fa8f80-d8b4-11eb-98e5-30b491fe822b.png)
 
-Forms for human beings
+# Formelio
 
-[![NPM](https://img.shields.io/npm/v/formelio.svg)](https://www.npmjs.com/package/formelio) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+**Declarative React forms, built for humans.**
 
-# Installation
+Define your fields, pass your state — Formelio handles rendering, validation, conditional visibility, nested structures, and theming.
+
+[![NPM](https://img.shields.io/npm/v/formelio.svg)](https://www.npmjs.com/package/formelio)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./license.md)
+
+[Live demo & examples](https://sgmonda.com/formelio/)
+
+---
+
+## Getting started
+
+### 1. Install
 
 ```bash
-npm install formelio react react-dom styled-components
+npm install formelio
 ```
 
-`react`, `react-dom` and `styled-components` are peer dependencies and must be installed in your project.
+Formelio requires **React 18+** and **styled-components 5.2+** as peer dependencies. If your project doesn't include them yet:
 
-# Usage
+```bash
+npm install react react-dom styled-components
+```
+
+### 2. Import styles
+
+Formelio ships its own CSS that must be imported once in your application:
+
+```ts
+import 'formelio/styles.css';
+```
+
+### 3. Render a form
 
 ```tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Form } from 'formelio';
 import 'formelio/styles.css';
 
-export const MyForm = () => {
+const LoginForm = () => {
   const [value, onChange] = useState({});
-  const fields = [{ name: 'email' }, { name: 'password', type: 'password' }];
-  return <Form {...{ fields, value, onChange }} />;
+  return (
+    <Form
+      fields={[
+        { name: 'email', required: true },
+        { name: 'password', type: 'password', required: true },
+      ]}
+      value={value}
+      onChange={(v, isValid) => {
+        onChange(v);
+        if (isValid) console.log('Ready to submit', v);
+      }}
+    />
+  );
 };
 ```
 
-> **Important:** You must import the CSS file (`formelio/styles.css`) for the form to render correctly. Alternatively, you can use `formelio/dist/index.css`.
+That's it. No boilerplate, no manual wiring.
 
-Go to [https://sgmonda.com/formelio/](https://sgmonda.com/formelio/) to see more usage examples.
+---
 
-## TypeScript
+## Peer dependencies
 
-Formelio exports generic types to provide full type safety:
+Formelio is designed to integrate into any React project without imposing extra runtime dependencies beyond what most apps already use.
+
+| Dependency          | Required version       | Why                       |
+| ------------------- | ---------------------- | ------------------------- |
+| `react`             | `^18.0.0` or `^19.0.0` | Core rendering            |
+| `react-dom`         | `^18.0.0` or `^19.0.0` | DOM rendering             |
+| `styled-components` | `^5.2.1` or `^6.0.0`   | Dynamic styling & theming |
+
+> Formelio supports both ESM and CommonJS. The package exposes `main` (CJS), `module` (ESM), and full `exports` map with TypeScript declarations.
+
+---
+
+## TypeScript support
+
+Formelio is written in TypeScript and exports generic types for full type safety:
 
 ```tsx
-import { Form, TForm, TField } from 'formelio';
+import { Form, TForm } from 'formelio';
 
-type MyValues = { email: string; age: number };
+type UserData = { email: string; age: number };
 
-const fields: TForm<MyValues>['fields'] = [
+const fields: TForm<UserData>['fields'] = [
   { name: 'email', type: 'text', required: true },
   { name: 'age', type: 'number' },
 ];
 
-const MyForm = () => {
-  const [value, setValue] = useState<Partial<MyValues>>({});
-  return <Form<MyValues> fields={fields} value={value} onChange={(v) => setValue(v)} />;
+const UserForm = () => {
+  const [value, setValue] = useState<Partial<UserData>>({});
+  return <Form<UserData> fields={fields} value={value} onChange={(v) => setValue(v)} />;
 };
 ```
 
-## Form properties
+### Exported types
 
-| Property   | Required | Description                                                       | Default                                   |
-| ---------- | -------- | ----------------------------------------------------------------- | ----------------------------------------- |
-| `fields`   | yes      | Form inputs to include in the form                                | -                                         |
-| `onChange` | yes      | Change event handler, receiving form value and validity status    | -                                         |
-| `value`    | yes      | Current value for all (or some) inputs                            | `{}`                                      |
-| `delay`    | no       | Time to wait before triggering `onChange()` after an input change | 500ms                                     |
-| `colors`   | no       | Simple customization                                              | `{ accent: '#5196D5', error: '#D65947' }` |
+| Type              | Description                                             |
+| ----------------- | ------------------------------------------------------- |
+| `TForm<T>`        | Props for the `Form` component                          |
+| `TField<T, F>`    | Single field definition (value type `T`, form type `F`) |
+| `TColors`         | Theme customization: `{ base?, accent?, error? }`       |
+| `TInput<T>`       | Low-level input props                                   |
+| `TFieldValidator` | Validator function signature                            |
 
-### Fields
+---
 
-| Property    | Required | Description                                                                                                   | Default  |
-| ----------- | -------- | ------------------------------------------------------------------------------------------------------------- | -------- |
-| `name`      | yes      | Field name                                                                                                    | -        |
-| `label`     | no       | Field label for humans. If not provided, `name` is used                                                       | -        |
-| `required`  | no       | If the a value is mandatory                                                                                   | false    |
-| `type`      | no       | Input type: `"text"`, `"text-multiline"`, `"number"`, `"date"`, `"select"`, `"tags"`, `"check"`, `"password"` | `"text"` |
-| `size`      | no       | Percentage of row width to be used as field width, in range [0, 1]                                            | 1        |
-| `icon`      | no       | Icon to display — accepts any `ReactNode` (see [Icons](#icons))                                               | -        |
-| `validator` | no       | Function that validates provided value                                                                        | -        |
-| `when`      | no       | List of conditions to show/hide the field                                                                     | -        |
-| `help`      | no       | Help text shown on focus (supports basic markdown)                                                            | -        |
+## API reference
 
-For complex fields (those with fields inside):
+### `<Form>` props
 
-| Property | Required | Description                                         | Default   |
-| -------- | -------- | --------------------------------------------------- | --------- |
-| `length` | no       | Function to compute the amount of items in the list | `() => 0` |
-| `fields` | no       | Subfields list                                      | `[]`      |
+| Prop       | Type                                            | Required | Default                                   | Description                                  |
+| ---------- | ----------------------------------------------- | -------- | ----------------------------------------- | -------------------------------------------- |
+| `fields`   | `TField[]`                                      | yes      | —                                         | Array of field definitions                   |
+| `value`    | `Partial<T>`                                    | yes      | `{}`                                      | Current form values                          |
+| `onChange` | `(value: Partial<T>, isValid: boolean) => void` | yes      | —                                         | Called on every change with value & validity |
+| `delay`    | `number`                                        | no       | `500`                                     | Debounce delay (ms) before firing `onChange` |
+| `colors`   | `TColors`                                       | no       | `{ accent: '#5196D5', error: '#D65947' }` | Theme colors                                 |
 
-### Icons
+### Field definition
 
-The `icon` field accepts any React node, so you can use any icon library:
+| Property    | Type                             | Default  | Description                                                                |
+| ----------- | -------------------------------- | -------- | -------------------------------------------------------------------------- |
+| `name`      | `string`                         | —        | Field identifier (required)                                                |
+| `type`      | see below                        | `"text"` | Input type                                                                 |
+| `label`     | `string`                         | `name`   | Human-readable label                                                       |
+| `required`  | `boolean`                        | `false`  | Whether the field is mandatory                                             |
+| `size`      | `number`                         | `1`      | Width as fraction of row (0–1), e.g. `0.5` for half width                  |
+| `icon`      | `ReactNode`                      | —        | Icon displayed inside the field (emoji, SVG, or any component)             |
+| `validator` | `(value, formValue) => string[]` | —        | Custom validation — return an array of error messages (or empty for valid) |
+| `when`      | `((formValue) => boolean)[]`     | —        | Conditions to show/hide the field dynamically                              |
+| `help`      | `string`                         | —        | Help text shown on focus (supports basic markdown)                         |
+| `options`   | `{ value, label? }[]`            | —        | Options for `select` and `tags` types                                      |
 
-```tsx
-// With an emoji
-{ name: 'email', icon: '📧' }
+#### Input types
 
-// With a custom SVG
-{ name: 'email', icon: <MyEmailIcon /> }
+`"text"` · `"password"` · `"number"` · `"date"` · `"select"` · `"tags"` · `"check"` · `"text-multiline"` · `"files"`
 
-// With any icon library (e.g. lucide-react, react-icons, etc.)
-import { Mail } from 'lucide-react';
-{ name: 'email', icon: <Mail size={16} /> }
-```
+#### Nested / dynamic fields
 
-### Conditional fields (`when`)
+Fields can contain sub-fields and repeat dynamically:
 
-Fields can be shown/hidden based on form values:
+| Property | Type                    | Description                            |
+| -------- | ----------------------- | -------------------------------------- |
+| `fields` | `TField[]`              | List of sub-fields                     |
+| `length` | `(formValue) => number` | Function returning the number of items |
+
+---
+
+## Features
+
+### Conditional fields
+
+Show or hide fields based on the current form value:
 
 ```tsx
 const fields = [
@@ -109,6 +166,8 @@ const fields = [
 ```
 
 ### Nested and dynamic fields
+
+Build repeatable groups of fields:
 
 ```tsx
 const fields = [
@@ -122,22 +181,34 @@ const fields = [
 
 ### Custom validators
 
+Return an array of error strings (empty = valid). Validators can be async:
+
 ```tsx
 const fields = [
   {
     name: 'age',
     type: 'number',
-    validator: (value) => {
-      if (value < 18) return ['Must be at least 18'];
-      return [];
-    },
+    validator: (value) => (value < 18 ? ['Must be at least 18'] : []),
   },
 ];
 ```
 
-### Theme / Colors
+### Icons
 
-Customize colors via the `colors` prop (`TColors`):
+The `icon` property accepts any React node:
+
+```tsx
+{ name: 'email', icon: '📧' }
+{ name: 'email', icon: <MyEmailIcon /> }
+
+// With any icon library (lucide-react, react-icons, etc.)
+import { Mail } from 'lucide-react';
+{ name: 'email', icon: <Mail size={16} /> }
+```
+
+### Theming
+
+Customize colors via the `colors` prop:
 
 ```tsx
 <Form
@@ -148,74 +219,52 @@ Customize colors via the `colors` prop (`TColors`):
 />
 ```
 
+---
+
 ## Compatibility
 
-| Dependency        | Supported versions   |
-| ----------------- | -------------------- |
-| React             | ^18.0.0 \|\| ^19.0.0 |
-| react-dom         | ^18.0.0 \|\| ^19.0.0 |
-| styled-components | ^5.2.1 \|\| ^6.0.0   |
-| Node.js           | >= 18                |
+| Requirement       | Version            |
+| ----------------- | ------------------ |
+| Node.js           | >= 18              |
+| React             | ^18.0.0 or ^19.0.0 |
+| styled-components | ^5.2.1 or ^6.0.0   |
 
-# Contributing
+---
+
+## Contributing
+
+### Setup
+
+```bash
+git clone https://github.com/sgmonda/formelio.git
+cd formelio
+npm install
+```
+
+### Development workflow
+
+Run these in separate terminals:
+
+```bash
+npm run dev          # Watch mode — rebuilds on file changes
+npm run dev:test     # Test watcher (vitest)
+npm run storybook    # Component playground on port 6006
+```
 
 ### Git hooks
 
-This project uses git hooks for:
+- **pre-commit** — runs lint, formatting, build, and full test suite
+- **commit-msg** — enforces [Conventional Commits](https://www.conventionalcommits.org/)
 
-- Commit message format: see https://www.conventionalcommits.org/
-- Linting, formatting and testing before committing
+### Publishing
 
-### Storybook
-
-To play with individual components and see usage cases:
-
-```
-npm run storybook
+```bash
+npm publish          # Publish to npm
+npm run site:deploy  # Update the demo site (GitHub Pages)
 ```
 
-### Development
+---
 
-Clone this repository and run:
+## License
 
-```
-npm i
-```
-
-Then open 3 terminals:
-
-- Terminal 1: Dev server (watch + compile):
-
-  ```
-  npm run dev
-  ```
-
-- Terminal 2: Test watcher:
-
-  ```
-  npm run dev:test
-  ```
-
-- Terminal 3: Serve the example site:
-
-  ```
-  npm run dev:site
-  ```
-
-### Deployment
-
-To publish on npm:
-
-```
-npm publish
-```
-
-To update gh pages:
-
-```
-npm run site:deploy
-```
-
-# License
-
-Feel free to use this project as you need, always under the terms of [MIT license](./license.md).
+[MIT](./license.md) — Sergio Garcia Mondaray
