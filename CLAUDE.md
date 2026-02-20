@@ -4,30 +4,30 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What is Formelio
 
-A React form library (npm package `formelio`) that generates forms from field definitions. It supports nested/dynamic fields, conditional visibility (`when`), custom validators, and multiple input types (text, number, date, select, tags, check, password, files, text-multiline). Built with TypeScript, React 16 class components, and styled-components.
+A React form library (npm package `formelio`) that generates forms from field definitions. It supports nested/dynamic fields, conditional visibility (`when`), custom validators, and multiple input types (text, number, date, select, tags, check, password, files, text-multiline). Built with TypeScript 5, React 18 functional components with hooks, and styled-components.
 
 ## Commands
 
 - **Install**: `npm i`
-- **Build**: `npm run build` (uses microbundle-crl, outputs to `dist/`)
+- **Build**: `npm run build` (uses tsup, outputs to `dist/`)
 - **Lint**: `npm run lint`
 - **Run all tests**: `npm test` (runs lint + unit tests)
-- **Run unit tests only**: `npm run test:unit`
+- **Run unit tests only**: `npm run test:unit` (vitest)
 - **Run tests in watch mode**: `npm run dev:test`
 - **Update snapshots**: `npm run test:unit:reset`
 - **Dev mode (watch + compile)**: `npm run dev`
-- **Storybook**: `npm run storybook` (port 6006)
+- **Storybook**: `npm run storybook` (port 6006, Storybook 8 + Vite)
 - **Demo site**: `npm run dev:site` (builds and serves the `site/` app)
 
 ## Architecture
 
 ### Core layers (src/)
 
-1. **`DynamicForm` (Form)** — The public API. Exported as `Form` and as default export. Handles conditional fields (`when`), nested field flattening/unflattening, and dynamic list fields (`length`). Wraps `BasicForm`.
+1. **`DynamicForm` (Form)** — The public API. Exported as `Form` and as default export. Handles conditional fields (`when`), nested field flattening/unflattening, and dynamic list fields (`length`). Wraps `BasicForm`. Functional component with hooks.
 
-2. **`BasicForm`** — Renders the form HTML structure. Groups fields by `depth` for visual nesting. Manages field validity state and debounced `onChange` propagation (default 500ms). Creates a `FieldWrapper` per field to bridge form-level data to individual `Field` components.
+2. **`BasicForm`** — Renders the form HTML structure. Groups fields by `depth` for visual nesting. Manages field validity state and debounced `onChange` propagation (default 500ms). Creates a `FieldWrapper` per field to bridge form-level data to individual `Field` components. Functional component with hooks.
 
-3. **`Field/Field`** — Individual field component. Manages field state (errors, focus, dirty, typing). Calls the validator and renders label, input, icon, and hint. Class component extending a custom `Component` base.
+3. **`Field/Field`** — Individual field component. Manages field state (errors, focus, dirty, typing). Calls the validator and renders label, input, icon, and hint. Functional component with `forwardRef` + `useImperativeHandle` exposing `FieldHandle` type.
 
 4. **`Input/`** — Input type renderers. `Input/index.tsx` routes to the correct component (Input, TextArea, Select/Tags, Date, File, Checkbox) based on `type` and `options` props.
 
@@ -41,17 +41,26 @@ A React form library (npm package `formelio`) that generates forms from field de
 - `clone` — Deep clone utility
 - `getBorderColor` — Computes input border color based on focus/error state
 
+### Hooks (src/hooks/)
+
+- `useIsMounted` — Returns a callback `() => boolean` to check mount state. Replaces the old `Component` base class antipattern.
+
 ### Styling
 
 SASS modules (`src/style/index.module.sass`) + CSS module for Date input. Theme variables in `src/style/theme.sass`. Component uses `classnames` for conditional class application.
 
 ### Testing
 
-Tests live in `src/stories/` alongside Storybook stories. Tests import stories and render them with `@testing-library/react`. Storyshot tests provide snapshot coverage.
+Tests live in `src/stories/` alongside Storybook stories. Tests import stories and render them with `@testing-library/react`. Test runner is vitest.
 
 ### Demo site
 
 The `site/` directory is a separate React app that uses `formelio` as a file dependency (`file:..`). It shares `node_modules` with the root via file references.
+
+## Peer Dependencies
+
+- `react: ^18.0.0`
+- `styled-components: ^5.2.1 || ^6.0.0`
 
 ## Git Hooks
 
@@ -71,7 +80,3 @@ The `site/` directory is a separate React app that uses `formelio` as a file dep
 - `TField<T, F>` — Field definition with generics for value type (T) and form type (F)
 - `TInput<T>` — Low-level input props
 - `TColors` — Theme customization: `{ base?, accent?, error? }`
-
-## Class Component Pattern
-
-Components extend a custom `Component` base class (src/Component.tsx) that tracks mount state via `_isMounted`. This is used to guard async setState calls. This is a known antipattern (per React docs) but is the current approach.

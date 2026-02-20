@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Meta, Story } from '@storybook/react/types-6-0';
+import { useState } from 'react';
+import { Meta, StoryFn } from '@storybook/react';
 import Form, { TForm } from '..';
 import { clone } from '../modules';
 
@@ -17,7 +17,7 @@ export type TValue = {
   };
 };
 
-const CaseTemplate: Story<TForm<TValue>> = (args: TForm<TValue>) => {
+const CaseTemplate: StoryFn<TForm<TValue>> = (args: TForm<TValue>) => {
   const [value, setValue] = useState(args.value);
   const [isValid, setIsValid] = useState(false);
   const onChange: TForm<TValue>['onChange'] = (value, isValid) => {

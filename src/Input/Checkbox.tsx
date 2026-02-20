@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler } from 'react';
+import { ChangeEventHandler } from 'react';
 import { TInputProps } from '../types';
 
 const CheckboxInput = (props: TInputProps<boolean>) => {
@@ -17,7 +17,6 @@ const CheckboxInput = (props: TInputProps<boolean>) => {
       name={props.name}
       autoComplete={props.autocomplete}
       type="checkbox"
-      // defaultValue={props.value as any}
       onChange={onChange}
       checked={!!props.value}
       value={''}

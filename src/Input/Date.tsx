@@ -1,5 +1,5 @@
-import React from 'react';
 import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import './Date.module.css';
 import styles from '../style/index.module.sass';
 import { createGlobalStyle } from 'styled-components';
@@ -18,10 +18,9 @@ const DateInput = (props: TInputProps<Date>) => {
       border-color: ${props.borderColor};
     }
   `;
-  const onChange = (date: Date | [Date, Date]) => {
-    if (typeof date === 'string') props.onChange(new Date(Date.parse(date)));
-    props.onChange(date as Date);
-    // props.onBlur();
+  const onChange = (date: Date | null) => {
+    if (!date) return;
+    props.onChange(date);
   };
   const years = range(1900, getYear(new Date()) + 1, 1);
   const months = getMonthList();

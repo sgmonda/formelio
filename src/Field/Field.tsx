@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import styles from '../style/index.module.sass';
 import { TFieldProps, TFieldState } from '../types';
 import cl from 'classnames';
@@ -8,73 +8,82 @@ import COLORS from '../Colors';
 import Hint from './Hint';
 import { getBorderColor } from '../modules';
 import Markdown from '../Markdown';
-import { Component } from '../Component';
+import { useIsMounted } from '../hooks/useIsMounted';
 
 const ERROR_HIDE_DELAY = 1000;
 
 export type Props<T, F> = TFieldProps<T, F>;
 type State<T> = TFieldState<T>;
 
-export class Field<T, F> extends Component<Props<T, F>, State<T>> {
-  static initialState = { errors: [], isDirty: false, isFocused: false, isTyping: false, value: undefined };
+export type FieldHandle = {
+  validate: () => void;
+};
 
-  constructor(props: Props<T, F>) {
-    super(props);
-    this.state = this.getStateAndValidate(props);
-  }
+function FieldInner<T, F>(props: Props<T, F>, ref: React.Ref<FieldHandle>) {
+  const isMounted = useIsMounted();
+  const [errors, setErrors] = useState<string[]>([]);
+  const [isDirty, setIsDirty] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const [value, setValue] = useState<T | undefined>(props.value);
 
-  private getStateAndValidate = (props: Props<T, F>): State<T> => {
-    const state = {
-      ...Field.initialState,
-      value: props.value,
-    };
-    this.validate(props);
-    return state;
-  };
+  const validate = useCallback(
+    (currentProps: Props<T, F> = props) => {
+      currentProps.validator?.(currentProps.value as T).then((errs) => {
+        if (!isMounted()) return;
+        setErrors(errs || []);
+      });
+    },
+    [props.validator, props.value, isMounted]
+  );
 
-  public validate = (props: Props<T, F> = this.props) => {
-    props.validator?.(props.value as T).then((errors) => {
-      if (!this._isMounted) return;
-      this.setState({ errors: errors || [] });
-    });
-  };
+  useImperativeHandle(ref, () => ({ validate: () => validate() }), [validate]);
 
-  public componentDidUpdate = (prevProps: Props<T, F>) => {
-    if (prevProps.value !== this.state.value && !(Number.isNaN(prevProps.value) && Number.isNaN(this.state.value))) {
-      const newState = {
-        ...this.getStateAndValidate(this.props),
-        isDirty: this.state.isDirty,
-        isFocused: this.state.isFocused,
-        isTyping: this.state.isTyping,
-      };
-      this.setState(newState);
+  const prevValueRef = useRef(props.value);
+  useEffect(() => {
+    const prev = prevValueRef.current;
+    if (prev !== value && !(Number.isNaN(prev) && Number.isNaN(value))) {
+      prevValueRef.current = props.value;
+      setValue(props.value);
+      validate();
     }
+  }, [props.value]);
+
+  const prevFormValueRef = useRef(props.formValue);
+  useEffect(() => {
     const shouldReset =
-      Object.keys(prevProps.formValue || {}).length && !Object.keys(this.props.formValue || {}).length;
+      Object.keys(prevFormValueRef.current || {}).length &&
+      !Object.keys(props.formValue || {}).length;
+    prevFormValueRef.current = props.formValue;
     if (shouldReset) {
-      this.setState({ isDirty: false });
+      setIsDirty(false);
     }
-  };
+  }, [props.formValue]);
 
-  private onChange = async (value: T) => {
-    // Do not show errors while typing
-    setTimeout(() => {
-      if (!this.isMounted) return;
-      this.setState({ isTyping: false });
-    }, ERROR_HIDE_DELAY);
+  const onChange = useCallback(
+    async (nextValue: T) => {
+      setTimeout(() => {
+        if (!isMounted()) return;
+        setIsTyping(false);
+      }, ERROR_HIDE_DELAY);
 
-    const { validator } = this.props;
-    const errors = (await validator?.(value)) || [];
-    if (!this._isMounted) return;
-    this.setState({ errors, isDirty: true, isTyping: true, value });
-    this.props.onChange(value, !errors.length);
-  };
+      const { validator } = props;
+      const errs = (await validator?.(nextValue)) || [];
+      if (!isMounted()) return;
+      setErrors(errs);
+      setIsDirty(true);
+      setIsTyping(true);
+      setValue(nextValue);
+      props.onChange(nextValue, !errs.length);
+    },
+    [props.validator, props.onChange, isMounted]
+  );
 
-  private renderStateIcon = () => {
-    const { colors } = this.props;
-    const { errors, isDirty, isFocused, isTyping } = this.state;
-    const isError = !!errors.length && !isTyping && isDirty;
-    let color = 'inherit' || undefined;
+  const isError = !!errors.length && !isTyping && isDirty;
+
+  const renderStateIcon = () => {
+    const { colors } = props;
+    let color: string = 'inherit';
     if (isError) color = colors?.error || COLORS.ERROR;
     else if (isFocused) color = colors?.accent || COLORS.ACCENT;
     return (
@@ -91,32 +100,28 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
     );
   };
 
-  private renderInput = () => {
-    const { help } = this.props;
-    const { errors, isDirty, isFocused, isTyping, value } = this.state;
-    const isError = !!errors.length && !isTyping && isDirty;
+  const renderInput = () => {
+    const { help } = props;
     return (
       <Input
-        {...this.props}
+        {...props}
         hasHint={isError || !!help}
         isErrored={isError}
         isFocused={isFocused}
         value={value}
-        onChange={this.onChange}
-        onFocus={() => this.setState({ isFocused: true })}
-        onBlur={() => this.setState({ isFocused: false })}
+        onChange={onChange}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
       />
     );
   };
 
   // eslint-disable-next-line complexity
-  private renderLabel = () => {
-    const { colors, disabled, icon, id, label, name, required } = this.props;
-    const { errors, isDirty, isFocused, isTyping, value } = this.state;
+  const renderLabel = () => {
+    const { colors, disabled, icon, id, label, name, required } = props;
     const isEmpty = !value;
-    const isErrored = !!errors.length && !isTyping && isDirty;
     let color = 'inherit';
-    if (isErrored) color = colors?.error || COLORS.ERROR;
+    if (isError) color = colors?.error || COLORS.ERROR;
     else if (isFocused) color = colors?.accent || COLORS.ACCENT;
     return (
       <label
@@ -129,50 +134,69 @@ export class Field<T, F> extends Component<Props<T, F>, State<T>> {
         htmlFor={id}
       >
         <span style={{ flex: 1 }}>
-          {icon && <Icon id={icon} />} <Markdown inline text={label || name || ''} /> {required && <span>*</span>}
+          {icon && <Icon id={icon} />}
+          {' '}<Markdown inline text={label || name || ''} />
+          {' '}{required && <span>*</span>}
         </span>
-        {Array.isArray(value) && !!value.length && <span>({value.length})</span>}
+        {Array.isArray(value) && !!value.length && (
+          <span>({value.length})</span>
+        )}
       </label>
     );
   };
 
-  private renderCheckbox = (isErrored: boolean) => {
-    const { colors, id, label, name } = this.props;
+  const renderCheckbox = () => {
+    const { colors, id, label, name } = props;
     let color = 'inherit';
-    if (isErrored) color = colors?.error || COLORS.ERROR;
+    if (isError) color = colors?.error || COLORS.ERROR;
+    const borderStyle = getBorderColor({ isErrored: isError });
     return (
-      <div className={`${styles.checkbox}`} style={{ ...getBorderColor({ isErrored }), color, position: 'relative' }}>
-        {this.renderInput()}{' '}
+      <div
+        className={`${styles.checkbox}`}
+        style={{ ...borderStyle, color, position: 'relative' }}
+      >
+        {renderInput()}{' '}
         <label htmlFor={id}>
           <Markdown inline text={label || name || ''} />
         </label>
-        {isErrored && this.renderStateIcon()}
+        {isError && renderStateIcon()}
       </div>
     );
   };
 
-  public render = () => {
-    const { disabled, help, required, type, value } = this.props;
-    const { errors = [], isDirty, isTyping, isFocused } = this.state;
-    const isError = isDirty && !isTyping && (errors.length > 0 || (required && !value));
-    const hasIcon = isError || help;
-    const hasHint = hasIcon && isFocused;
-    if (type === 'check') return this.renderCheckbox(!!isError);
-    return (
-      <div
-        className={cl({
-          [styles.field]: true,
-          [styles.isErrored]: isError,
-          [styles.isDisabled]: disabled,
-        })}
-      >
-        {this.renderInput()}
-        {this.renderLabel()}
-        {hasIcon && this.renderStateIcon()}
-        {hasHint && <Hint<T, F> {...this.props} {...this.state} />}
-      </div>
-    );
-  };
+  const { disabled, help, type } = props;
+  const hasIcon = isError || help;
+  const hasHint = hasIcon && isFocused;
+
+  if (type === 'check') return renderCheckbox();
+
+  return (
+    <div
+      className={cl({
+        [styles.field]: true,
+        [styles.isErrored]: isError,
+        [styles.isDisabled]: disabled,
+      })}
+    >
+      {renderInput()}
+      {renderLabel()}
+      {hasIcon && renderStateIcon()}
+      {hasHint && (
+        <Hint<T, F>
+          {...props}
+          errors={errors}
+          isDirty={isDirty}
+          isFocused={isFocused}
+          isTyping={isTyping}
+          value={value}
+        />
+      )}
+    </div>
+  );
 }
+
+export const Field = forwardRef(FieldInner) as <T, F>(
+  props: Props<T, F> & { ref?: React.Ref<FieldHandle> }
+) => ReturnType<typeof FieldInner>;
 
 export default Field;

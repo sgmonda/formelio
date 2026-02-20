@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, useEffect, useRef, useState } from 'react';
+import { ChangeEventHandler, useEffect, useRef, useState } from 'react';
 import cl from 'classnames';
 import { TInputProps } from '../types';
 import styles from '../style/index.module.sass';

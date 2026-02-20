@@ -1,52 +1,47 @@
-import React, { Fragment } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { BasicForm } from './BasicForm';
-import { Component } from './Component';
 import { clone, flatten, unflatten } from './modules';
 import { TField, TForm } from './types';
+import { useIsMounted } from './hooks/useIsMounted';
 
-type State<T> = {
-  fields: TForm<T>['fields'];
-  isValid: boolean;
-  value: Partial<T> & { [key: string]: any };
-};
+export function Form<T>(props: TForm<T>) {
+  const isMounted = useIsMounted();
+  const [fields, setFields] = useState<TForm<T>['fields']>(() => getInconditionalFields<T>(props.fields));
+  const [value, setValue] = useState<Partial<T> & { [key: string]: any }>(() => flatten(props.value || {}) as any);
 
-export class Form<T> extends Component<TForm<T>, State<T>> {
-  constructor(props: TForm<T>) {
-    super(props);
-    this.state = {
-      fields: getInconditionalFields<T>(props.fields),
-      isValid: false,
-      value: flatten(props.value || {}) as any,
-    };
-    cleanFields(props.fields, this.state.value).then((fields: any) => {
-      return this.isMounted && this.setState({ fields });
+  const onChange: TForm<T>['onChange'] = useCallback(
+    async (nextValue, nextIsValid) => {
+      const nextFields = await cleanFields(props.fields, nextValue);
+      if (!isMounted()) return;
+      const cleaned = cleanValue(nextValue, nextFields);
+      setFields(nextFields);
+      setValue(cleaned);
+      props.onChange(unflatten(cleaned), nextIsValid);
+    },
+    [props.fields, props.onChange]
+  );
+
+  useEffect(() => {
+    cleanFields(props.fields, props.value).then((f) => {
+      if (isMounted()) setFields(f);
     });
-  }
+  }, []);
 
-  private onChange: TForm<T>['onChange'] = async (value, isValid) => {
-    const fields = await cleanFields(this.props.fields, value);
-    if (!this.isMounted) return;
-    value = cleanValue(value, fields);
-    this.setState({ fields, isValid, value });
-    this.props.onChange(unflatten(value), isValid);
-  };
-
-  public componentDidUpdate = (prevProps: TForm<T>) => {
-    if (prevProps.value !== this.props.value || prevProps.fields !== this.props.fields) {
-      const value = flatten(this.props.value || {}) as any;
-      cleanFields(this.props.fields, this.props.value).then(
-        (fields) => this.isMounted && this.setState({ fields, value })
-      );
+  const prevValueRef = useRef(props.value);
+  const prevFieldsRef = useRef(props.fields);
+  useEffect(() => {
+    if (prevValueRef.current !== props.value || prevFieldsRef.current !== props.fields) {
+      prevValueRef.current = props.value;
+      prevFieldsRef.current = props.fields;
+      const nextValue = flatten(props.value || {}) as any;
+      setValue(nextValue);
+      cleanFields(props.fields, props.value).then((f) => {
+        if (isMounted()) setFields(f);
+      });
     }
-  };
+  }, [props.value, props.fields]);
 
-  public render = () => {
-    return (
-      <Fragment>
-        <BasicForm {...this.props} {...this.state} onChange={this.onChange} />
-      </Fragment>
-    );
-  };
+  return <BasicForm {...props} fields={fields} value={value} onChange={onChange} />;
 }
 
 function getInconditionalFields<T>(fields: TForm<T>['fields']): TForm<T>['fields'] {
@@ -57,7 +52,7 @@ function getInconditionalFields<T>(fields: TForm<T>['fields']): TForm<T>['fields
 
 // eslint-disable-next-line complexity
 async function cleanFields<T>(
-  fields: any, // This cannot be just TForm<T>['fields'] because cleanFields() is called recursivelly
+  fields: any,
   formValue: Partial<T> = {},
   depth: number = 0
 ): Promise<TForm<T>['fields']> {
@@ -128,13 +123,16 @@ async function cleanFields<T>(
 }
 
 function cleanValue<T>(value: Partial<T>, fields: TForm<any>['fields']): Partial<T> {
-  const keys = fields.reduce((accum, f) => {
-    if (f.name) accum[f.name] = true;
-    return accum;
-  }, {} as { [key: string]: boolean });
+  const keys = fields.reduce(
+    (accum, f) => {
+      if (f.name) accum[f.name] = true;
+      return accum;
+    },
+    {} as { [key: string]: boolean }
+  );
   const nextValue = clone<typeof value>(value);
   Object.keys(nextValue).forEach((key) => {
-    if (!keys[key]) delete nextValue[key];
+    if (!keys[key]) delete (nextValue as any)[key];
   });
   return nextValue;
 }

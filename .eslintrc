@@ -2,27 +2,32 @@
   "parser": "@typescript-eslint/parser",
   "extends": [
     "eslint:recommended",
-    // "plugin:prettier/recommended",
     "plugin:react/recommended"
   ],
   "env": {
     "browser": true,
-    "jest": true,
     "node": true,
     "es6": true
+  },
+  "globals": {
+    "it": "readonly",
+    "expect": "readonly",
+    "describe": "readonly",
+    "beforeEach": "readonly",
+    "afterEach": "readonly",
+    "vi": "readonly"
   },
   "parserOptions": {
     "ecmaVersion": 2020,
     "ecmaFeatures": {
-      "legacyDecorators": true,
       "jsx": true
     },
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "import", "react", "json", "cypress"],
+  "plugins": ["@typescript-eslint", "import", "react"],
   "settings": {
     "react": {
-      "version": "16"
+      "version": "detect"
     },
     "import/resolver": {
       "node": {
@@ -38,7 +43,6 @@
     "import/export": 0,
 
     "camelcase": "off",
-    // "comma-dangle": ["error", "always-multiline"],
     "consistent-return": "off",
     "complexity": ["error", 10],
     "global-require": "off",
@@ -54,15 +58,10 @@
     "no-return-assign": ["error", "except-parens"],
     "no-param-reassign": "off",
     "no-plusplus": "off",
-
-    // Fix "Definition for rule '@typescript-eslint/no-redeclare' was not found" error
-    // "no-redeclare": "off",
-    // "@typescript-eslint/no-redeclare": ["error"],
-
     "no-underscore-dangle": "off",
     "import/no-dynamic-require": "off",
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
-    "import/no-unresolved": "off", // Typescript already takes care of this, and works with raw-loader. This doesn't
+    "import/no-unresolved": "off",
     "import/prefer-default-export": "off",
     "object-property-newline": "off",
     "object-curly-newline": ["error", { "consistent": true }],
@@ -70,12 +69,11 @@
     "no-unused-vars": "warn",
     "@typescript-eslint/no-unused-vars": ["warn"],
     "react/prop-types": "off",
-    "react/react-in-jsx-scoe": "off", // React must be in global scope, so we don't need to import it
+    "react/react-in-jsx-scope": "off",
     "guard-for-in": "off",
     "semi": "error",
     "sort-keys": "warn",
     "sort-vars": "warn",
-    "react/no-is-mounted": "warn",
     "sort-imports": [
       "warn",
       {

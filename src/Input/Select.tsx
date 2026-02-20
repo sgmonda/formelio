@@ -1,4 +1,3 @@
-import React from 'react';
 import RSelect, { StylesConfig } from 'react-select';
 import { TInputProps } from '../types';
 import COLORS from '../Colors';
@@ -47,8 +46,8 @@ function getSelect<T>(isMulti: boolean = false) {
         background: state.isSelected
           ? props.colors?.accent || COLORS.ACCENT
           : state.isFocused
-          ? (props.colors?.accent || COLORS.ACCENT) + '1F'
-          : 'white',
+            ? (props.colors?.accent || COLORS.ACCENT) + '1F'
+            : 'white',
         color: state.isSelected ? 'white' : '#555',
         padding: '0.25em 0.5em',
       }),

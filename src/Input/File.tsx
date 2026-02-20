@@ -1,11 +1,11 @@
-import React, { ChangeEventHandler, createRef, FocusEventHandler, Fragment } from 'react';
+import { ChangeEventHandler, FocusEventHandler, Fragment, useRef } from 'react';
 import cl from 'classnames';
 import { TInputProps } from '../types';
 import styles from '../style/index.module.sass';
 
 const FileInput = (props: TInputProps<File[]>) => {
-  const ref = createRef<HTMLInputElement>();
-  const ref2 = createRef<HTMLInputElement>();
+  const ref = useRef<HTMLInputElement>(null);
+  const ref2 = useRef<HTMLInputElement>(null);
   const onFocus: FocusEventHandler<HTMLInputElement> = () => {
     ref2.current?.blur();
     ref.current?.click();

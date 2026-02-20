@@ -1,4 +1,4 @@
-import React, { createRef, Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import { createPopper } from '@popperjs/core';
 import styles from '../style/index.module.sass';
 import { TFieldProps, TFieldState } from '../types';
@@ -9,8 +9,8 @@ function Hint<T, F>(props: TFieldProps<T, F> & TFieldState<T>) {
   const { colors, errors, help, isDirty, isFocused, isTyping } = props;
   const isError = !!errors.length && !isTyping && isDirty;
 
-  const refTarget = createRef<HTMLDivElement>();
-  const refPopper = createRef<HTMLDivElement>();
+  const refTarget = useRef<HTMLDivElement>(null);
+  const refPopper = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (refTarget.current && refPopper.current) {
@@ -29,7 +29,6 @@ function Hint<T, F>(props: TFieldProps<T, F> & TFieldState<T>) {
       <div className={styles.hint} ref={refPopper} style={{ backgroundColor }}>
         <Markdown text={isFocused ? message || '' : ''} inline />
         <div className={styles.arrow} data-popper-arrow></div>
-        {/* <div className={styles.spike} style={{ borderTopColor: backgroundColor }} /> */}
       </div>
     </Fragment>
   );

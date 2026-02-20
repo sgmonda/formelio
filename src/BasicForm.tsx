@@ -1,22 +1,15 @@
 import _ from 'lodash';
-import React, { createRef, Fragment, useEffect } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './style/index.module.sass';
-import { Field } from './Field';
+import { Field, FieldHandle } from './Field';
 import { TColors, TField, TForm } from './types';
 import Colors from './Colors';
 import cl from 'classnames';
 import Markdown from './Markdown';
-import { Component } from './Component';
 import { clone } from './modules';
-
-type State<T> = {
-  fields: TForm<T>['fields'];
-  validity: { [key: string]: boolean };
-  value: Partial<T>;
-};
+import { useIsMounted } from './hooks/useIsMounted';
 
 const genId = (field: TField<any, any>) => field.name || 'noname';
-// const genId = () => Math.random().toString(36).slice(2);
 
 function parseFields<T>(_fields: TForm<T>['fields'], base: string): TForm<T>['fields'] {
   const fields: typeof _fields = clone(_fields);
@@ -28,99 +21,115 @@ function parseFields<T>(_fields: TForm<T>['fields'], base: string): TForm<T>['fi
   return fields;
 }
 
-export class BasicForm<T> extends Component<TForm<T>, State<T>> {
-  private id: string = this.props.id || genId({ name: 'myformid' });
+export function BasicForm<T>(props: TForm<T>) {
+  const isMounted = useIsMounted();
+  const id = useMemo(() => props.id || genId({ name: 'myformid' }), [props.id]);
 
-  constructor(props: TForm<T>) {
-    super(props);
-    const fields = parseFields(props.fields, this.id);
-    this.state = {
-      fields,
-      validity: { something: false }, // Not valid by default, until first validation
-      value: props.value || {},
-    };
-    this.init(fields);
-  }
+  const [fields, setFields] = useState<TForm<T>['fields']>(() => parseFields(props.fields, id));
+  const [validity, setValidity] = useState<{ [key: string]: boolean }>({ something: false });
+  const [value, setValue] = useState<Partial<T>>(props.value || {});
 
-  private init = (fields: TForm<T>['fields'], value: TForm<T>['value'] = this.props.value) => {
-    Promise.all(
-      fields.map(async (field) => {
-        const errors = field.name ? await validateField<any, any>(field, value?.[field.name], value) : [];
-        return errors.length > 0;
-      })
-    ).then((errors) => {
-      if (!this.isMounted) return;
-      const validity = {};
-      fields.forEach((field, i) => {
-        validity[field.name as string] = !errors[i];
+  const validityRef = useRef(validity);
+  validityRef.current = validity;
+  const valueRef = useRef(value);
+  valueRef.current = value;
+
+  const propagateOnChange = useMemo(
+    () =>
+      _.debounce(() => {
+        const isValid = !Object.values(validityRef.current).some((b) => !b);
+        props.onChange(valueRef.current, isValid);
+      }, props.delay || 500),
+    [props.onChange, props.delay]
+  );
+
+  const init = useCallback(
+    (initFields: TForm<T>['fields'], initValue: TForm<T>['value'] = props.value) => {
+      Promise.all(
+        initFields.map(async (field) => {
+          const errors = field.name ? await validateField<any, any>(field, initValue?.[field.name], initValue) : [];
+          return errors.length > 0;
+        })
+      ).then((errors) => {
+        if (!isMounted()) return;
+        const nextValidity: { [key: string]: boolean } = {};
+        initFields.forEach((field, i) => {
+          nextValidity[field.name as string] = !errors[i];
+        });
+        setFields(initFields);
+        setValidity(nextValidity);
+        setValue(initValue || {});
+        propagateOnChange();
       });
+    },
+    [isMounted, propagateOnChange, props.value]
+  );
 
-      // Hack to force Webkit autofill transition restart
-      // Disabled because this makes inputs rebuild, so they lose focus and other state
-      // this.setState({ fields: [] });
+  useEffect(() => {
+    init(parseFields(props.fields, id));
+  }, []);
 
-      this.setState({ fields, validity, value: value || {} });
-      this.propagateOnChange();
-    });
-  };
-
-  private propagateOnChange = _.debounce(() => {
-    const isValid = !Object.values(this.state.validity).some((b) => !b);
-    this.props.onChange(this.state.value, isValid);
-  }, this.props.delay || 500);
-
-  private onChange<X>(field: TField<X, T>, value: X, isValid: boolean): void {
-    if (!field.name) return;
-    this.setState({
-      validity: { ...this.state.validity, [field.name]: isValid },
-      value: { ...this.state.value, [field.name]: value },
-    });
-    this.propagateOnChange();
-  }
-
-  public componentDidUpdate = (prevProps: TForm<T>) => {
-    const hasValueChanged = JSON.stringify(prevProps.value) !== JSON.stringify(this.props.value);
-    const hasFieldsChanged = JSON.stringify(prevProps.fields) !== JSON.stringify(this.props.fields);
+  const prevPropsRef = useRef({ fields: props.fields, value: props.value });
+  useEffect(() => {
+    const hasValueChanged = JSON.stringify(prevPropsRef.current.value) !== JSON.stringify(props.value);
+    const hasFieldsChanged = JSON.stringify(prevPropsRef.current.fields) !== JSON.stringify(props.fields);
+    prevPropsRef.current = { fields: props.fields, value: props.value };
     if (hasValueChanged || hasFieldsChanged) {
-      const fields = hasFieldsChanged ? parseFields(this.props.fields, this.id) : this.state.fields;
-      this.init(fields);
+      const nextFields = hasFieldsChanged ? parseFields(props.fields, id) : fields;
+      init(nextFields);
     }
-  };
+  }, [props.value, props.fields]);
 
-  public render = () => {
-    const { colors } = this.props;
-    const { fields, value } = this.state;
-    const fieldGroups = groupFields(fields);
-    return (
-      <div className={styles.formelio}>
-        <form id={this.id}>
-          {fieldGroups.map((group, i) => (
-            <div
-              key={i}
-              className={styles.group}
-              style={{
-                borderLeft: group.depth > 0 ? `solid 0.1em ${colors?.accent || Colors.ACCENT}20` : 'none',
-                marginLeft: `${group.depth > 0 ? 0.5 + (group.depth - 1) : 0}em`,
-                paddingLeft: `${group.depth > 0 ? 0.5 : 0}em`,
-              }}
-            >
-              {group.fields.map((field) => (
-                <Fragment key={`${group.depth}${field.name || field.label}${i}`}>
-                  <div
-                    className={cl({ [styles.fieldWrapper]: true })}
-                    style={{ flexBasis: (field.size || 1) * 100 + '%' }}
-                  >
-                    {!field.name && renderLabel(field, colors)}
-                    {field.name && getField<T>(field, value, this.onChange.bind(this), this.props.colors)}
-                  </div>
-                </Fragment>
-              ))}
-            </div>
-          ))}
-        </form>
-      </div>
-    );
-  };
+  const onFieldChange = useCallback(
+    <X,>(field: TField<X, T>, fieldValue: X, isValid: boolean): void => {
+      if (!field.name) return;
+      setValidity((prev) => {
+        const next = { ...prev, [field.name as string]: isValid };
+        validityRef.current = next;
+        return next;
+      });
+      setValue((prev) => {
+        const next = { ...prev, [field.name as string]: fieldValue };
+        valueRef.current = next;
+        return next;
+      });
+      propagateOnChange();
+    },
+    [propagateOnChange]
+  );
+
+  const { colors } = props;
+  const fieldGroups = groupFields(fields);
+
+  return (
+    <div className={styles.formelio}>
+      <form id={id}>
+        {fieldGroups.map((group, i) => (
+          <div
+            key={i}
+            className={styles.group}
+            style={{
+              borderLeft: group.depth > 0 ? `solid 0.1em ${colors?.accent || Colors.ACCENT}20` : 'none',
+              marginLeft: `${group.depth > 0 ? 0.5 + (group.depth - 1) : 0}em`,
+              paddingLeft: `${group.depth > 0 ? 0.5 : 0}em`,
+            }}
+          >
+            {group.fields.map((field) => (
+              <Fragment key={`${group.depth}${field.name || field.label}${i}`}>
+                <div
+                  className={cl({ [styles.fieldWrapper]: true })}
+                  style={{ flexBasis: (field.size || 1) * 100 + '%' }}
+                >
+                  {!field.name && renderLabel(field, colors)}
+                  {field.name && getField<T>(field, value, onFieldChange, props.colors)}
+                </div>
+              </Fragment>
+            ))}
+          </div>
+        ))}
+      </form>
+    </div>
+  );
 }
 
 const groupFields = (fields: TField<any, any>[]) => {
@@ -139,7 +148,6 @@ const groupFields = (fields: TField<any, any>[]) => {
   return groups;
 };
 
-// @TODO Don't use "any" here
 function getField<T>(field: any, value: any, onChange: any, colors?: TColors) {
   switch (field.type) {
     case 'date':
@@ -170,17 +178,13 @@ const renderLabel = (field: TField<any, any>, colors: TForm<any>['colors']) => {
   );
 };
 
-/**
- * Intermediate component to let field handlers receive form data without passing
- * any form info to the Field class itself. This way <Field/> does not need to know about <Form/>
- */
 function FieldWrapper<T, F>(props: {
   field: TField<T, F>;
   formValue: Partial<F>;
   onChange: (field: TField<T, F>, value: T, isValid: boolean) => void;
   colors?: TColors;
 }) {
-  const ref = createRef<Field<T, F>>();
+  const ref = useRef<FieldHandle>(null);
   const onChange = (value: T, isValid: boolean) => props.onChange(props.field, value, isValid);
   const validator = async (value?: T): Promise<string[]> => {
     return validateField(props.field, value, props.formValue);

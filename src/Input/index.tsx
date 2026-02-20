@@ -5,9 +5,9 @@ import Date from './Date';
 import Checkbox from './Checkbox';
 import Input from './Input';
 import TextArea from './TextArea';
-import React from 'react';
 import { getBorderColor } from '../modules';
 
+// eslint-disable-next-line react/display-name
 export default (props: TInputProps<any>) => {
   const { options, type } = props;
   const inputProps = { ...props, ...getBorderColor(props) };
@@ -15,9 +15,9 @@ export default (props: TInputProps<any>) => {
     if (type === 'tags') return <Tags {...inputProps} />;
     return <Select {...inputProps} />;
   }
-  if (type === 'date') return Date(inputProps);
-  if (type === 'files') return File(inputProps);
-  if (type === 'check') return Checkbox(inputProps);
-  if (type === 'text-multiline') return TextArea(inputProps);
-  return Input(inputProps);
+  if (type === 'date') return <Date {...inputProps} />;
+  if (type === 'files') return <File {...inputProps} />;
+  if (type === 'check') return <Checkbox {...inputProps} />;
+  if (type === 'text-multiline') return <TextArea {...inputProps} />;
+  return <Input {...inputProps} />;
 };
